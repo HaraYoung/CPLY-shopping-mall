@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import setnotice from "./NoticeAPI";
 import { RightArrow, RightArrowDouble } from "../icons";
-<<<<<<< HEAD
-=======
 import SideNav from "../components/SideNav";
 import styled from "styled-components";
 
@@ -29,7 +27,6 @@ const NoticeContainer = styled.div`
 `;
 
 const Pagination = styled.div``;
->>>>>>> cb9fc0ff9ebe30dfe0b4f05096ce18999aa858cb
 
 const NoticeMain = () => {
   return (

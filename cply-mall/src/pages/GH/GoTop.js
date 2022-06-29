@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
 
-import btnTop from '../assets/img/goTop.png';
+import btnTop from '../../assets/img/goTop.png';
 
 const TopButton =styled.button`
     width: 70px;
