@@ -1,8 +1,6 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
 import {Link,Routes,Route} from 'react-router-dom';
-import Signin from './Signin';
-import NotMembers from './NotMembers';
 const LoginCss = styled.div`
     width: 100%;
     display: flex;
@@ -136,15 +134,6 @@ const Login = memo(() => {
                 <div className='login-box-title'>
                     <h1>로그인</h1>
                 </div>
-                {/* <nav>
-                <NavLink to='signin'>회원</NavLink>
-                <NavLink to='notmembers'>비회원(주문조회)</NavLink>
-                </nav>
-
-                <Routes>
-                    <Route path='/signin' element={<Signin/>}/>
-                    <Route path='/notmembers' element={<NotMembers/>}/>
-                </Routes> */}
                 <div className='login-active-button'>
                     <button value='1' onClick={ChangeButton} className={changeLogin?'login-active':''}>회원</button>
                     <button value='0' onClick={ChangeButton} className={changeLogin?'':'login-active'}>비회원(주문조회)</button>

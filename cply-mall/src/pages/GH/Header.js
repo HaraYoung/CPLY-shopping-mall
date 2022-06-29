@@ -122,13 +122,13 @@ const Header = () => {
     const [SearchBtn,setSearchBtn] = React.useState(true);
 
     //상단 우측 검색 이미지 클릭시 발생할 이벤트
-    const BtnClick = React.useCallback(e=>setSearchBtn(SearchBtn => !SearchBtn),[SearchBtn])
+    const BtnClick = React.useCallback(e=>setSearchBtn(SearchBtn => !SearchBtn),[setSearchBtn])
     return (
         <HeaderCss>
             <div className='header-box'>
                 <Link to='/login'>로그인/비로그인주문조회</Link>
-                <Link to='/'>장바구니</Link>
-                <Link to='/'>고객센터</Link>
+                <Link to='/cart'>장바구니</Link>
+                <Link to='/notice'>고객센터</Link>
             </div>
             <div className='header-box2'>
                 <button onClick={BtnClick}>☰</button>
