@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import setnotice from "./NoticeAPI";
-import { RightArrow, RightArrowDouble } from "./icons";
+import { RightArrow, RightArrowDouble } from "../icons";
 
 const NoticeMain = () => {
   return (

@@ -1,15 +1,6 @@
-<<<<<<< HEAD
-import React from 'react';
-
-function App() {
-  return (
-    <div>
-    </div>
-  )
-=======
-import NoticeMain from "./pages/YS/NoticeMain";
+import NoticeMain from "./pages/YS/NoticeScreen/NoticeMain";
 import { Routes, Route } from "react-router-dom";
-import NoticeContent from "./pages/YS/NoticeContent";
+import NoticeContent from "./pages/YS/NoticeScreen/NoticeContent";
 
 function App() {
   return (
@@ -20,7 +11,7 @@ function App() {
       </Routes>
     </>
   );
->>>>>>> ce779b27b226730ff7584bdc99ba6a82c08e18b7
+
 }
 
 export default App;
