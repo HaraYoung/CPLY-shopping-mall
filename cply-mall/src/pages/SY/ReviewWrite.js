@@ -1,3 +1,10 @@
+/**
+ * @filename: ReviewWrite.js
+ * @description: 리뷰쓰기 버튼 클릭시 나타나는 리뷰 작성 팝업
+ * @author: 박세영(qkrtpdud9899@gmail.com)
+ */
+
+
 import React, { memo } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
