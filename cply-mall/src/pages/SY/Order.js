@@ -4,16 +4,18 @@
  * @author: 박세영(qkrtpdud9899@gmail.com)
  */
 import React, { memo } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 import Delivery from "./Delivery";
+import ReviewWrite from "./ReviewWrite";
 
 import Img from "./img/찡찡이젤리.jpg";
 
 const OrderArea = styled.div`
+position: relative;
   padding: 1em 2em;
   .orderArea {
     .orderItem {
@@ -246,7 +248,7 @@ const Order = memo(() => {
           </div>
         </div>
       </div>
-      <Delivery/>
+      <Delivery />
       {/*배송 완료 */}
       <div className="orderArea">
         {/*하나의 상품 영역 */}
@@ -344,13 +346,16 @@ const Order = memo(() => {
                   구매 확정
                   {/*[주문확인중,배송중,배송완료,구매확정]인 경우를 따져 선택값 or 컴포넌트 */}
                 </div>
-                <NavLink to="#">리뷰 쓰기</NavLink>
+                <NavLink to="/reviewWrite">리뷰 쓰기</NavLink>
                 {/*클릭시 리뷰쓰기 컴포넌트 나타남 */}
               </span>
             </div>
           </div>
         </div>
       </div>
+      <Routes>
+        <Route path="/reviewWrite" element={<ReviewWrite />} />
+      </Routes>
     </OrderArea>
   );
 });
