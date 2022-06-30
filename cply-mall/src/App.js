@@ -29,7 +29,6 @@ const App = memo(() => {
                 <Route path="/cart" element={<Cart/>}/>
             </Routes> */}
 
-            <Order/>
     </div>
   )
 })
