@@ -32,7 +32,7 @@ const RandE = memo(() => {
   return (
     <div>
       <TabEAndR>
-        <NavLink to="exchange">교환</NavLink>
+        <NavLink to="/">교환</NavLink>
         <NavLink to="refund">반품</NavLink>
       </TabEAndR>
       <Notice>

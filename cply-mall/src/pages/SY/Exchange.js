@@ -130,29 +130,6 @@ const ExchangeArea = styled.div`
   }
 `;
 
-const TabEAndR = styled.div`
-  display: flex;
-  justify-content: space-around;
-  a {
-    text-decoration: none;
-    color: #000;
-    font-size: 1.5em;
-    font-weight: bold;
-    padding: 10px;
-    border-bottom: 2px solid black;
-    margin: 3em;
-    &:hover {
-      background-color: gainsboro;
-    }
-  }
-`;
-
-const Notice = styled.div`
-  color: red;
-  font-size: 14px;
-  font-weight: bold;
-  padding: 1em 2em;
-`;
 
 const exchange = memo(() => {
   return (

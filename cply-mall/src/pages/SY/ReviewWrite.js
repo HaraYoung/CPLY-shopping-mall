@@ -91,21 +91,28 @@ margin-right: 10%;
 }
 `;
 
-const onClickCancel = () => {
-  if (window.confirm("정말 삭제합니까?")) {
 
-    alert("삭제되었습니다.");
+
+
+
+const ReviewWrite = memo(() => {
+  const RWRef= React.useRef();
+  
+const onClickCancel = () => {
+  
+  if (window.confirm("취소시 작성하신 리뷰는 저장되지 않습니다. 창을 닫으시겠습니까?")) {
+    RWRef.styled.display='none';
+    //window.location.href = 'http://localhost:3000/'
 
   } else {
-
     alert("취소합니다.");
+
 
   }
 }
 
-const ReviewWrite = memo(() => {
   return (
-    <RWArea>
+    <RWArea ref={RWRef}>
       <div className="container">
         <ReviewTop>
         <FontAwesomeIcon
