@@ -152,7 +152,14 @@ const DetailGoods = () => {
                   backgroundSize: "cover",
                 }}
                 onClick={onClick}
-              />
+              >
+                <img
+                  src={
+                    "https://cdn.shopify.com/s/files/1/1071/7482/files/1383185611092.jpg?v=1487090221"
+                  }
+                  alt="thumbs"
+                />
+              </li>
               <li
                 style={{
                   background:
