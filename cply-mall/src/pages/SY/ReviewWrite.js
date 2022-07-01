@@ -8,6 +8,7 @@ import React, { memo } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import Img from "./img/찡찡이젤리.jpg";
 
@@ -24,7 +25,7 @@ const RWArea = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 5% 0;
+    padding-bottom: 5%;
     margin-top: 3%;
     .ItemInfo {
       background-color: gainsboro;
@@ -80,15 +81,47 @@ const RWArea = styled.div`
     }
   }
 `;
-
-const onClickCancel = () => {
-  
+const ReviewTop= styled.div`
+display: flex;
+justify-content: flex-end;
+width: 100%;
+margin-right: 10%;
+.deleteItem{
+  cursor: pointer;
 }
+`;
+
+
+
+
 
 const ReviewWrite = memo(() => {
+  const RWRef= React.useRef();
+  
+const onClickCancel = () => {
+  
+  if (window.confirm("취소시 작성하신 리뷰는 저장되지 않습니다. 창을 닫으시겠습니까?")) {
+    RWRef.styled.display='none';
+    //window.location.href = 'http://localhost:3000/'
+
+  } else {
+    alert("취소합니다.");
+
+
+  }
+}
+
   return (
-    <RWArea>
+    <RWArea ref={RWRef}>
       <div className="container">
+        <ReviewTop>
+        <FontAwesomeIcon
+                icon={faXmark}
+                size="2x"
+                className="deleteItem"
+                onClick={onClickCancel}
+              />
+        </ReviewTop>
         <div className="ItemInfo">
           <img src={Img} alt="itemImage" width="120px" />
           <div className="Info">
@@ -108,7 +141,7 @@ const ReviewWrite = memo(() => {
           <input type="text" placeholder="내용을 입력해주세요." />
         </div>
         <div className="butArea">
-          <button type="button" className="cancel">
+          <button type="button" className="cancel" onClick={onClickCancel}>
             취소
           </button>
           <button type="button" className="register">

@@ -81,8 +81,8 @@ const ExchangeArea = styled.div`
       border-bottom: 1px solid gray;
       div {
         width: 100%;
-        &:last-child{
-            margin:auto;
+        &:last-child {
+          margin: auto;
         }
         select {
           width: 80%;
@@ -130,22 +130,6 @@ const ExchangeArea = styled.div`
   }
 `;
 
-const TabEAndR = styled.div`
-  display: flex;
-  justify-content: space-around;
-  a {
-    text-decoration: none;
-    color: #000;
-    font-size: 1.5em;
-    font-weight: bold;
-    padding: 10px;
-    border-bottom: 2px solid black;
-    margin: 3em;
-    &:hover {
-      background-color: gainsboro;
-    }
-  }
-`;
 
 const exchange = memo(() => {
   return (
