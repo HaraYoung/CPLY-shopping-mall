@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { Outlet } from 'react-router-dom';
 const FooterCss = styled.div`
     width: 100%;
-    background-color: #ccc;
-    padding: 30px 0;
     .footer-margin {
-        width: 1550px;
+        background-color: #ccc;
+        padding: 30px 0;
+        width: 100%;
         margin: auto;
         display: flex;
         justify-content: space-around;
@@ -60,6 +60,7 @@ const FooterCss = styled.div`
 const Footer = () => {
     return (
         <FooterCss>
+            <Outlet/>
             <div className='footer-margin'>
             <div className='footer-box'>
                 <a href='#'>회사소개</a>
