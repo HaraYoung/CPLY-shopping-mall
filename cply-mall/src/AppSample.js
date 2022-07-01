@@ -13,7 +13,7 @@ import QnaMain from "./pages/YS/QnaScreen/QnaMain";
 import Cart from "./pages/SY/Cart";
 import Header from "./pages/GH/Header";
 import Footer from "./pages/GH/Footer";
-
+import MyPage from "./pages/GH/MyPage";
 const App = memo(() => {
   return (
     <div>
@@ -30,6 +30,7 @@ const App = memo(() => {
             <Route path="/faq" element={<FaqMain />} />
             <Route path="/Qna" element={<QnaMain />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/mypage" element={<MyPage />} />
           </Route>
         </Route>
       </Routes>
