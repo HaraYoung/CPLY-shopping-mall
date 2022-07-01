@@ -23,6 +23,10 @@ const Meta = (props) => {
           rel="stylesheet"
           type="text/css"
         />
+        <link
+          rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+        />
 
         {/* Helmet 안에서 CSS적용하기 */}
         <style type="text/css">{`
