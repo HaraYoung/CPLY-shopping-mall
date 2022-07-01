@@ -17,22 +17,24 @@ const BannerCss = styled.div`
         margin: 100px 0;
     }
     .swiper-button-next {
-    background: url(./assets/img/btn_banner_next.png) no-repeat;
-    width: 109px;
-    height: 109px;
+    background: url(./assets/img/btn_banner_next1.png) no-repeat;
+    width: 75px;
+    height: 75px;
     background-position: center center;    
     position: absolute;
     top: 50%;
+    right: 0%;
     transform: translate(-300%,-25%);
     }
 
     .swiper-button-prev {
-    background: url(./assets/img/btn_banner_prev.png) no-repeat;
-    width: 109px;
-    height: 109px;
+    background: url(./assets/img/btn_banner_prev1.png) no-repeat;
+    width: 75px;
+    height: 75px;
     background-position: center;
     position: absolute;
     top: 50%;
+    left: 0;
     transform: translate(300%,-25%);
     }
 

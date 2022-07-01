@@ -5,13 +5,14 @@ const FindIdCss = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    margin: auto;
+    padding: 5% 0;
     .findid-box {
-        padding: 30px;
+        padding: 50px 30px;
         border: 3px solid #ccc;
         margin: auto;
         width: 20%;
-        height: 50vh;
+        height: auto;
         .findid-box-title {
             text-align: center;
             >h1 {
