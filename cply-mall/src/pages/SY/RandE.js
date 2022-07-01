@@ -32,7 +32,7 @@ const RandE = memo(() => {
   return (
     <div>
       <TabEAndR>
-        <NavLink to="exchange">교환</NavLink>
+        <NavLink to="/">교환</NavLink>
         <NavLink to="refund">반품</NavLink>
       </TabEAndR>
       <Notice>
@@ -40,8 +40,8 @@ const RandE = memo(() => {
         <p>교환시 주의 사항</p>
       </Notice>
       <Routes>
-      <Route path='exchange'element={<Exchange/>} expat={true} />
-      <Route path='refund' element={<Refund/>}/>
+      <Route path='/'element={<Exchange/>} expat={true} />
+      <Route path='/refund' element={<Refund/>}/>
       </Routes>
     </div>
   );

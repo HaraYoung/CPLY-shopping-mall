@@ -17,7 +17,6 @@ import Footer from "./pages/GH/Footer";
 const App = memo(() => {
   return (
     <div>
-      {/* <Header /> */}
       <Routes>
         <Route element={<Header />}>
           <Route element={<Footer />}>
@@ -34,7 +33,6 @@ const App = memo(() => {
           </Route>
         </Route>
       </Routes>
-      {/* <Footer /> */}
     </div>
   );
 });

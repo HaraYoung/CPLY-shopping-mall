@@ -5,13 +5,14 @@ const FindPwCss = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    margin: auto;
+    padding: 5% 0;
     .findpw-box {
-        padding: 30px;
+        padding: 50px 30px;
         border: 3px solid #ccc;
         margin: auto;
         width: 20%;
-        height: 50vh;
+        height: auto;
         .findpw-box-title {
             text-align: center;
             >h1 {
@@ -20,7 +21,7 @@ const FindPwCss = styled.div`
                 margin-bottom: 50px;
             }
             >p {
-                font-size: 13px;
+                font-size: 0.8em;
             }
 
         }
