@@ -1,21 +1,22 @@
 import React, { memo } from 'react';
+import RandE from './pages/SY/RandE';
+import Home from './pages/GH/Home';
+import {Routes,Route} from 'react-router-dom';
+import Login from './pages/GH/Login';
+import FindId from './pages/GH/FindId'
+import FindPw from './pages/GH/FindPw'
+import SignupCheck from './pages/GH/SignupCheck'
+import SignupInfo from "./pages/GH/SignupInfo";
+import NoticeMain from './pages/YS/NoticeScreen/NoticeMain';
+import FaqMain from './pages/YS/FaqScreen/FaqMain';
+import QnaMain from './pages/YS/QnaScreen/QnaMain';
+import Cart from './pages/SY/Cart';
 import Order from './pages/SY/Order';
-// import Home from './pages/GH/Home';
-// import {Routes,Route} from 'react-router-dom';
-// import Login from './pages/GH/Login';
-// import FindId from './pages/GH/FindId'
-// import FindPw from './pages/GH/FindPw'
-// import SignupCheck from './pages/GH/SignupCheck'
-// import SignupInfo from "./pages/GH/SignupInfo";
-// import NoticeMain from './pages/YS/NoticeScreen/NoticeMain';
-// import FaqMain from './pages/YS/FaqScreen/FaqMain';
-// import QnaMain from './pages/YS/QnaScreen/QnaMain';
-// import Cart from './pages/SY/Cart';
-
 
 const App = memo(() => {
   return (
     <div>
+      <Order/>
             {/* <Routes>
                 <Route path="/login/*" element={<Login/>}/>
                 <Route path="/" element={<Home/>} exapt={true}/>
