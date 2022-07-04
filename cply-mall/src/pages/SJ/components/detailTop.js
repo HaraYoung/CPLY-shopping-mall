@@ -6,15 +6,21 @@ import styled from "styled-components";
 
 const Div = styled.div`
   margin: auto;
-  padding: 150px;
+  padding-top: 10em;
+  /* padding: 150px; */
 `;
 const First = styled.section`
   display: flex;
   .img {
-    width: 25%;
+    width: 40%;
+    height: 30em;
     margin-right: 3em;
     .swiper-main {
-      height: 25em;
+      height: 30em;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
     .swiper-gallery {
       height: 5em;
@@ -26,13 +32,25 @@ const First = styled.section`
         width: 25%;
         box-sizing: border-box;
         height: 100%;
-        margin: 0;
+        margin-right: 1em;
         cursor: pointer;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0.5;
+        }
+        .op {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 1;
+        }
       }
     }
   }
   .des {
-    width: 75%;
+    width: 60%;
   }
   div:nth-child(2) {
     flex-direction: column;
@@ -43,18 +61,17 @@ const First = styled.section`
         flex-shrink: 1;
       }
     }
-    ul:nth-child(1),
+    ul:nth-child(2),
     ul:nth-child(3),
     ul:nth-child(4),
-    ul:nth-child(5),
-    ul:nth-child(6) {
+    ul:nth-child(5) {
       justify-content: flex-start;
       li {
         margin-right: 1em;
       }
     }
   }
-  ul:nth-child(3) {
+  ul:nth-child(2) {
     li:nth-child(1),
     li:nth-child(2) {
       font-size: 1.5em;
@@ -62,23 +79,22 @@ const First = styled.section`
     li:nth-child(3) {
       font-size: 1em;
       color: gray;
-      line-height: 4em;
       text-decoration: line-through;
     }
   }
-  ul:nth-child(5) {
+  ul:nth-child(4) {
     border-top: 0.2em solid lightgray;
     border-bottom: 0.2em solid lightgray;
     padding-top: 1em;
     padding-bottom: 1em;
   }
-  ul:nth-child(6) {
+  ul:nth-child(5) {
     padding-top: 1em;
   }
   .dropdown {
-    width: 65%;
+    width: 95%;
     form {
-      max-width: 100%;
+      width: 100%;
       select {
         margin-top: 1em;
         flex-shrink: 1;
@@ -132,9 +148,27 @@ const DetailGoods = () => {
     "https://cdn.shopify.com/s/files/1/1071/7482/files/1383185611092.jpg?v=1487090221"
   );
 
-  const onClick = () => {
-    setUrlImg();
-  };
+  const [opc, setopc] = React.useState(0);
+
+  const onClick = React.useCallback((e) => {
+    e.preventDefault();
+    const img = e.target;
+    setUrlImg(img.src);
+
+    const value = e.target.dataset.value;
+    if (value === "0") {
+      setopc(0);
+    } else if (value === "1") {
+      setopc(1);
+    } else if (value === "2") {
+      setopc(2);
+    } else if (value === "3") {
+      setopc(3);
+    } else {
+      setopc(4);
+    }
+  }, []);
+
   return (
     <Div>
       <First>
@@ -145,65 +179,55 @@ const DetailGoods = () => {
           <div>
             <ul className="swiper-gallery ">
               {/* ajax 처리 부분 추후 수정해야 함 */}
-              <li
-                style={{
-                  background:
-                    "url(https://cdn.shopify.com/s/files/1/1071/7482/files/1383185611092.jpg?v=1487090221) no-repeat center",
-                  backgroundSize: "cover",
-                }}
-                onClick={onClick}
-              >
+              <li>
                 <img
-                  src={
-                    "https://cdn.shopify.com/s/files/1/1071/7482/files/1383185611092.jpg?v=1487090221"
-                  }
-                  alt="thumbs"
+                  onClick={onClick}
+                  data-value="0"
+                  className={opc === 0 ? "op" : ""}
+                  src="https://cdn.shopify.com/s/files/1/1071/7482/files/1383185611092.jpg?v=1487090221"
+                  alt="thumbnail"
                 />
               </li>
-              <li
-                style={{
-                  background:
-                    "url(http://www.joseilbo.com/gisa_img/16372825251637282525_pabw.jpg) no-repeat center",
-                  backgroundSize: "contain",
-                }}
-                onClick={onClick}
-              />
-              <li
-                style={{
-                  background:
-                    "url(https://cdn.shopify.com/s/files/1/1071/7482/products/450g_grande.jpg?v=1473961315) no-repeat center",
-                  backgroundSize: "cover",
-                }}
-                onClick={onClick}
-              />
-              <li
-                style={{
-                  background:
-                    "url(https://cdn.shopify.com/s/files/1/1071/7482/products/300_grande.jpg?v=1528415349) no-repeat center",
-                  backgroundSize: "contain",
-                }}
-                onClick={onClick}
-              />
-              <li
-                style={{
-                  background:
-                    "url(https://cdn.shopify.com/s/files/1/1071/7482/products/cj_brown_12pc_grande.jpeg?v=1460716782) no-repeat center",
-                  backgroundSize: "contain",
-                }}
-                onClick={onClick}
-              />
+              <li>
+                <img
+                  className={opc === 1 ? "op" : ""}
+                  data-value="1"
+                  onClick={onClick}
+                  src="http://www.joseilbo.com/gisa_img/16372825251637282525_pabw.jpg"
+                  alt="thumbnail"
+                />
+              </li>
+              <li>
+                <img
+                  className={opc === 2 ? "op" : ""}
+                  data-value="2"
+                  onClick={onClick}
+                  src="https://cdn.shopify.com/s/files/1/1071/7482/products/450g_grande.jpg?v=1473961315"
+                  alt="thumbnail"
+                />
+              </li>
+              <li>
+                <img
+                  className={opc === 3 ? "op" : ""}
+                  data-value="3"
+                  onClick={onClick}
+                  src="https://cdn.shopify.com/s/files/1/1071/7482/products/300_grande.jpg?v=1528415349"
+                  alt="thumbnail"
+                />
+              </li>
+              <li>
+                <img
+                  className={opc === 4 ? "op" : ""}
+                  data-value="4"
+                  onClick={onClick}
+                  src="https://cdn.shopify.com/s/files/1/1071/7482/products/cj_brown_12pc_grande.jpeg?v=1460716782"
+                  alt="thumbnail"
+                />
+              </li>
             </ul>
           </div>
         </div>
         <div className="des">
-          <ul style={{ fontSize: "1.3em", cursor: "pointer" }}>
-            <li>
-              <i className="fa fa-home"></i>
-            </li>
-            <li>브랜드명</li>
-            <li>&#62;</li>
-            <li></li>
-          </ul>
           <ul>
             <h1>제품명</h1>
           </ul>
@@ -219,7 +243,7 @@ const DetailGoods = () => {
               </h1>
             </li>
             <li>
-              <h3>
+              <h3 style={{ lineHeight: "1.7em" }}>
                 <b>할인적용전가격</b>
               </h3>
             </li>
@@ -252,7 +276,7 @@ const DetailGoods = () => {
               CPLY의 모든 상품은 100% 정품입니다.
             </li>
           </ul>
-          <ul class="dropdown">
+          <ul className="dropdown">
             <form>
               <select>
                 <option value="none">[컬러]를 선택하세요</option>
