@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
 import MyPageMenu from './MyPageMenu';
 import NewProduct from './NewProduct';
+import Profile from './Profile';
+import Withdraw from './Withdraw';
+import ChangeInfo from './ChangeInfo';
 import TodayPopularity from './TodayPopularity';
 import {Routes,Route} from 'react-router-dom'
 const MyPageCss = styled.div`
@@ -19,9 +21,14 @@ const MyPage = () => {
         <MyPageCss>
             <MyPageMenu/>
             <div className='mypage-contents'>
-            <Routes>
+            {/* <Routes>
                 <Route path='/' element={<NewProduct/>}/>
                 <Route path='b' element={<TodayPopularity/>}/>
+            </Routes> */}
+            <Routes>
+                <Route path='/' element={<Profile/>}/>
+                <Route path='withdraw' element={<Withdraw/>}/>
+                <Route path='changeinfo' element={<ChangeInfo/>}/>
             </Routes>
             </div>
         </MyPageCss>

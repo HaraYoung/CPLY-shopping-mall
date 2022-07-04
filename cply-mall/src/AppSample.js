@@ -30,7 +30,7 @@ const App = memo(() => {
             <Route path="/faq" element={<FaqMain />} />
             <Route path="/Qna" element={<QnaMain />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/*" element={<MyPage />} />
           </Route>
         </Route>
       </Routes>

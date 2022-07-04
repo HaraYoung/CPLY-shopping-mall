@@ -20,6 +20,7 @@ const MyPageMenuCSS = styled.div`
                         padding: 7px 0;
                         >a {
                             padding: 3px;
+                            color: #fff;
                             &:hover {
                             background: #fff;
                             color: #000;
@@ -43,8 +44,8 @@ const MyPageMenu = () => {
                     <ul>
                         <li><h2>내정보</h2></li>
                         <li className='list'><Link to='/mypage/'>프로필 정보</Link></li>
-                        <li className='list'><Link to='b'>나의 정보 수정</Link></li>
-                        <li className='list'><a>회원 탈퇴</a></li>
+                        <li className='list'><Link to='changeinfo'>나의 정보 수정</Link></li>
+                        <li className='list'><Link to='withdraw'>회원 탈퇴</Link></li>
                         <li><h2>쇼핑 정보</h2></li>
                         <li className='list'><a>주문내역조회</a></li>
                         <li className='list'><a>취소/반품</a></li>
