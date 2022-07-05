@@ -80,7 +80,8 @@ const HeaderCss = styled.div`
     }
     .menu-box {
         width: 100%;
-        background-color: #ff6600;
+        background-color: #fff;
+        border-bottom: 10px solid #ccc;
         padding: 30px 0;
         display: block;
         position: absolute;
@@ -142,7 +143,10 @@ const Header = () => {
             <div className={SearchBtn? ('menu-box max-height'):('menu-box')}>
                 <div className='menu-box-margin'>
                     <ul>
-                        <h2>아우터</h2>
+                        <h2><a>전체상품</a></h2>
+                    </ul>
+                    <ul>
+                        <h2><a>아우터</a></h2>
                         <li><a>자켓</a></li>
                         <li><a>코트</a></li>
                         <li><a>점퍼</a></li>
@@ -153,7 +157,7 @@ const Header = () => {
                         <li><a>바람막이</a></li>
                     </ul>
                     <ul>
-                        <h2>상의</h2>
+                        <h2><a>상의</a></h2>
                         <li><a>티셔츠</a></li>
                         <li><a>셔츠/남방</a></li>
                         <li><a>블라우스</a></li>
@@ -164,7 +168,7 @@ const Header = () => {
 
                     </ul>
                     <ul>
-                        <h2>하의</h2>
+                        <h2><a>하의</a></h2>
                         <li><a>청바지</a></li>
                         <li><a>슬랙스</a></li>
                         <li><a>면바지</a></li>
@@ -174,7 +178,7 @@ const Header = () => {
 
                     </ul>
                     <ul>
-                        <h2>신발</h2>
+                        <h2><a>신발</a></h2>
                         <li><a>플랫/로퍼</a></li>
                         <li><a>샌들/슬리퍼</a></li>
                         <li><a>힐</a></li>
@@ -184,7 +188,7 @@ const Header = () => {
 
                     </ul>
                     <ul>
-                        <h2>악세사리</h2>
+                        <h2><a>악세사리</a></h2>
                         <li><a>가방</a></li>
                         <li><a>헤어악세사리</a></li>
                         <li><a>양말/스타킹</a></li>

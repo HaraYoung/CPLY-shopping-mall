@@ -1,6 +1,9 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import {Link,Routes,Route} from 'react-router-dom';
+import {NavLink,Routes,Route} from 'react-router-dom';
+import Signin from './Signin';
+import NotMembers from './NotMembers';
+import { useParams } from 'react-router-dom';
 const LoginCss = styled.div`
     width: 100%;
     display: flex;
@@ -37,7 +40,7 @@ const LoginCss = styled.div`
                 }
             }
         }
-        /* >nav {
+        >nav {
             >a {
                 text-decoration: none;
                 margin-right: 10px;
@@ -55,8 +58,13 @@ const LoginCss = styled.div`
                     transition: all 0.2s ease;
                 }
             }
-        } */
-        .sign-css {
+        }
+        .effect {
+            color: #e74c3c;
+            padding-bottom: 3px;
+            border-bottom: 3px solid #e74c3c;
+        }
+        /* .sign-css {
             margin-top: 50px;
             width: 100%;
             .signin-user-info {
@@ -90,8 +98,8 @@ const LoginCss = styled.div`
                 }
             }
 
-        }
-        .not-member {
+        } */
+        /* .not-member {
             .notmembers-user-info {
                 margin-top: 50px;
                 width: 100%;
@@ -115,26 +123,35 @@ const LoginCss = styled.div`
                     margin-top: 20px;
                 }
             }
-        }
+        } */
     }
 `;
 const Login = memo(() => {
     const [changeLogin,setChangeLogin] = React.useState(true);
 
-    const ChangeButton = React.useCallback((e)=> {
-        if (e.target.value > 0) {
-            setChangeLogin(true)
+
+    const params = useParams();
+
+    React.useEffect(()=> {
+        if (params['*'] === "") {
+            setChangeLogin(true);
+            console.log (changeLogin)
+            console.log (params)
         }else {
-            setChangeLogin(false)
+            setChangeLogin(false);
+            console.log (changeLogin)
+            console.log (params)
         }
-    },[setChangeLogin])
+    },[params,changeLogin]);
+
+    
     return (
         <LoginCss>
             <div className='login-box'>
                 <div className='login-box-title'>
                     <h1>로그인</h1>
                 </div>
-                <div className='login-active-button'>
+                {/* <div className='login-active-button'>
                     <button value='1' onClick={ChangeButton} className={changeLogin?'login-active':''}>회원</button>
                     <button value='0' onClick={ChangeButton} className={changeLogin?'':'login-active'}>비회원(주문조회)</button>
                 </div>
@@ -158,7 +175,16 @@ const Login = memo(() => {
                             <button type='submit'>주문조회</button>
                         </form>
                     </div>
-                )}
+                )} */}
+                <nav>
+                <NavLink to='/login/' className={changeLogin ? "effect" : ''}>회원</NavLink>
+                <NavLink to='notmembers'>비회원(주문조회)</NavLink>
+                </nav>
+
+                <Routes>
+                    <Route path='/' element={<Signin/>}/>
+                    <Route path='/notmembers' element={<NotMembers/>}/>
+                </Routes>
             </div>
         </LoginCss>
     );
