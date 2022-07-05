@@ -24,6 +24,7 @@ const Div = styled.div`
   }
 
   .sticky-list {
+    z-index: 100000;
     background-color: white;
     display: flex;
     margin: 0;
