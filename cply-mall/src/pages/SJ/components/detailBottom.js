@@ -8,6 +8,9 @@ const Div = styled.div`
   a {
     text-decoration: none;
     color: black;
+    &:hover {
+      color: black;
+    }
   }
   h2 {
     font-weight: 600;
@@ -15,7 +18,7 @@ const Div = styled.div`
   .qaTop,
   .infoTop,
   .rv,
-  .recommendation {
+  .reco {
     margin-top: 8em;
     border-bottom: 1px solid black;
   }
@@ -281,6 +284,50 @@ const Div = styled.div`
         }
         .indent {
           text-indent: 2em;
+        }
+      }
+    }
+  }
+  .recommendation {
+    .recoList {
+      margin-top: 2em;
+      margin-bottom: 8em;
+      display: flex;
+      div {
+        width: 20%;
+        margin: 0 0.5em 1em 0.5em;
+        a {
+          div {
+            padding: 0;
+            margin: 0;
+            width: 14em;
+            height: 14em;
+            background-color: greenyellow;
+          }
+          h5 {
+            padding: 0.5em 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          ul {
+            display: flex;
+            padding: 0;
+            li:nth-child(1) {
+              color: #ff204b;
+              font-size: 1.4em;
+              margin-right: 0.2em;
+            }
+            li:nth-child(2) {
+              font-size: 1.4em;
+              margin-right: 0.2em;
+            }
+            li:nth-child(3) {
+              line-height: 2em;
+              text-decoration: line-through;
+              color: #757575;
+            }
+          }
         }
       }
     }
@@ -778,9 +825,86 @@ const DetailBottom = () => {
           </div>
         </div>
       </div>
-      <div>
-        <div className="recommendation">
+      <div className="recommendation">
+        <div className="reco">
           <h2 style={{ padding: "15px 16px 14px" }}>추천상품</h2>
+        </div>
+        <div className="recoList">
+          <div>
+            <a href="#!">
+              <div></div>
+              <h5>title</h5>
+              <ul>
+                <li>
+                  <strong>0%</strong>
+                </li>
+                <li>
+                  <strong>0원</strong>
+                </li>
+                <li>할인 전 가격</li>
+              </ul>
+            </a>
+          </div>
+          <div>
+            <a href="#!">
+              <div></div>
+              <h5>title</h5>
+              <ul>
+                <li>
+                  <strong>0%</strong>
+                </li>
+                <li>
+                  <strong>0원</strong>
+                </li>
+                <li>할인 전 가격</li>
+              </ul>
+            </a>
+          </div>
+          <div>
+            <a href="#!">
+              <div></div>
+              <h5>title</h5>
+              <ul>
+                <li>
+                  <strong>0%</strong>
+                </li>
+                <li>
+                  <strong>0원</strong>
+                </li>
+                <li>할인 전 가격</li>
+              </ul>
+            </a>
+          </div>
+          <div>
+            <a href="#!">
+              <div></div>
+              <h5>title</h5>
+              <ul>
+                <li>
+                  <strong>0%</strong>
+                </li>
+                <li>
+                  <strong>0원</strong>
+                </li>
+                <li>할인 전 가격</li>
+              </ul>
+            </a>
+          </div>
+          <div>
+            <a href="#!">
+              <div></div>
+              <h5>title</h5>
+              <ul>
+                <li>
+                  <strong>0%</strong>
+                </li>
+                <li>
+                  <strong>0원</strong>
+                </li>
+                <li>할인 전 가격</li>
+              </ul>
+            </a>
+          </div>
         </div>
       </div>
     </Div>
