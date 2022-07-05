@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import PaginationCp from "./pagination_cp";
 import Fslight from "./fslight";
 const Div = styled.div`
+  padding-top: 10em;
+  /* padding: 0 150px; */
   a {
     text-decoration: none;
     color: black;
   }
-  padding-top: 10em;
-  /* padding: 0 150px; */
+  h2 {
+    font-weight: 600;
+  }
+  .qaTop,
+  .infoTop,
+  .rv,
+  .recommendation {
+    margin-top: 8em;
+    border-bottom: 1px solid black;
+  }
+
   .sticky-list {
     background-color: white;
     display: flex;
@@ -32,14 +43,13 @@ const Div = styled.div`
       border-bottom: 5px solid black;
     }
   }
-  .info {
+  .goodsInfo {
     height: 35em;
     padding: 10em;
     text-align: center;
     background-color: gray;
   }
   .review {
-    margin-top: 8em;
     .rv {
       display: flex;
       flex-direction: row;
@@ -125,16 +135,12 @@ const Div = styled.div`
     margin-top: 5em;
   }
   .QA {
-    margin-top: 8em;
     .qaTop {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       padding: 15px 16px 14px;
-      .qaTitle {
-        font-size: 2em;
-        font-weight: bold;
-      }
+
       ul {
         line-height: 2.5em;
       }
@@ -246,11 +252,6 @@ const Div = styled.div`
     }
   }
   .information {
-    div:nth-child(1) {
-      margin-top: 5em;
-      font-size: 2em;
-      font-weight: bold;
-    }
     div:nth-child(2) {
       a {
         position: relative;
@@ -269,6 +270,7 @@ const Div = styled.div`
         color: #777777;
         background-color: #f7f7f7;
         line-height: 1em;
+        text-align: start;
         h5 {
           margin-bottom: 1em;
         }
@@ -287,9 +289,10 @@ const Div = styled.div`
 const DetailBottom = () => {
   const [list, setList] = useState(0);
   const [open, setOpen] = useState(0);
-  const [info1, setInfo1] = useState(0);
-  const [info2, setInfo2] = useState(0);
-  const [info3, setInfo3] = useState(0);
+  const [ifm1, setIfm1] = useState(0);
+  const [ifm2, setIfm2] = useState(0);
+  const [ifm3, setIfm3] = useState(0);
+
   const onList = React.useCallback((e) => {
     // e.preventDefault();
     const value = e.target.dataset.value;
@@ -312,12 +315,21 @@ const DetailBottom = () => {
     [open]
   );
 
-  const info = React.useCallback((e) => {
-    e.preventDefault();
-    info1 === 0 ? setInfo1(1) : setInfo1(0);
-    info2 === 0 ? setInfo2(1) : setInfo2(0);
-    info3 === 0 ? setInfo3(1) : setInfo3(0);
-  });
+  const info = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      const data = e.target.dataset.info;
+
+      if (data === "1") {
+        ifm1 === 0 ? setIfm1(1) : setIfm1(0);
+      } else if (data === "2") {
+        ifm2 === 0 ? setIfm2(1) : setIfm2(0);
+      } else {
+        ifm3 === 0 ? setIfm3(1) : setIfm3(0);
+      }
+    },
+    [ifm1, ifm2, ifm3]
+  );
 
   return (
     <Div>
@@ -355,14 +367,15 @@ const DetailBottom = () => {
           주문정보
         </a>
       </div>
-      <div className="info" id="info">
+      <div className="goodsInfo" id="info">
         <img />
         상품정보
       </div>
       <div className="review" id="review">
         <ul className="rv">
-          <li style={{ fontSize: "2em", fontWeight: "bold" }}>
-            리뷰<span></span>
+          <li>
+            <h2>리뷰</h2>
+            <span></span>
           </li>
           <li>
             <ul>
@@ -522,8 +535,9 @@ const DetailBottom = () => {
       <PaginationCp />
       <div className="QA" id="QA">
         <ul className="qaTop">
-          <li className="qaTitle">
-            Q&A<span></span>
+          <li>
+            <h2>Q&A</h2>
+            <span></span>
           </li>
           <li>
             <ul>
@@ -653,12 +667,14 @@ const DetailBottom = () => {
         <PaginationCp />
       </div>
       <div className="information" id="information">
-        <div>주문정보</div>
+        <div className="infoTop">
+          <h2 style={{ padding: "15px 16px 14px" }}>주문정보</h2>
+        </div>
         <div>
-          <a href="#!" onClick={hidden}>
+          <a data-info="1" href="#!" onClick={info}>
             판매자 정보<i className="fa fa-angle-down"></i>
           </a>
-          <div style={{ display: info1 === 0 ? "none" : "" }}>
+          <div style={{ display: ifm1 === 0 ? "none" : "block" }}>
             <h5>[스토어 정보]</h5>
             <p>상호명 : cply</p>
             <p>대표자 : 윤원식,이교헌,박세영,최수진</p>
@@ -675,16 +691,16 @@ const DetailBottom = () => {
             <p>하의 사이즈 : 26</p>
             <p>발 사이즈 : 240mm</p>
           </div>
-          <a href="#!" onClick={hidden}>
+          <a href="#!" data-info="2" onClick={info}>
             상품 정보<i className="fa fa-angle-down"></i>
           </a>
-          <div style={{ display: info2 === 0 ? "none" : "" }}>
+          <div style={{ display: ifm2 === 0 ? "none" : "" }}>
             <p>상품 상세 참조</p>
           </div>
-          <a href="#!" onClick={hidden}>
+          <a href="#!" data-info="3" onClick={info}>
             배송/교환/환불/취소<i className="fa fa-angle-down"></i>
           </a>
-          <div style={{ display: info3 === 0 ? "none" : "" }}>
+          <div style={{ display: ifm3 === 0 ? "none" : "" }}>
             <h5>[배송정보]</h5>
             <p>발 사이즈 : 240mm</p>
             <h5>[ 교환/환불 정보 ]</h5>
@@ -760,6 +776,11 @@ const DetailBottom = () => {
               미성년자와 법정대리인은 구매계약을 취소할 수 있습니다
             </p>
           </div>
+        </div>
+      </div>
+      <div>
+        <div className="recommendation">
+          <h2 style={{ padding: "15px 16px 14px" }}>추천상품</h2>
         </div>
       </div>
     </Div>
