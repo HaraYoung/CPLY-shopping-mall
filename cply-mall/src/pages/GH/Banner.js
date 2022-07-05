@@ -12,9 +12,13 @@ import 'swiper/css/autoplay';
 const BannerCss = styled.div`
     margin-bottom: 50px;
     .swiper-slide {
-        background-color: #ff6600;
-        height: 300px;
+        
+        
         margin: 100px 0;
+        
+        img {
+            width: 100%;
+        }
     }
     .swiper-button-next {
     background: url(./assets/img/btn_banner_next1.png) no-repeat;
@@ -80,10 +84,11 @@ const Banner = () => {
           centeredSlides={true}
           pagination={{ clickable: true }}
         >
-      <SwiperSlide>Slide 1</SwiperSlide>
-      <SwiperSlide>Slide 2</SwiperSlide>
-      <SwiperSlide>Slide 3</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
+      <SwiperSlide><img src="./assets/img/bannerImage_796772_1656664122.jpg"></img></SwiperSlide>
+      <SwiperSlide><img src="./assets/img/bannerImage_796766_1656664121.jpg"></img></SwiperSlide>
+      <SwiperSlide><img src="./assets/img/bannerImage_796773_1656664123.jpg"></img></SwiperSlide>
+      <SwiperSlide><img src="./assets/img/bannerImage_796774_1656664123.jpg"></img></SwiperSlide>
+
       
     </Swiper>
     </BannerCss>

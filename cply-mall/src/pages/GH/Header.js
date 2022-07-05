@@ -101,7 +101,19 @@ const HeaderCss = styled.div`
             margin: auto;
             display: flex;
             justify-content: space-around;
+            position: relative;
             
+            >img {
+                width: 40px;
+                position: absolute;
+                right: -10%;
+                top: 9%;
+                opacity: 0.5;
+                &:hover {
+                    opacity: 1;
+                    transition: all 0.3s ease;
+                }
+            }
 
             ul {
                 list-style: none;
@@ -142,6 +154,7 @@ const Header = () => {
             </div>
             <div className={SearchBtn? ('menu-box max-height'):('menu-box')}>
                 <div className='menu-box-margin'>
+                    <img src='./assets/img/close.png' onClick={BtnClick}></img>
                     <ul>
                         <h2><a>전체상품</a></h2>
                     </ul>

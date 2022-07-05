@@ -69,8 +69,7 @@ const Footer = () => {
                 <p>CPLY 주식회사 사업자등록번호 :123-45-56789<br/>사업장소재지 : Seoul Seocho-gu. 1303-37 서초W타워 13층</p>
             </div>
             <div className='footer-box2'>
-                <span>고객센터: 1234-5678</span>
-                <a href='#'>Q&A</a>
+                <span>고객센터: 1234-5678</span>                
                 <p>운영시간 평일 11:00 ~ 18:00 (토,일 공휴일 휴무)<br/>점심시간 평일 13:00 ~ 14:00</p>
             </div>
             </div>

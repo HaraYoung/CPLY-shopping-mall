@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
+import RegexHelper from '../../libs/RegexHelper';
 
 const SignupCss = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    padding: 5% 0;
     .signup-check-box{
         margin: auto;
         width: 30%;
@@ -19,13 +20,13 @@ const SignupCss = styled.div`
             border-bottom: 3px solid #ccc;
             >form {
                 padding: 40px 0;
-                width: 75%;
-                margin: auto;
+                width: 100%;
                 >label {
                     display: block;
-                    font-size: 23px;
+                    font-size: 1.2rem;
                     font-weight: bold;
                     >input {
+                        vertical-align: middle;
                         width: 25px;
                         height: 25px;
                         margin-right:30px ;
@@ -48,13 +49,25 @@ const SignupCss = styled.div`
 
 const Signup = memo(() => {
     
+    const SignupCheckSubmit = React.useCallback((e)=> {
+        e.preventDefault();
+        console.log (e.target.check1.value)
+        
+        const current = e.target;
+        try {
+            RegexHelper.check(current.check1,'필수항목 동의가 필요합니다');
+        }catch(e) {
+            window.alert(e.message);
+
+        }
+    },[])
 
     return (
         <SignupCss>
             <div className='signup-check-box'>
                 <h1>C P L Y</h1>
                 <div className='signup-check-box-margin'>
-                    <form>
+                    <form onSubmit={SignupCheckSubmit}>
                         <label htmlFor='check1' >
                             <input type='checkbox' name='check1'/>
                             약관 전체 동의하기
