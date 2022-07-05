@@ -356,7 +356,7 @@ const Order = memo(() => {
       </div>
       <Routes>
         <Route path="/reviewWrite" element={<ReviewWrite />} />
-        <Route path="/RandE" element={<RandE />} />
+        <Route path="RandE" element={<RandE />} />
       </Routes>
     </OrderArea>
   );

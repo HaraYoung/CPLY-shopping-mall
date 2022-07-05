@@ -7,10 +7,16 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-regular-svg-icons";
+import { faStar as regular } from "@fortawesome/free-regular-svg-icons";
+import { faStar as solidStar} from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
+
+//import { confirmAlert } from 'react-confirm-alert';
+
 import Img from "./img/찡찡이젤리.jpg";
+
+//import { clickNoLastMsg } from "../../components/YorNAlert";
 
 const RWArea = styled.div`
   position: absolute;
@@ -90,27 +96,18 @@ margin-right: 10%;
   cursor: pointer;
 }
 `;
-
-
-
-
-
 const ReviewWrite = memo(() => {
   const RWRef= React.useRef();
-  
-const onClickCancel = () => {
-  
-  if (window.confirm("취소시 작성하신 리뷰는 저장되지 않습니다. 창을 닫으시겠습니까?")) {
-    RWRef.styled.display='none';
-    //window.location.href = 'http://localhost:3000/'
-
-  } else {
-    alert("취소합니다.");
-
-
+  const closeReview= '취소시 작성하신 내용은 저장되지 않습니다. 리뷰 작성을 취소하시겠습니까?';
+  const closeURL= 'http://localhost:3000/';
+    const clickNoLastMsg= () => {
+      if (window.confirm(closeReview)) {
+          window.location.href = closeURL;
+        }
   }
-}
-
+   const [star,setStar]= React.useState(false);
+   const onStarClick= () => {setStar(!star);};
+  
   return (
     <RWArea ref={RWRef}>
       <div className="container">
@@ -119,7 +116,7 @@ const onClickCancel = () => {
                 icon={faXmark}
                 size="2x"
                 className="deleteItem"
-                onClick={onClickCancel}
+                onClick={clickNoLastMsg}
               />
         </ReviewTop>
         <div className="ItemInfo">
@@ -128,20 +125,22 @@ const onClickCancel = () => {
             <p>상품 이름</p>
             <p>옵션</p>
             <p>1개</p>
+
           </div>
         </div>
         <div className="starArea">
-          <FontAwesomeIcon icon={faStar} size="lg" />
-          <FontAwesomeIcon icon={faStar} size="lg" />
-          <FontAwesomeIcon icon={faStar} size="lg" />
-          <FontAwesomeIcon icon={faStar} size="lg" />
-          <FontAwesomeIcon icon={faStar} size="lg" />
+          <FontAwesomeIcon icon={star ? solidStar : regular} size="lg" onClick={onStarClick}/>
+          {/*아이콘에 번호를 매겨 클릭시 자신보다 작은 값들도 상태 같이 변경되게 구현해야함 */}
+          <FontAwesomeIcon icon={regular} size="lg" />
+          <FontAwesomeIcon icon={regular} size="lg" />
+          <FontAwesomeIcon icon={regular} size="lg" />
+          <FontAwesomeIcon icon={regular} size="lg" />
         </div>
         <div className="inputArea">
           <input type="text" placeholder="내용을 입력해주세요." />
         </div>
         <div className="butArea">
-          <button type="button" className="cancel" onClick={onClickCancel}>
+          <button type="button" className="cancel" onClick={clickNoLastMsg}>
             취소
           </button>
           <button type="button" className="register">
