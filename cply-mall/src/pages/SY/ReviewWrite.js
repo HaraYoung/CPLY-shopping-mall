@@ -58,6 +58,7 @@ const RWArea = styled.div`
     }
     .starArea {
       padding: 1em 0;
+      cursor: pointer;
     }
     .butArea {
       button {
