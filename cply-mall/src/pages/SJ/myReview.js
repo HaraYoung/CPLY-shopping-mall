@@ -6,14 +6,19 @@ import DateSearch from "./components/dateSearch";
 import ReviewList from "./components/reviewList";
 import styled from "styled-components";
 
+const ContentContainer = styled.section`
+  width: 1200px;
+  margin: 0 auto;
+`;
+
 const MyReview = () => {
   return (
-    <div>
+    <ContentContainer>
       <Header />
       <DateSearch />
       <ReviewList />
       <Footer />
-    </div>
+    </ContentContainer>
   );
 };
 
