@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
-
+import RegexHelper from '../../libs/RegexHelper.js';
 const FindIdCss = styled.div`
     width: 100%;
     display: flex;
@@ -54,6 +54,22 @@ const FindIdCss = styled.div`
 `;
 
 const FindId = memo(() => {
+    const FindIdSubmit = React.useCallback((e)=> {
+        e.preventDefault();
+
+        const current = e.target;
+        
+        try {
+            //전화번호 유효성
+            RegexHelper.value(current.phone,'전화번호를 입력하세요');
+            RegexHelper.num(current.phone,'전화번호는 숫자만 입력 가능합니다');
+            RegexHelper.minLength(current.phone,10,'전화번호는 10자 이상부터 입력 가능합니다');
+            RegexHelper.maxLength(current.phone,11,'전화번호는 11자 까지 입력 가능합니다');
+        }catch(e) {
+            window.alert(e.message);
+            e.field.focus();
+        }
+    },[])
     return (
         <FindIdCss>
             <div className='findid-box'>
@@ -61,7 +77,7 @@ const FindId = memo(() => {
                     <h1>아이디 찾기</h1>
                     <p>가입시 등록한 전화번호를 입력하시면<br/>아이디의 일부를 알려드립니다</p>
                 </div>
-                <form>
+                <form onSubmit={FindIdSubmit}>
                     <label htmlFor='phone'>
                         가입시 등록한 전화번호
                     </label>
