@@ -1,6 +1,8 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-
+import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons"; // ♡
+import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons"; // ♥︎
 // CSS적용을 위한 컴포넌트
 import styled from "styled-components";
 
@@ -144,11 +146,14 @@ const First = styled.section`
 `;
 
 const DetailGoods = () => {
-  const [urlImg, setUrlImg] = React.useState(
+  const navigate = useNavigate();
+
+  const [urlImg, setUrlImg] = useState(
     "https://cdn.shopify.com/s/files/1/1071/7482/files/1383185611092.jpg?v=1487090221"
   );
 
-  const [opc, setopc] = React.useState(0);
+  const [opc, setopc] = useState(0);
+  const [hrt, setHrt] = useState(0);
 
   const onClick = React.useCallback((e) => {
     e.preventDefault();
@@ -169,6 +174,27 @@ const DetailGoods = () => {
     }
   }, []);
 
+  const handleLike = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      hrt === 0 ? setHrt(1) : setHrt(0);
+    },
+    [hrt]
+  );
+
+  const message = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      if (
+        window.confirm(
+          "선택하신 상품들이 정상적으로 장바구니에 담겼습니다. \n지금 장바구니함으로 이동하시겠습니까?"
+        ) === true
+      ) {
+        navigate("/");
+      }
+    },
+    [navigate]
+  );
   return (
     <Div>
       <First>
@@ -299,13 +325,16 @@ const DetailGoods = () => {
               <button type="submit">바로구매</button>
             </li>
             <li className="cart">
-              <button>
+              <button onClick={message}>
                 <i className="fa fa-shopping-cart"></i>
               </button>
             </li>
             <li className="heart">
-              <button>
-                <i className="fa fa-heart"></i>
+              <button onClick={handleLike}>
+                <FontAwesomeIcon
+                  icon={hrt === 0 ? regularHeart : solidHeart}
+                  style={{ color: hrt === 0 ? " " : "#ff204b" }}
+                />
               </button>
             </li>
           </ul>
