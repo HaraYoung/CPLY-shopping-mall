@@ -41,7 +41,7 @@ const RandE = memo(() => {
       </Notice>
       <Routes>
       <Route path='/'element={<Exchange/>} expat={true} />
-      <Route path='/refund' element={<Refund/>}/>
+      <Route path='refund' element={<Refund/>}/>
       </Routes>
     </div>
   );
