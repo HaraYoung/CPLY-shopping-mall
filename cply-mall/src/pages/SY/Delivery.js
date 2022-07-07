@@ -28,6 +28,7 @@ const DeliveryTop = styled.div`
     .close{
       margin-left: 10em;
       padding-bottom: 0.5em;
+      cursor: pointer;
     }
   }
 
@@ -55,6 +56,11 @@ const DeliveryBottom = styled.div`
 `;
 
 const Delivery = memo(() => {
+  const [DClose,setDClose]= React.useState(true)
+  const onClickClose= ()=>{
+    setDClose(!DClose);
+//slice or props를 통해 클릭시 Order 페이지에서 import된 Delivery컴포넌트를 핸들링
+  }
   return (
     <div>
       <DeliveryTop>
@@ -65,7 +71,7 @@ const Delivery = memo(() => {
         <div className="top2">
           <span>현재 위치</span>
           <span className='close'>
-            <FontAwesomeIcon icon={faXmark} size="2x" className="deleteItem" />
+            <FontAwesomeIcon icon={faXmark} size="2x" className="deleteItem" onClick={onClickClose} />
           </span>
         </div>
       </DeliveryTop>

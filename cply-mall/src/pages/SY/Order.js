@@ -16,7 +16,7 @@ import RandE from "./RandE";
 import Img from "./img/찡찡이젤리.jpg";
 
 const OrderArea = styled.div`
-position: relative;
+  position: relative;
   padding: 1em 2em;
   .orderArea {
     .orderItem {
@@ -146,8 +146,16 @@ position: relative;
 `;
 
 const Order = memo(() => {
-  const onClickDetail=() => {
+  const [close, setClose] = React.useState(false);
+  const onClickDelivery = () => {
+    setClose(!close);
+  };
 
+  const [decide, setDecide] =  React.useState(true);
+  const onClickDecide= ()=>{
+    if (window.confirm('구매 확정시 교환/반품이 불가합니다. 구매를 확정하시겠습니까?')) {
+      setDecide(false);
+    }
   }
   return (
     <OrderArea>
@@ -245,14 +253,16 @@ const Order = memo(() => {
                   배송중
                   {/*[주문확인중,배송중,배송완료,구매확정]인 경우를 따져 선택값 or 컴포넌트 */}
                 </div>
-                <NavLink to="#">배송 조회</NavLink>
+                <NavLink to="delivery" onClick={onClickDelivery}>
+                  배송 조회
+                </NavLink>
                 {/*클릭시 delivery컴포넌트 나타남 */}
               </span>
             </div>
           </div>
         </div>
       </div>
-      <Delivery />
+      {close && <Delivery />}
       {/*배송 완료 */}
       <div className="orderArea">
         {/*하나의 상품 영역 */}
@@ -346,10 +356,10 @@ const Order = memo(() => {
             <div className="info2">
               <span>000원</span>
               <span className="orderSituation">
-                <div>
+                {decide && <div onClick={onClickDecide}>
                   구매 확정
                   {/*[주문확인중,배송중,배송완료,구매확정]인 경우를 따져 선택값 or 컴포넌트 */}
-                </div>
+                </div>}
                 <NavLink to="/reviewWrite">리뷰 쓰기</NavLink>
                 {/*클릭시 리뷰쓰기 컴포넌트 나타남 */}
               </span>
