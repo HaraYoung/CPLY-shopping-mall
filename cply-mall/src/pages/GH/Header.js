@@ -31,7 +31,8 @@ const HeaderCss = styled.div`
     }
     .header-box2 {
         width: 100%;
-        background-color: #ccc;
+        background-color: #fff;
+        border-bottom: 3px solid #000;
         text-align: center;
         position: relative;
         padding: 20px 0;
@@ -40,9 +41,10 @@ const HeaderCss = styled.div`
             color: #000;
             h1 {
                 margin: 0;
+                display: block;
                 font-size: 40px;
                 &:hover {
-                    color: #fff;
+                    color: #aaa;
                     transition: all 0.3s ease-in-out;
                 }
             }
@@ -102,16 +104,19 @@ const HeaderCss = styled.div`
             display: flex;
             justify-content: space-around;
             position: relative;
-            
-            >img {
-                width: 40px;
-                position: absolute;
-                right: -10%;
-                top: 9%;
-                opacity: 0.5;
-                &:hover {
-                    opacity: 1;
-                    transition: all 0.3s ease;
+            >div {
+                margin-top: 43px;
+                padding-left: 40px;
+                >img {
+                    width: 40px;
+                    /* position: absolute;
+                    right: -10%;
+                    top: 9%; */
+                    opacity: 0.5;
+                    &:hover {
+                        opacity: 1;
+                        transition: all 0.3s ease;
+                    }
                 }
             }
 
@@ -154,7 +159,6 @@ const Header = () => {
             </div>
             <div className={SearchBtn? ('menu-box max-height'):('menu-box')}>
                 <div className='menu-box-margin'>
-                    <img src='./assets/img/close.png' onClick={BtnClick}></img>
                     <ul>
                         <h2><a>전체상품</a></h2>
                     </ul>
@@ -216,6 +220,9 @@ const Header = () => {
                         <li><a>기타</a></li>
 
                     </ul>
+                    <div>
+                    <img src='assets/img/close.png' onClick={BtnClick}></img>
+                    </div>
                 </div>
             </div>
             <Outlet/>

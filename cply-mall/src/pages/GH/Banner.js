@@ -12,16 +12,15 @@ import 'swiper/css/autoplay';
 const BannerCss = styled.div`
     margin-bottom: 50px;
     .swiper-slide {
-        
-        
         margin: 100px 0;
-        
+        opacity: 0.8;
+        filter: grayscale(60%);
         img {
             width: 100%;
         }
     }
     .swiper-button-next {
-    background: url(./assets/img/btn_banner_next1.png) no-repeat;
+    background: url(./assets/img/next_button.png) no-repeat;
     width: 75px;
     height: 75px;
     background-position: center center;    
@@ -32,7 +31,7 @@ const BannerCss = styled.div`
     }
 
     .swiper-button-prev {
-    background: url(./assets/img/btn_banner_prev1.png) no-repeat;
+    background: url(./assets/img/prev_button.png) no-repeat;
     width: 75px;
     height: 75px;
     background-position: center;
@@ -67,7 +66,10 @@ const BannerCss = styled.div`
         transform: scale(1.5,1.5);
         background-color: #000;
         z-index: 99;
+        opacity: 1;
+        filter: grayscale(0%);
         transition: transform 0.5s ease-in-out;
+        
     }
 `;
 
