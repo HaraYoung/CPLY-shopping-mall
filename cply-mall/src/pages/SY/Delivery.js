@@ -28,6 +28,7 @@ const DeliveryTop = styled.div`
     .close{
       margin-left: 10em;
       padding-bottom: 0.5em;
+      cursor: pointer;
     }
   }
 
@@ -55,6 +56,10 @@ const DeliveryBottom = styled.div`
 `;
 
 const Delivery = memo(() => {
+  const [closeIcon, setCloseIcon]= React.useState(true);
+  const onClickDclose= () => {
+    setCloseIcon(!closeIcon);
+  }
   return (
     <div>
       <DeliveryTop>
@@ -65,7 +70,7 @@ const Delivery = memo(() => {
         <div className="top2">
           <span>현재 위치</span>
           <span className='close'>
-            <FontAwesomeIcon icon={faXmark} size="2x" className="deleteItem" />
+            <FontAwesomeIcon icon={faXmark} size="2x" className="deleteItem" onClick={onClickDclose}/>
           </span>
         </div>
       </DeliveryTop>

@@ -12,11 +12,12 @@ import { faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Delivery from "./Delivery";
 import ReviewWrite from "./ReviewWrite";
 import RandE from "./RandE";
+import OrderDetail from "./OrderDetail";
 
 import Img from "./img/찡찡이젤리.jpg";
 
 const OrderArea = styled.div`
-position: relative;
+  position: relative;
   padding: 1em 2em;
   .orderArea {
     .orderItem {
@@ -146,6 +147,25 @@ position: relative;
 `;
 
 const Order = memo(() => {
+  //delivery컴포넌트 상태값
+  const [delivery, setDelivery] = React.useState(false);
+  const onClickDelivery = () => {
+    setDelivery(!delivery);
+  };
+
+  //reviewWrite 컴포넌트 상태값
+  const [review, setReview] = React.useState(false);
+  const onClickReview = () => {
+    setReview(true);
+  }
+
+  const onClickCancel= () =>{
+    if (window.confirm('주문을 취소하시겠습니까?')) {
+      //RandE이동인데 링크태그 그대로 이동하는것..?
+      window.location.href = 'http://localhost:3000/mypage/RandE';
+  }
+}
+
   return (
     <OrderArea>
       <h1>주문/배송조회</h1>
@@ -157,7 +177,7 @@ const Order = memo(() => {
             {/*주문 날짜와 상세 주문 정보 버튼 영역 */}
             <h3>2020.06.06</h3>
             <span>
-              <NavLink to="#">주문 상세보기</NavLink>
+              <NavLink to="/mypage/orderDetail">주문 상세보기</NavLink>
               <FontAwesomeIcon icon={faCircleChevronRight} size="lg" />
             </span>
           </div>
@@ -193,7 +213,7 @@ const Order = memo(() => {
                   {/*[주문확인중,배송중,배송완료,구매확정]인 경우를 따져 선택값 or 컴포넌트 */}
                 </div>
                 {/*클릭시 교환/반품 페이지로 이동 */}
-                <Link to="RandE">주문 취소</Link>
+                <Link to="/mypage/RandE" onClick={onClickCancel}>주문 취소</Link>
               </span>
             </div>
           </div>
@@ -207,7 +227,7 @@ const Order = memo(() => {
             {/*주문 날짜와 상세 주문 정보 버튼 영역 */}
             <h3>2020.06.06</h3>
             <span>
-              <NavLink to="#">주문 상세보기</NavLink>
+              <NavLink to="/mypage/orderDetail">주문 상세보기</NavLink>
               <FontAwesomeIcon icon={faCircleChevronRight} size="lg" />
             </span>
           </div>
@@ -242,14 +262,16 @@ const Order = memo(() => {
                   배송중
                   {/*[주문확인중,배송중,배송완료,구매확정]인 경우를 따져 선택값 or 컴포넌트 */}
                 </div>
-                <NavLink to="#">배송 조회</NavLink>
-                {/*클릭시 delivery컴포넌트 나타남 */}
+                <button type="button" onClick={onClickDelivery}>
+                  배송 조회
+                </button>
+                {/*클릭시 delivery컴포넌트 나타남 - 닫기 구현해야함*/}
               </span>
             </div>
           </div>
         </div>
       </div>
-      <Delivery />
+      {delivery && (<Delivery/>)}
       {/*배송 완료 */}
       <div className="orderArea">
         {/*하나의 상품 영역 */}
@@ -258,7 +280,7 @@ const Order = memo(() => {
             {/*주문 날짜와 상세 주문 정보 버튼 영역 */}
             <h3>2020.06.06</h3>
             <span>
-              <NavLink to="#">주문 상세보기</NavLink>
+              <NavLink to="/mypage/orderDetail">주문 상세보기</NavLink>
               <FontAwesomeIcon icon={faCircleChevronRight} size="lg" />
             </span>
           </div>
@@ -297,7 +319,7 @@ const Order = memo(() => {
                 <NavLink to="#">구매 확정</NavLink>
                 {/*클릭시 교환/반품 페이지로 이동 */}
                 <div>
-                  <NavLink to="#">교환/반품</NavLink>
+                  <NavLink to="/mypage/RandE">교환/반품</NavLink>
                 </div>
               </span>
             </div>
@@ -312,7 +334,7 @@ const Order = memo(() => {
             {/*주문 날짜와 상세 주문 정보 버튼 영역 */}
             <h3>2020.06.06</h3>
             <span>
-              <NavLink to="#">주문 상세보기</NavLink>
+              <NavLink to="/mypage/orderDetail">주문 상세보기</NavLink>
               <FontAwesomeIcon icon={faCircleChevronRight} size="lg" />
             </span>
           </div>
@@ -347,17 +369,17 @@ const Order = memo(() => {
                   구매 확정
                   {/*[주문확인중,배송중,배송완료,구매확정]인 경우를 따져 선택값 or 컴포넌트 */}
                 </div>
-                <NavLink to="/reviewWrite">리뷰 쓰기</NavLink>
+                <button type='button' onClick={onClickReview}>리뷰 쓰기</button>
                 {/*클릭시 리뷰쓰기 컴포넌트 나타남 */}
               </span>
             </div>
           </div>
         </div>
       </div>
-      <Routes>
-        <Route path="/reviewWrite" element={<ReviewWrite />} />
-        <Route path="RandE" element={<RandE />} />
-      </Routes>
+      {review && <ReviewWrite />}
+      {/* <Routes>
+        <Route path="reviewWrite" element={<ReviewWrite />} />
+      </Routes> */}
     </OrderArea>
   );
 });

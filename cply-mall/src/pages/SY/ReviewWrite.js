@@ -99,9 +99,10 @@ margin-right: 10%;
 const ReviewWrite = memo(() => {
   const RWRef= React.useRef();
   const closeReview= '취소시 작성하신 내용은 저장되지 않습니다. 리뷰 작성을 취소하시겠습니까?';
-  const closeURL= 'http://localhost:3000/';
+  const closeURL= 'http://localhost:3000/mypage/order';
     const clickNoLastMsg= () => {
       if (window.confirm(closeReview)) {
+        //url말고 리덕스로 리뷰상태값을 false로 바꾸게 만들것
           window.location.href = closeURL;
         }
   }

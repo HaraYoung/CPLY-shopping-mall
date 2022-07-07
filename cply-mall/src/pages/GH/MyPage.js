@@ -6,6 +6,10 @@ import Profile from './Profile';
 import Withdraw from './Withdraw';
 import ChangeInfo from './ChangeInfo';
 import TodayPopularity from './TodayPopularity';
+import Cart from '../SY/Cart';
+import Order from '../SY/Order';
+import OrderDetail from '../SY/OrderDetail';
+import RandE from '../SY/RandE';
 import {Routes,Route} from 'react-router-dom'
 const MyPageCss = styled.div`
     padding: 150px 0;
@@ -29,6 +33,10 @@ const MyPage = () => {
                 <Route path='/' element={<Profile/>}/>
                 <Route path='withdraw' element={<Withdraw/>}/>
                 <Route path='changeinfo' element={<ChangeInfo/>}/>
+                <Route path='order' element={<Order/>}/>
+                <Route path='orderdetail' element={<OrderDetail/>}/>
+                <Route path='cart' element={<Cart/>}/>
+                <Route path='rande' element={<RandE/>}/>
             </Routes>
             </div>
         </MyPageCss>

@@ -180,7 +180,7 @@ const DetailArea = styled.div`
   }
   .butArea{
     text-align: center;
-    button{
+    a{
       font-size: 16px;
       padding: 0.5em 1.5em;
       color:#fff;
@@ -331,7 +331,7 @@ const OrderDetail = memo(() => {
         </div>
       </div>
       <div className="butArea margin">
-        <button type="button">주문/배송 페이지로 이동</button>
+        <NavLink to='/mypage/order'>주문/배송 페이지로 이동</NavLink>
       </div>
     </DetailArea>
   );
