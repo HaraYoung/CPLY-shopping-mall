@@ -12,6 +12,7 @@ import { faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Delivery from "./Delivery";
 import ReviewWrite from "./ReviewWrite";
 import RandE from "./RandE";
+import OrderDetail from "./OrderDetail";
 
 import Img from "./img/찡찡이젤리.jpg";
 
@@ -207,7 +208,7 @@ const Order = memo(() => {
             {/*주문 날짜와 상세 주문 정보 버튼 영역 */}
             <h3>2020.06.06</h3>
             <span>
-              <NavLink to="#">주문 상세보기</NavLink>
+              <NavLink to="/mypage/orderDetail" >주문 상세보기</NavLink>
               <FontAwesomeIcon icon={faCircleChevronRight} size="lg" />
             </span>
           </div>
@@ -242,14 +243,16 @@ const Order = memo(() => {
                   배송중
                   {/*[주문확인중,배송중,배송완료,구매확정]인 경우를 따져 선택값 or 컴포넌트 */}
                 </div>
-                <NavLink to="#">배송 조회</NavLink>
-                {/*클릭시 delivery컴포넌트 나타남 */}
+                <NavLink to="/delivery">배송 조회</NavLink>
+                {/*클릭시 delivery컴포넌트 나타남 - 닫기 구현해야함*/}
               </span>
             </div>
           </div>
         </div>
       </div>
-      <Delivery />
+     { <Routes>
+        <Route path='/delivery' element={<Delivery />} />
+      </Routes>}
       {/*배송 완료 */}
       <div className="orderArea">
         {/*하나의 상품 영역 */}
@@ -356,6 +359,7 @@ const Order = memo(() => {
       </div>
       <Routes>
         <Route path="/reviewWrite" element={<ReviewWrite />} />
+        <Route path='orderDetails' element={<OrderDetail />} />
         <Route path="RandE" element={<RandE />} />
       </Routes>
     </OrderArea>
