@@ -10,6 +10,7 @@ import Cart from '../SY/Cart';
 import Order from '../SY/Order';
 import OrderDetail from '../SY/OrderDetail';
 import RandE from '../SY/RandE';
+import PageNotFound from './PageNotFound';
 import {Routes,Route} from 'react-router-dom'
 const MyPageCss = styled.div`
     padding: 150px 0;
@@ -37,6 +38,7 @@ const MyPage = () => {
                 <Route path='orderdetail' element={<OrderDetail/>}/>
                 <Route path='cart' element={<Cart/>}/>
                 <Route path='rande' element={<RandE/>}/>
+                <Route path='*' element={<PageNotFound/>}/>
             </Routes>
             </div>
         </MyPageCss>
