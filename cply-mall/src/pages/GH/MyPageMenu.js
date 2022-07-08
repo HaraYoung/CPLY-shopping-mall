@@ -47,15 +47,15 @@ const MyPageMenu = () => {
                         <li className='list'><Link to='changeinfo'>나의 정보 수정</Link></li>
                         <li className='list'><Link to='withdraw'>회원 탈퇴</Link></li>
                         <li><h2>쇼핑 정보</h2></li>
-                        <li className='list'><a>주문내역조회</a></li>
-                        <li className='list'><a>취소/반품</a></li>
-                        <li className='list'><a>장바구니</a></li>
+                        <li className='list'><Link to='order'>주문내역조회</Link></li>
+                        <li className='list'><Link to='rande'>취소/반품</Link></li>
+                        <li className='list'><Link to='cart'>장바구니</Link></li>
                         <li className='list'><a>찜한 상품</a></li>
                         <li className='list'><a>작성 리뷰</a></li>
                         <li><h2>고객센터</h2></li>
-                        <li className='list'><a>내 문의 내역</a></li>
-                        <li className='list'><a>FAQ(자주묻는질문)</a></li>
-                        <li className='list'><a>공지사항</a></li>
+                        <li className='list'><Link to='/Qna'>내 문의 내역</Link></li>
+                        <li className='list'><Link to='/faq'>FAQ(자주묻는질문)</Link></li>
+                        <li className='list'><Link to='/notice'>공지사항</Link></li>
                     </ul>
                 </div>
             </div>

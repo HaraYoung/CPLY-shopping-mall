@@ -81,6 +81,17 @@ class RegexHelper {
      * @param {*} field 검사할 대상에 대한 input 요소의 dom 객체
      * @param {*} msg   검사에 실패할 경우 표시할 메세지
      */
+    checked(field,msg) {
+        const bool = field.checked;
+        if (!bool) {
+            throw new BadRequestException(msg,field);
+        }
+    }
+    /**
+     * 라이오나 체크박스가 선택된 항목인지 확인한다
+     * @param {*} field 검사할 대상에 대한 input 요소의 dom 객체
+     * @param {*} msg   검사에 실패할 경우 표시할 메세지
+     */
     check(field,msg) {
         
         const checkedItem = Array.from(field).filter((v, i)=> v.checked)
