@@ -8,9 +8,8 @@ import React, { memo } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as regular } from "@fortawesome/free-regular-svg-icons";
-import { faStar as solidStar} from "@fortawesome/free-solid-svg-icons";
+import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-
 
 //import { confirmAlert } from 'react-confirm-alert';
 
@@ -88,37 +87,40 @@ const RWArea = styled.div`
     }
   }
 `;
-const ReviewTop= styled.div`
-display: flex;
-justify-content: flex-end;
-width: 100%;
-margin-right: 10%;
-.deleteItem{
-  cursor: pointer;
-}
+const ReviewTop = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-right: 10%;
+  .deleteItem {
+    cursor: pointer;
+  }
 `;
 const ReviewWrite = memo(() => {
-  const RWRef= React.useRef();
-  const closeReview= '취소시 작성하신 내용은 저장되지 않습니다. 리뷰 작성을 취소하시겠습니까?';
-  const closeURL= 'http://localhost:3000/';
-    const clickNoLastMsg= () => {
-      if (window.confirm(closeReview)) {
-          window.location.href = closeURL;
-        }
-  }
-   const [star,setStar]= React.useState(false);
-   const onStarClick= () => {setStar(!star);};
-  
+  const RWRef = React.useRef();
+  const closeReview =
+    "취소시 작성하신 내용은 저장되지 않습니다. 리뷰 작성을 취소하시겠습니까?";
+  const closeURL = "http://localhost:3000/";
+  const clickNoLastMsg = () => {
+    if (window.confirm(closeReview)) {
+      window.location.href = closeURL;
+    }
+  };
+  const [star, setStar] = React.useState(false);
+  const onStarClick = () => {
+    setStar(!star);
+  };
+
   return (
     <RWArea ref={RWRef}>
       <div className="container">
         <ReviewTop>
-        <FontAwesomeIcon
-                icon={faXmark}
-                size="2x"
-                className="deleteItem"
-                onClick={clickNoLastMsg}
-              />
+          <FontAwesomeIcon
+            icon={faXmark}
+            size="2x"
+            className="deleteItem"
+            onClick={clickNoLastMsg}
+          />
         </ReviewTop>
         <div className="ItemInfo">
           <img src={Img} alt="itemImage" width="120px" />
@@ -126,16 +128,35 @@ const ReviewWrite = memo(() => {
             <p>상품 이름</p>
             <p>옵션</p>
             <p>1개</p>
-
           </div>
         </div>
         <div className="starArea">
-          <FontAwesomeIcon icon={star ? solidStar : regular} size="lg" onClick={onStarClick}/>
+          <FontAwesomeIcon
+            icon={star ? solidStar : regular}
+            size="lg"
+            onClick={onStarClick}
+          />
           {/*아이콘에 번호를 매겨 클릭시 자신보다 작은 값들도 상태 같이 변경되게 구현해야함 */}
-          <FontAwesomeIcon icon={regular} size="lg" />
-          <FontAwesomeIcon icon={regular} size="lg" />
-          <FontAwesomeIcon icon={regular} size="lg" />
-          <FontAwesomeIcon icon={regular} size="lg" />
+          <FontAwesomeIcon
+            icon={star ? solidStar : regular}
+            size="lg"
+            onClick={onStarClick}
+          />
+          <FontAwesomeIcon
+            icon={star ? solidStar : regular}
+            size="lg"
+            onClick={onStarClick}
+          />
+          <FontAwesomeIcon
+            icon={star ? solidStar : regular}
+            size="lg"
+            onClick={onStarClick}
+          />
+          <FontAwesomeIcon
+            icon={star ? solidStar : regular}
+            size="lg"
+            onClick={onStarClick}
+          />
         </div>
         <div className="inputArea">
           <input type="text" placeholder="내용을 입력해주세요." />
