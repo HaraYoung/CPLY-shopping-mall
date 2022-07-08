@@ -4,6 +4,7 @@ import {NavLink,Routes,Route} from 'react-router-dom';
 import Signin from './Signin';
 import NotMembers from './NotMembers';
 import { useParams } from 'react-router-dom';
+import PageNotFound from './PageNotFound';
 const LoginCss = styled.div`
     width: 100%;
     display: flex;
@@ -184,6 +185,7 @@ const Login = memo(() => {
                 <Routes>
                     <Route path='/' element={<Signin/>}/>
                     <Route path='/notmembers' element={<NotMembers/>}/>
+                    <Route path="*" element={<PageNotFound/>}/>
                 </Routes>
             </div>
         </LoginCss>

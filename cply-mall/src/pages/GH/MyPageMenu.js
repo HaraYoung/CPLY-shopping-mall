@@ -53,9 +53,9 @@ const MyPageMenu = () => {
                         <li className='list'><a>찜한 상품</a></li>
                         <li className='list'><a>작성 리뷰</a></li>
                         <li><h2>고객센터</h2></li>
-                        <li className='list'><a>내 문의 내역</a></li>
-                        <li className='list'><a>FAQ(자주묻는질문)</a></li>
-                        <li className='list'><a>공지사항</a></li>
+                        <li className='list'><Link to='/Qna'>내 문의 내역</Link></li>
+                        <li className='list'><Link to='/faq'>FAQ(자주묻는질문)</Link></li>
+                        <li className='list'><Link to='/notice'>공지사항</Link></li>
                     </ul>
                 </div>
             </div>
