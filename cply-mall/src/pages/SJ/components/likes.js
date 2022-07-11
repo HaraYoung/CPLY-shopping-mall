@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import List from "./listItem";
 
 const Favor = styled.div`
   display: flex;
+  padding: 5em 1em;
   .side {
     width: 20%;
     h5,
@@ -35,11 +36,37 @@ const Favor = styled.div`
     ul {
       padding: 1em 0;
       li {
-        padding-left: 1em;
+        margin: 0.1em 0;
+        line-height: 2.5em;
         a {
-          color: #696969;
-          height: 2.2em;
+          padding-left: 1em;
           display: block;
+          color: #696969;
+          height: 2.7em;
+          display: block;
+          &:hover {
+            color: black;
+            background-color: #e1e1e1;
+          }
+        }
+        .option {
+          background-color: #e1e1e1;
+          color: black;
+        }
+      }
+    }
+  }
+  .content {
+    width: 80%;
+    div {
+      margin-bottom: 0.5em;
+      display: flex;
+      justify-content: end;
+      select {
+        padding: 0.3em 1em;
+        border: 1px solid #e1e1e1;
+        &:focus {
+          outline: none;
         }
       }
     }
@@ -47,6 +74,39 @@ const Favor = styled.div`
 `;
 
 const Likes = () => {
+  const [imj, setImj] = useState(0);
+  const [op, setOp] = useState(0);
+
+  const onClick = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      if (imj === 0) {
+        setImj(1);
+      } else {
+        setImj(0);
+      }
+    },
+    [imj]
+  );
+
+  const onOption = React.useCallback((e) => {
+    e.preventDefault();
+    const value = e.target.dataset.value;
+    if (value === "0") {
+      setOp(0);
+    } else if (value === "1") {
+      setOp(1);
+    } else if (value === "2") {
+      setOp(2);
+    } else if (value === "3") {
+      setOp(3);
+    } else if (value === "4") {
+      setOp(4);
+    } else {
+      setOp(5);
+    }
+  }, []);
+
   return (
     <Favor>
       <div className="side">
@@ -57,28 +117,72 @@ const Likes = () => {
         </div>
         <h5>찜한 상품</h5>
         <div className="ctg">
-          <div className="category">
+          <div className="category" onClick={onClick}>
             <div>CATEGORIES</div>
-            <i className="fa fa-angle-up"></i>
+            <i
+              className={imj === 0 ? "fa fa-angle-up" : "fa fa-angle-down"}
+            ></i>
           </div>
-          <ul>
+          <ul style={{ display: imj === 0 ? "" : "none" }}>
             <li>
-              <a href="#!">전체</a>
+              <a
+                href="#!"
+                onClick={onOption}
+                data-value="0"
+                className={op === 0 ? "option" : ""}
+              >
+                전체
+              </a>
             </li>
             <li>
-              <a href="#!">아우터</a>
+              <a
+                href="#!"
+                onClick={onOption}
+                data-value="1"
+                className={op === 1 ? "option" : ""}
+              >
+                아우터
+              </a>
             </li>
             <li>
-              <a href="#!">상의</a>
+              <a
+                href="#!"
+                onClick={onOption}
+                data-value="2"
+                className={op === 2 ? "option" : ""}
+              >
+                상의
+              </a>
             </li>
             <li>
-              <a href="#!">하의</a>
+              <a
+                href="#!"
+                onClick={onOption}
+                data-value="3"
+                className={op === 3 ? "option" : ""}
+              >
+                하의
+              </a>
             </li>
             <li>
-              <a href="#!">신발</a>
+              <a
+                href="#!"
+                onClick={onOption}
+                data-value="4"
+                className={op === 4 ? "option" : ""}
+              >
+                신발
+              </a>
             </li>
             <li>
-              <a href="#!">악세사리</a>
+              <a
+                href="#!"
+                onClick={onOption}
+                data-value="5"
+                className={op === 5 ? "option" : ""}
+              >
+                악세사리
+              </a>
             </li>
           </ul>
         </div>
@@ -86,7 +190,7 @@ const Likes = () => {
       <div className="content">
         <div>
           <select>
-            <option value="recent">최근 찜한순</option>
+            <option>최근 찜한순</option>
             <option>인기순</option>
             <option>낮은 가격순</option>
           </select>
