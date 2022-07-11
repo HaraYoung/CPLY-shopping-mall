@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
 import RegexHelper from '../../libs/RegexHelper';
-
+import { useNavigate } from "react-router-dom";
 const SignupInfoCss = styled.div`
     width: 100%;
     display: flex;
@@ -84,23 +84,20 @@ const SignupInfoCss = styled.div`
     }
 `;
 const SignupInfo = memo(() => {
-
+    const navigate = useNavigate();
+    const mega = React.useRef();
+    const [overlap,setOverlap] = React.useState(false);
     const SignupInfoSubmit = React.useCallback((e)=> {
         e.preventDefault();
         
         
         const current = e.target;
         try {
-            //아이디 유효성
-            /**
-             * 중복검사쪽에서 되게끔 수정필요
-             * 중복아이디,사용가능아이디
-             * 중복검사 진행여부 확인해야함
-             */
-            RegexHelper.value(current.id,'아이디는 필수 정보입니다');
-            RegexHelper.engNum(current.id,'아이디는 영문,숫자만 입력 가능합니다');
-            RegexHelper.minLength(current.id,8,'아이디는 8글자 이상만 입력 가능합니다');
-            RegexHelper.maxLength(current.id,20,'아이디는 최대 20글자 까지 입력 가능합니다');
+            //중복검사 유효성
+            if (!overlap) {
+                window.alert('아이디 중복검사를 실행하세요');
+                return;
+            }
             //비밀번호 유효성
             /**
              * 특수문자유효성추가해야함
@@ -134,18 +131,111 @@ const SignupInfo = memo(() => {
             RegexHelper.value(current.addr2,'나머지 주소를 입력해 주세요');
         }catch(e) {
             window.alert(e.message);
-
+            e.field.focus();
+            return;
         }
-        /**
-         * confirm구현 해야함
-         * ajax구현
-         */
+
+        if (window.confirm('입력하신 내용으로 정보가 저장됩니다.계속하시겠습니까?')) {
+            //ajax연동
+            window.alert('회원가입이 완료되었습니다.');
+            navigate('/');
+        }
+
         
-    },[])
+    },[overlap,navigate])
+
+    const idInfoSubmit = React.useCallback((e)=> {
+        e.preventDefault();
+
+        const current = mega.current
+        console.log (current);
+
+        try {
+            //아이디 유효성
+            /**
+             * 중복검사쪽에서 되게끔 수정필요
+             * 중복아이디,사용가능아이디
+             * 중복검사 진행여부 확인해야함
+             */
+             RegexHelper.value(current,'아이디는 필수 정보입니다');
+             RegexHelper.engNum(current,'아이디는 영문,숫자만 입력 가능합니다');
+             RegexHelper.minLength(current,8,'아이디는 8글자 이상만 입력 가능합니다');
+             RegexHelper.maxLength(current,20,'아이디는 최대 20글자 까지 입력 가능합니다');
+        }catch(e) {
+            window.alert(e.message);
+            return;
+        }
+        //ajax처리
+        setOverlap(overlap=>true);
+        window.alert('사용 가능한 아이디 입니다');
+    },[setOverlap])
 
     return (
         <SignupInfoCss>
             <div className='signup-info-box'>
+                <h1>C P L Y</h1>
+                <div className='signup-info-box-margin'>
+                    <form onSubmit={SignupInfoSubmit}>
+                        <div className='signup-info-div-box'>
+                            <div className='signup-info-div1'><h2>아이디<span>*</span></h2></div>
+                            <div className='signup-info-div2'><input type='text' name='id' placeholder='아이디를 입력해 주세요' ref={mega}/></div>
+                            <div className='signup-info-div3'><button onClick={idInfoSubmit}>중복확인</button></div>                                                 
+                        </div>
+                        <div className='signup-info-div-box'>
+                            <div className='signup-info-div1'><h2>비밀번호<span>*</span></h2></div>
+                            <div className='signup-info-div2'><input type='password' name='pw' placeholder='비밀번호를 입력해 주세요'/></div>
+                            <div className='signup-info-div3'></div>                                                 
+                        </div>
+                        <div className='signup-info-div-box'>
+                            <div className='signup-info-div1'><h2>비밀번호 확인<span>*</span></h2></div>
+                            <div className='signup-info-div2'><input type='password' name='pwre'/></div>
+                            <div className='signup-info-div3'></div>                                                 
+                        </div>
+                        <div className='signup-info-div-box'>
+                            <div className='signup-info-div1'><h2>이름<span>*</span></h2></div>
+                            <div className='signup-info-div2'><input type='text' name='name' placeholder='이름을 입력해 주세요'/></div>
+                            <div className='signup-info-div3'></div>                                                 
+                        </div>
+                        <div className='signup-info-div-box'>
+                            <div className='signup-info-div1'><h2>전화번호<span>*</span></h2></div>
+                            <div className='signup-info-div2'><input type='text' name='phone' placeholder='(-)를 제외한 전화번호'/></div>
+                            <div className='signup-info-div3'></div>                                                 
+                        </div>
+                        <div className='signup-info-div-box'>
+                            <div className='signup-info-div1'><h2>SNS 수신</h2></div>
+                            <div className='signup-info-div2'><input type='checkbox' name='sns-check' className=' signup-info-check'/></div>
+                            <div className='signup-info-div3'></div>                                                 
+                        </div>
+                        <div className='signup-info-div-box'>
+                            <div className='signup-info-div1'><h2>이메일<span>*</span></h2></div>
+                            <div className='signup-info-div2'><input type='text' name='email' placeholder='이메일을 입력해주세요'/></div>
+                            <div className='signup-info-div3'></div>                                                 
+                        </div>
+                        <div className='signup-info-div-box'>
+                            <div className='signup-info-div1'><h2>이메일 수신</h2></div>
+                            <div className='signup-info-div2'><input type='checkbox' name='sns-check' className=' signup-info-check'/></div>
+                            <div className='signup-info-div3'></div>                                                 
+                        </div>
+                        <div className='signup-info-div-box'>
+                            <div className='signup-info-div1'><h2>주소<span>*</span></h2></div>
+                            <div className='signup-info-div2'><input type='text' name='addr' placeholder='우편번호'/></div>
+                            <div className='signup-info-div3'><button>주소검색</button></div>                                                 
+                        </div>
+                        <div className='signup-info-div-box'>
+                            <div className='signup-info-div1'></div>
+                            <div className='signup-info-div2'><input type='text' name='addr1' placeholder='기본주소'/></div>
+                            <div className='signup-info-div3'></div>                                                 
+                        </div>
+                        <div className='signup-info-div-box'>
+                            <div className='signup-info-div1'></div>
+                            <div className='signup-info-div2'><input type='text' name='addr2' placeholder='나머지 주소'/></div>
+                            <div className='signup-info-div3'></div>                                                 
+                        </div>
+                        <button type='submit'>가입하기</button>
+                    </form>
+                </div>
+            </div>
+            {/* <div className='signup-info-box'>
                 <h1>C P L Y</h1>
                 <div className='signup-info-box-margin'>
                     <form onSubmit={SignupInfoSubmit}>
@@ -207,7 +297,7 @@ const SignupInfo = memo(() => {
                         <button type='submit'>가입하기</button>
                     </form>
                 </div>
-            </div>
+            </div> */}
         </SignupInfoCss>
     );
 });
