@@ -66,6 +66,7 @@ const SignupInfoCss = styled.div`
                     }
                     .signup-info-div3 {
                         width: 20%;
+                        text-align: center;
                         >button {
                             background: #e74c3c;
                             border: none;
@@ -73,6 +74,17 @@ const SignupInfoCss = styled.div`
                             margin: 0;
                             margin: auto;
                             display: block;
+                            padding: 8px 8px;
+                            color: #fff;
+                            border-radius: 5px;
+                        }
+                        >span {
+                            background: #e74c3c;
+                            border: none;
+                            font-size: 0.9em;
+                            margin: 0;
+                            margin: auto;
+                            
                             padding: 8px 8px;
                             color: #fff;
                             border-radius: 5px;
@@ -86,7 +98,10 @@ const SignupInfoCss = styled.div`
 const SignupInfo = memo(() => {
     const navigate = useNavigate();
     const mega = React.useRef();
-    const [overlap,setOverlap] = React.useState(false);
+    const [overlap,setOverlap] = React.useState({
+        blo:false,
+        data:''
+    });
     const SignupInfoSubmit = React.useCallback((e)=> {
         e.preventDefault();
         
@@ -94,14 +109,20 @@ const SignupInfo = memo(() => {
         const current = e.target;
         try {
             //중복검사 유효성
-            if (!overlap) {
+            if (!overlap.blo || overlap.data !== current.id.value) {
                 window.alert('아이디 중복검사를 실행하세요');
+                setOverlap({
+                    blo:false,
+                    data:''
+                })
                 return;
             }
+
+            
             //비밀번호 유효성
             /**
              * 특수문자유효성추가해야함
-             * */
+             **/
             RegexHelper.value(current.pw,'비밀번호는 필수 정보입니다');
             RegexHelper.minLength(current.pw,8,'비밀번호는 8글자 이상만 입력 가능합니다');
             RegexHelper.maxLength(current.pw,20,'비밀번호는 최대 20글자 까지 입력 가능합니다');
@@ -112,7 +133,7 @@ const SignupInfo = memo(() => {
             RegexHelper.value(current.name,'이름은 필수 정보입니다');
             RegexHelper.minLength(current.name,2,'이름은 2글자 이상 부터 입력 가능합니다');
             RegexHelper.maxLength(current.name,20,'이름은 최대 20글자 까지 입력 가능합니다');
-            RegexHelper.korNUm(current.name,'이름은 한글,영문만 입력 가능합니다');
+            RegexHelper.korEng(current.name,'이름은 한글,영문만 입력 가능합니다');
             //전화번호 유효성
             RegexHelper.value(current.phone,'전화번호는 필수 정보입니다');
             RegexHelper.num(current.phone,'전화번호는 숫자만 입력 가능합니다');
@@ -148,7 +169,7 @@ const SignupInfo = memo(() => {
         e.preventDefault();
 
         const current = mega.current
-        console.log (current);
+
 
         try {
             //아이디 유효성
@@ -166,7 +187,12 @@ const SignupInfo = memo(() => {
             return;
         }
         //ajax처리
-        setOverlap(overlap=>true);
+        
+        setOverlap({
+            blo:true,
+            data:current.value
+        });
+
         window.alert('사용 가능한 아이디 입니다');
     },[setOverlap])
 
@@ -219,11 +245,11 @@ const SignupInfo = memo(() => {
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>주소<span>*</span></h2></div>
                             <div className='signup-info-div2'><input type='text' name='addr' placeholder='우편번호'/></div>
-                            <div className='signup-info-div3'><button>주소검색</button></div>                                                 
+                            <div className='signup-info-div3'><span onClick={()=>window.open('/juso','window_name','width=430,height=500,location=no,status=no')}>주소검색</span></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'></div>
-                            <div className='signup-info-div2'><input type='text' name='addr1' placeholder='기본주소'/></div>
+                            <div className='signup-info-div2'><input type='text' name='addr1' placeholder='기본주소' defaultValue={overlap.data}/></div>
                             <div className='signup-info-div3'></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
