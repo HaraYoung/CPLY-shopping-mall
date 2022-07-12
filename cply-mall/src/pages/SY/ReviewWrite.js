@@ -109,6 +109,11 @@ const ReviewWrite = memo(() => {
   }
    const [star,setStar]= React.useState(false);
    const onStarClick= () => {setStar(!star);};
+   const onReviewWrite = () => {
+    alert('리뷰가 등록되었습니다.');
+    window.location.href = closeURL;
+
+   }
   
   return (
     <RWArea ref={RWRef}>
@@ -164,7 +169,7 @@ const ReviewWrite = memo(() => {
           <button type="button" className="cancel" onClick={clickNoLastMsg}>
             취소
           </button>
-          <button type="button" className="register">
+          <button type="button" className="register" onClick={onReviewWrite}>
             리뷰 등록
           </button>
         </div>

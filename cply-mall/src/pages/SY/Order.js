@@ -116,7 +116,7 @@ const OrderArea = styled.div`
               padding-bottom: 1em;
               font-size: 17px;
             }
-            a {
+            a, button {
               display: inline-block;
               padding: 0.5em;
               text-decoration: none;
@@ -157,14 +157,35 @@ const Order = memo(() => {
   const [review, setReview] = React.useState(false);
   const onClickReview = () => {
     setReview(true);
-  }
+  };
 
-  const onClickCancel= () =>{
-    if (window.confirm('주문을 취소하시겠습니까?')) {
+  const onClickCancel = () => {
+    if (window.confirm("주문을 취소하시겠습니까?")) {
       //RandE이동인데 링크태그 그대로 이동하는것..?
-      window.location.href = 'http://localhost:3000/mypage/RandE';
-  }
-}
+      window.location.href = "http://localhost:3000/mypage/RandE";
+    }
+  };
+  
+  //배송 완료 상태값
+  const [deliveryComplete, setdeliveryComplete]= React.useState(false);
+
+  //구매 확정 ui 상태값-> 배송완료 상태의 구매확정 버튼 클릭시 나타남
+  const [decide, setDecide] = React.useState(false);
+  const onClickDecide = () => {
+    if (
+      window.confirm(
+        "구매 확정시 교환/반품은 불가합니다. 구매를 확정하시겠습니까?"
+      )
+    ) {
+      alert("구매가 확정되었습니다.");
+      setDecide(true);
+      setdeliveryComplete(!deliveryComplete);
+    }
+  };
+  
+  //리뷰 등록이 되었다는 알림창의 확인버튼을 눌렀을때 reviewBtn을 false로 바꿀것
+  const [reviewBtn,setReviewBtn]= React.useState(true);
+
   return (
     <OrderArea>
       <h1>주문/배송조회</h1>
@@ -213,7 +234,9 @@ const Order = memo(() => {
                 </div>
                 {/*클릭시 교환/반품 페이지로 이동 */}
 
-                <Link to="/mypage/RandE" onClick={onClickCancel}>주문 취소</Link>
+                <Link to="/mypage/RandE" onClick={onClickCancel}>
+                  주문 취소
+                </Link>
               </span>
             </div>
           </div>
@@ -272,9 +295,9 @@ const Order = memo(() => {
           </div>
         </div>
       </div>
-      {delivery && (<Delivery/>)}
+      {delivery && <Delivery />}
       {/*배송 완료 */}
-      <div className="orderArea">
+      {!decide && <div className="orderArea">
         {/*하나의 상품 영역 */}
         <div className="orderItem">
           <div className="orderHeader">
@@ -317,7 +340,7 @@ const Order = memo(() => {
                   {/*[주문확인중,배송중,배송완료,구매확정]인 경우를 따져 선택값 or 컴포넌트 */}
                 </div>
                 {/*클릭시 구매 확적을 묻는 알림창 뜸->확인 클릭시 구매 확정 버튼 없어짐 */}
-                <NavLink to="#">구매 확정</NavLink>
+                  <NavLink to="#" onClick={onClickDecide}>구매 확정</NavLink>
                 {/*클릭시 교환/반품 페이지로 이동 */}
                 <div>
                   <NavLink to="/mypage/RandE">교환/반품</NavLink>
@@ -326,9 +349,9 @@ const Order = memo(() => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
       {/*구매 확정 */}
-      <div className="orderArea">
+      {decide && <div className="orderArea">
         {/*하나의 상품 영역 */}
         <div className="orderItem">
           <div className="orderHeader">
@@ -366,16 +389,16 @@ const Order = memo(() => {
             <div className="info2">
               <span>000원</span>
               <span className="orderSituation">
-                {/*decide && <div onClick={onClickDecide}>
-                  구매 확정
-                </div>*/}
-                <button type='button' onClick={onClickReview}>리뷰 쓰기</button>
+                <div>구매 확정</div>
+                {reviewBtn && <button type="button" onClick={onClickReview}>
+                  리뷰 쓰기
+                </button>}
                 {/*클릭시 리뷰쓰기 컴포넌트 나타남 */}
               </span>
             </div>
           </div>
         </div>
-      </div>
+      </div>}
 
       {review && <ReviewWrite />}
       {/* <Routes>

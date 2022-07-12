@@ -40,7 +40,6 @@ const CartArea = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding-bottom: 4em;
     .ItemTitle {
       display: flex;
       justify-content: space-between;
@@ -143,6 +142,7 @@ const CartArea = styled.div`
     display: flex;
     border-bottom: 1px solid #000;
     border-top: 1px solid #000;
+    margin-top: 5em;
     padding: 2em 0;
     width: 100%;
     justify-content: space-around;
@@ -194,9 +194,34 @@ const CartArea = styled.div`
       font-size: 20px;
     }
   }
+  .soldOut{
+    span{
+      position: relative;
+      img{
+      opacity: 0.4;
+    }
+      span {
+        position: absolute;
+        left: 13%;
+        top: 5%;
+        font-weight: bold;
+        font-size: 25px;
+      }
+    }
+  }
 `;
 
 const Cart = memo(() => {
+  const onChoiceDelete= ()=>{
+    if (window.confirm('선택하신 상품을 삭제하시겠습니까?')) {
+        alert('선택하신 상품이 삭제되었습니다.')
+      }
+  }
+  const onSoldOutDelete= ()=>{
+    if (window.confirm('품절된 상품을 삭제하시겠습니까?')) {
+        alert('품절된 상품이 삭제되었습니다.')
+      }
+  }
   return (
     <CartArea>
       <div className="checkButArea">
@@ -207,8 +232,8 @@ const Cart = memo(() => {
           </label>
         </span>
         <span>
-          <button type="button">선택 삭제</button>
-          <button type="button">품절 삭제</button>
+          <button type="button" onClick={onChoiceDelete}>선택 삭제</button>
+          <button type="button" onClick={onSoldOutDelete}>품절 삭제</button>
         </span>
       </div>
       <div className="ItemArea">
@@ -229,6 +254,50 @@ const Cart = memo(() => {
                 <input type="checkbox" name="ItemCheck" value="true" />
               </span>
               <span>
+                <img src={Img} alt="상품이미지" width="100px" />
+              </span>
+              <span>
+                <p>상품 이름</p>
+                <p>000원</p>
+              </span>
+              <FontAwesomeIcon
+                icon={faXmark}
+                size="2x"
+                className="deleteItem"
+              />
+            </div>
+          </div>
+          <div className="ItemInfoButtonArea">
+            <div className="ItemOption">
+              <span>옵션</span>
+              <div className="ItemNum">
+                <div>
+                  <button type="button">+</button>
+                  <span>1</span>
+                  <button type="button">-</button>
+                </div>
+                <div>
+                  <p>000원</p>
+                </div>
+              </div>
+            </div>
+            <div className="OrderArea">
+              <div>0000원</div>
+              <button type="button">주문하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/*품절된 상품 */}
+      <div className="ItemArea soldOut">
+        <div className="ItemInfoArea">
+          <div className="ItemInfoTopArea">
+            <div className="ItemInfo">
+              <span>
+                <input type="checkbox" name="ItemCheck" value="true" />
+              </span>
+              <span>
+                <span>품절</span>{/*상품의 클래스에 soldOut이 있다면 추가할 태그*/}
                 <img src={Img} alt="상품이미지" width="100px" />
               </span>
               <span>
