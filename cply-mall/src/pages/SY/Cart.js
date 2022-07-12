@@ -195,10 +195,10 @@ const CartArea = styled.div`
     }
   }
   .soldOut{
+    opacity: 0.6;
     span{
       position: relative;
       img{
-      opacity: 0.4;
     }
       span {
         position: absolute;
@@ -325,10 +325,11 @@ const Cart = memo(() => {
                 </div>
               </div>
             </div>
-            <div className="OrderArea">
+            {/*soldOut클래스가 적용되어있을 경우 경우 0원으로 바꾸고 구매하기 버튼 없대기 */}
+            {<div className="OrderArea">
               <div>0000원</div>
               <button type="button">주문하기</button>
-            </div>
+            </div>}
           </div>
         </div>
       </div>
