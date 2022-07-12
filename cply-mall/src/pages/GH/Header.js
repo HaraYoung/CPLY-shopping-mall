@@ -58,7 +58,7 @@ const HeaderCss = styled.div`
             font-size: 40px;
             background-color: rgba( 255, 255, 255, 0);
             &:hover {
-                color: #fff;
+                color:#bbb;
                 transition: all 0.5s;
             }
         }
