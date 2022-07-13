@@ -4,8 +4,9 @@ import List from "./listItem";
 
 const Favor = styled.div`
   display: flex;
-  padding: 5em 1em;
+  padding: 4em 1em;
   .side {
+    margin-right: 1em;
     width: 20%;
     h5,
     .check,
@@ -58,7 +59,8 @@ const Favor = styled.div`
   }
   .content {
     width: 80%;
-    div {
+
+    div:nth-child(1) {
       margin-bottom: 0.5em;
       display: flex;
       justify-content: end;

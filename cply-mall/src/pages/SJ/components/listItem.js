@@ -1,16 +1,5 @@
 // 이 곳은 찜한 상품 / 최근 본 상품에서 상품들을 나열할 컴포넌트입니다.
-import React from "react";
-
-const listItem = () => {
-  return (
-    <div>
-      이 곳은 찜한 상품 / 최근 본 상품에서 상품들을 나열할 컴포넌트입니다.
-    </div>
-  );
-};
-
-export default listItem;// 이 곳은 찜한 상품 / 최근 본 상품에서 상품들을 나열할 컴포넌트입니다.
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,10 +9,10 @@ const Item = styled.div`
   margin-top: 2em;
   margin-bottom: 8em;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  div {
+  display: flex;
+  .item {
     box-sizing: border-box;
-    width: 20%;
+    width: 23%;
     margin: 0 0.5em 1em 0.5em;
     a {
       display: block;
@@ -45,6 +34,11 @@ const Item = styled.div`
           bottom: 0;
           svg {
             font-size: 1.7em;
+            color: white;
+          }
+          .heartButton {
+            font-size: 1.7em;
+            color: #ff204b;
           }
         }
       }
@@ -77,31 +71,23 @@ const Item = styled.div`
 `;
 
 const ListItem = () => {
-  const heartRef = useRef();
-  const [heart, setHeart] = useState(0);
+  // const heartRef = useRef();
+  const [heart, setHeart] = useState(1);
 
-  const onHeart = React.useCallback(
-    (e) => {
-      e.preventDefault();
+  const toggleMenu = React.useCallback((e) => {
+    setHeart((heart) => !heart);
+  }, []);
 
-      if (heart === 0) {
-        setHeart(1);
-      } else {
-        setHeart(0);
-      }
-    },
-    [heart]
-  );
   return (
     <Item>
-      <div>
+      <div className="item">
         <a href="#!">
           <div>
-            <button type="button" onClick={onHeart}>
+            <button type="button">
               <FontAwesomeIcon
+                className={heart ? "heartButton" : ""}
+                onClick={toggleMenu}
                 icon={solidHeart}
-                ref={heartRef}
-                style={{ color: heart === 0 ? "#ff204b" : "white" }}
               />
             </button>
           </div>
@@ -117,14 +103,14 @@ const ListItem = () => {
           </ul>
         </a>
       </div>
-      <div>
+      <div className="item">
         <a href="#!">
           <div>
-            <button type="button" onClick={onHeart}>
+            <button type="button">
               <FontAwesomeIcon
+                className={heart ? "heartButton" : ""}
+                onClick={toggleMenu}
                 icon={solidHeart}
-                ref={heartRef}
-                style={{ color: heart === 0 ? "#ff204b" : "white" }}
               />
             </button>
           </div>
@@ -140,14 +126,14 @@ const ListItem = () => {
           </ul>
         </a>
       </div>
-      <div>
+      <div className="item">
         <a href="#!">
           <div>
-            <button type="button" onClick={onHeart}>
+            <button type="button">
               <FontAwesomeIcon
+                className={heart ? "heartButton" : ""}
+                onClick={toggleMenu}
                 icon={solidHeart}
-                ref={heartRef}
-                style={{ color: heart === 0 ? "#ff204b" : "white" }}
               />
             </button>
           </div>
@@ -163,14 +149,14 @@ const ListItem = () => {
           </ul>
         </a>
       </div>
-      <div>
+      <div className="item">
         <a href="#!">
           <div>
-            <button type="button" onClick={onHeart}>
+            <button type="button">
               <FontAwesomeIcon
+                className={heart ? "heartButton" : ""}
+                onClick={toggleMenu}
                 icon={solidHeart}
-                ref={heartRef}
-                style={{ color: heart === 0 ? "#ff204b" : "white" }}
               />
             </button>
           </div>
@@ -186,14 +172,14 @@ const ListItem = () => {
           </ul>
         </a>
       </div>
-      <div>
+      <div className="item">
         <a href="#!">
           <div>
-            <button type="button" onClick={onHeart}>
+            <button type="button">
               <FontAwesomeIcon
+                className={heart ? "heartButton" : ""}
+                onClick={toggleMenu}
                 icon={solidHeart}
-                ref={heartRef}
-                style={{ color: heart === 0 ? "#ff204b" : "white" }}
               />
             </button>
           </div>
@@ -209,14 +195,14 @@ const ListItem = () => {
           </ul>
         </a>
       </div>
-      <div>
+      <div className="item">
         <a href="#!">
           <div>
-            <button type="button" onClick={onHeart}>
+            <button type="button">
               <FontAwesomeIcon
+                className={heart ? "heartButton" : ""}
+                onClick={toggleMenu}
                 icon={solidHeart}
-                ref={heartRef}
-                style={{ color: heart === 0 ? "#ff204b" : "white" }}
               />
             </button>
           </div>
@@ -237,4 +223,3 @@ const ListItem = () => {
 };
 
 export default ListItem;
-
