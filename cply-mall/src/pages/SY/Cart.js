@@ -222,6 +222,14 @@ const Cart = memo(() => {
         alert('품절된 상품이 삭제되었습니다.')
       }
   }
+  const [optionNum, setOptionNum]= React.useState(1);
+  const onClickPlus= ()=>{
+    setOptionNum(optionNum +1);
+  }
+  const onClickMinus= ()=>{
+    setOptionNum(optionNum - 1);
+  }
+
   return (
     <CartArea>
       <div className="checkButArea">
@@ -272,9 +280,9 @@ const Cart = memo(() => {
               <span>옵션</span>
               <div className="ItemNum">
                 <div>
-                  <button type="button">+</button>
-                  <span>1</span>
-                  <button type="button">-</button>
+                  <button type="button" onClick={onClickPlus}>+</button>
+                  <span>{optionNum}</span>
+                  <button type="button" onClick={onClickMinus}>-</button>
                 </div>
                 <div>
                   <p>000원</p>
@@ -314,6 +322,7 @@ const Cart = memo(() => {
           <div className="ItemInfoButtonArea">
             <div className="ItemOption">
               <span>옵션</span>
+            {/*soldOut클래스가 적용되어있을 경우 숫자변경 버튼 없대기 */}
               <div className="ItemNum">
                 <div>
                   <button type="button">+</button>
@@ -325,7 +334,7 @@ const Cart = memo(() => {
                 </div>
               </div>
             </div>
-            {/*soldOut클래스가 적용되어있을 경우 경우 0원으로 바꾸고 구매하기 버튼 없대기 */}
+            {/*soldOut클래스가 적용되어있을 경우 0원으로 바꾸고 구매하기 버튼 없대기 */}
             {<div className="OrderArea">
               <div>0000원</div>
               <button type="button">주문하기</button>
