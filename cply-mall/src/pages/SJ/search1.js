@@ -2,18 +2,19 @@
 import React from "react";
 import SearchTop from "./components/searchTop";
 import MoreButtonList from "./components/moreButtonList";
-import Header from "./Header";
-import Footer from "./Footer";
 import styled from "styled-components";
+
+const QuerySearch = styled.div`
+  width: 1200px;
+  margin: auto;
+`;
 
 const Search1 = () => {
   return (
-    <div>
-      <Header />
+    <QuerySearch>
       <SearchTop />
       <MoreButtonList />
-      <Footer />
-    </div>
+    </QuerySearch>
   );
 };
 
