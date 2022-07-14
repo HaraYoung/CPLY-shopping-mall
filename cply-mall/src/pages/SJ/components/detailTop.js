@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons"; // ♡
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons"; // ♥︎
@@ -258,20 +258,12 @@ const DetailGoods = () => {
             <h1>제품명</h1>
           </ul>
           <ul>
-            <li style={{ color: "#ff204b" }}>
-              <h1>
-                <b>0%</b>
-              </h1>
-            </li>
             <li>
               <h1>
-                <b>할인적용된가격</b>
+                <b>
+                  <span>(가격)</span>원
+                </b>
               </h1>
-            </li>
-            <li>
-              <h3 style={{ lineHeight: "1.7em" }}>
-                <b>할인적용전가격</b>
-              </h3>
             </li>
           </ul>
           <ul>
@@ -283,7 +275,7 @@ const DetailGoods = () => {
               <i className="fa fa-star"></i>&nbsp;
             </li>
             <li>
-              <NavLink to="#">0개 리뷰 보기</NavLink>
+              <a href="#review">0개 리뷰 보기</a>
             </li>
             <li>0개 구매중</li>
             <li>도착 예정일</li>

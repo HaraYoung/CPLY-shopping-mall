@@ -14,6 +14,7 @@ const ContentContainer = styled.section`
     height: 3em;
     line-height: 2.8em;
     a {
+      color: black;
       width: 50%;
       text-align: center;
       border-bottom: 0.1em solid lightgray;
