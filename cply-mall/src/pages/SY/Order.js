@@ -4,15 +4,13 @@
  * @author: 박세영(qkrtpdud9899@gmail.com)
  */
 import React, { memo } from "react";
-import { NavLink, Route, Routes, Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 import Delivery from "./Delivery";
 import ReviewWrite from "./ReviewWrite";
-import RandE from "./RandE";
-import OrderDetail from "./OrderDetail";
 
 import Img from "./img/찡찡이젤리.jpg";
 
@@ -403,9 +401,6 @@ const Order = memo(() => {
       </div>}
 
       {review && <ReviewWrite />}
-      {/* <Routes>
-        <Route path="reviewWrite" element={<ReviewWrite />} />
-      </Routes> */}
     </OrderArea>
   );
 });

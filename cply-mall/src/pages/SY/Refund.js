@@ -4,10 +4,11 @@
  * @author: 박세영(qkrtpdud9899@gmail.com)
  */
 import React, { memo } from "react";
-import { NavLink, Router } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
+
 
 import Img from "./img/찡찡이젤리.jpg";
 
@@ -110,6 +111,16 @@ const RefundArea = styled.div`
 `;
 
 const Refund = memo(() => {
+  //반품하기 버튼 클릭시
+  const onClickRefund= ()=>{
+    if (window.confirm('반품하시겠습니까?')) {
+      alert('반품 신청이 완료되었습니다.');
+      window.location.href='http://localhost:3000/mypage/order';
+      //리덕스로 order에 있는 해당 상품 상태를 교환 요청 확인중으로 바꿈
+    }
+  }
+
+
   return (
     <div>
       <RefundArea>
@@ -168,7 +179,7 @@ const Refund = memo(() => {
                 <p style={{ fontSize: "25px", color: "red" }}>000원</p>
               </div>
               <div className="butArea">
-                <NavLink to="#">반품 하기</NavLink>
+                <NavLink to="#" onClick={onClickRefund}>반품 하기</NavLink>
               </div>
             </div>
           </div>
