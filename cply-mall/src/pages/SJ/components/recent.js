@@ -11,7 +11,7 @@ const RecentDiv = styled.div`
   display: flex;
   div {
     box-sizing: border-box;
-    width: 18.66%;
+    width: 23%;
     margin: 0 0.5em 1em 0.5em;
     a {
       display: block;
@@ -35,6 +35,7 @@ const RecentDiv = styled.div`
         }
       }
       h5 {
+        color: black;
         padding: 0.5em 0;
         white-space: nowrap;
         overflow: hidden;
@@ -44,18 +45,9 @@ const RecentDiv = styled.div`
         display: flex;
         padding: 0;
         li:nth-child(1) {
-          color: #ff204b;
+          color: black;
           font-size: 1.4em;
           margin-right: 0.2em;
-        }
-        li:nth-child(2) {
-          font-size: 1.4em;
-          margin-right: 0.2em;
-        }
-        li:nth-child(3) {
-          line-height: 2em;
-          text-decoration: line-through;
-          color: #757575;
         }
       }
     }
@@ -75,12 +67,8 @@ const Recent = () => {
           <h5>title</h5>
           <ul>
             <li>
-              <strong>0%</strong>
-            </li>
-            <li>
               <strong>0원</strong>
             </li>
-            <li>할인 전 가격</li>
           </ul>
         </a>
       </div>
@@ -94,12 +82,8 @@ const Recent = () => {
           <h5>title</h5>
           <ul>
             <li>
-              <strong>0%</strong>
-            </li>
-            <li>
               <strong>0원</strong>
             </li>
-            <li>할인 전 가격</li>
           </ul>
         </a>
       </div>
@@ -113,12 +97,8 @@ const Recent = () => {
           <h5>title</h5>
           <ul>
             <li>
-              <strong>0%</strong>
-            </li>
-            <li>
               <strong>0원</strong>
             </li>
-            <li>할인 전 가격</li>
           </ul>
         </a>
       </div>
@@ -132,12 +112,8 @@ const Recent = () => {
           <h5>title</h5>
           <ul>
             <li>
-              <strong>0%</strong>
-            </li>
-            <li>
               <strong>0원</strong>
             </li>
-            <li>할인 전 가격</li>
           </ul>
         </a>
       </div>
@@ -151,12 +127,8 @@ const Recent = () => {
           <h5>title</h5>
           <ul>
             <li>
-              <strong>0%</strong>
-            </li>
-            <li>
               <strong>0원</strong>
             </li>
-            <li>할인 전 가격</li>
           </ul>
         </a>
       </div>

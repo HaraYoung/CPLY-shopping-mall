@@ -7,7 +7,6 @@ import styled from "styled-components";
 import Likes from "./components/likes";
 import Recent from "./components/recent";
 const ContentContainer = styled.section`
-  width: 1200px;
   margin: 0 auto;
   nav {
     display: flex;
@@ -44,7 +43,7 @@ const RecentLikes = () => {
     <ContentContainer>
       <nav>
         <NavLink
-          to="/recentLikes"
+          to="/mypage/likes"
           className={site === 0 ? "link" : ""}
           onClick={onLink}
           data-value="0"
@@ -61,7 +60,7 @@ const RecentLikes = () => {
         </NavLink>
       </nav>
       <Routes>
-        <Route path="/recentLikes" element={<Likes />} />
+        <Route path="/" element={<Likes />} />
         <Route path="/recent" element={<Recent />} />
       </Routes>
     </ContentContainer>
