@@ -124,6 +124,8 @@ const OrderArea = styled.div`
               color: #fff;
               border-radius: 5px;
               font-size: 13px;
+              cursor: pointer;
+              border:none;
               &:hover {
                 background-color: gainsboro;
                 color: #000;

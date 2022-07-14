@@ -96,7 +96,7 @@ const RefundArea = styled.div`
         .butArea {
           display: flex;
           justify-content: flex-end;
-          width: 20%;
+          width: 30%;
           a {
             padding: 1.5em 3.5em;
             background-color: #000;
