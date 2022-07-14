@@ -10,9 +10,10 @@ const Item = styled.div`
   margin-bottom: 8em;
   flex-wrap: wrap;
   display: flex;
+
   .item {
     box-sizing: border-box;
-    width: 23%;
+    width: 22.3%;
     margin: 0 0.5em 1em 0.5em;
     a {
       display: block;
@@ -43,6 +44,7 @@ const Item = styled.div`
         }
       }
       h5 {
+        color: black;
         padding: 0.5em 0;
         white-space: nowrap;
         overflow: hidden;
@@ -51,19 +53,10 @@ const Item = styled.div`
       ul {
         display: flex;
         padding: 0;
-        li:nth-child(1) {
-          color: #ff204b;
+        li {
+          color: black;
           font-size: 1.4em;
           margin-right: 0.2em;
-        }
-        li:nth-child(2) {
-          font-size: 1.4em;
-          margin-right: 0.2em;
-        }
-        li:nth-child(3) {
-          line-height: 2em;
-          text-decoration: line-through;
-          color: #757575;
         }
       }
     }
@@ -94,12 +87,8 @@ const ListItem = () => {
           <h5>title</h5>
           <ul>
             <li>
-              <strong>0%</strong>
-            </li>
-            <li>
               <strong>0원</strong>
             </li>
-            <li>할인 전 가격</li>
           </ul>
         </a>
       </div>
@@ -117,12 +106,8 @@ const ListItem = () => {
           <h5>title</h5>
           <ul>
             <li>
-              <strong>0%</strong>
-            </li>
-            <li>
               <strong>0원</strong>
             </li>
-            <li>할인 전 가격</li>
           </ul>
         </a>
       </div>
@@ -140,12 +125,28 @@ const ListItem = () => {
           <h5>title</h5>
           <ul>
             <li>
-              <strong>0%</strong>
+              <strong>0원</strong>
             </li>
+          </ul>
+        </a>
+      </div>
+      >
+      <div className="item">
+        <a href="#!">
+          <div>
+            <button type="button">
+              <FontAwesomeIcon
+                className={heart ? "heartButton" : ""}
+                onClick={toggleMenu}
+                icon={solidHeart}
+              />
+            </button>
+          </div>
+          <h5>title</h5>
+          <ul>
             <li>
               <strong>0원</strong>
             </li>
-            <li>할인 전 가격</li>
           </ul>
         </a>
       </div>
@@ -163,12 +164,8 @@ const ListItem = () => {
           <h5>title</h5>
           <ul>
             <li>
-              <strong>0%</strong>
-            </li>
-            <li>
               <strong>0원</strong>
             </li>
-            <li>할인 전 가격</li>
           </ul>
         </a>
       </div>
@@ -186,35 +183,8 @@ const ListItem = () => {
           <h5>title</h5>
           <ul>
             <li>
-              <strong>0%</strong>
-            </li>
-            <li>
               <strong>0원</strong>
             </li>
-            <li>할인 전 가격</li>
-          </ul>
-        </a>
-      </div>
-      <div className="item">
-        <a href="#!">
-          <div>
-            <button type="button">
-              <FontAwesomeIcon
-                className={heart ? "heartButton" : ""}
-                onClick={toggleMenu}
-                icon={solidHeart}
-              />
-            </button>
-          </div>
-          <h5>title</h5>
-          <ul>
-            <li>
-              <strong>0%</strong>
-            </li>
-            <li>
-              <strong>0원</strong>
-            </li>
-            <li>할인 전 가격</li>
           </ul>
         </a>
       </div>

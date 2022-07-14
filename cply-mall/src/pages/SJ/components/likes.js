@@ -6,7 +6,7 @@ const Favor = styled.div`
   display: flex;
   padding: 4em 1em;
   .side {
-    margin-right: 1em;
+    margin-right: 2em;
     width: 20%;
     h5,
     .check,
