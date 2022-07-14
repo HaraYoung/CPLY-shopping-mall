@@ -37,7 +37,7 @@ const MyPage = () => {
                 <Route path='order' element={<Order/>}/>
                 <Route path='orderdetail' element={<OrderDetail/>}/>
                 <Route path='cart' element={<Cart/>}/>
-                <Route path='rande' element={<RandE/>}/>
+                <Route path='rande/*' element={<RandE/>}/>
                 <Route path='*' element={<PageNotFound/>}/>
             </Routes>
             </div>
