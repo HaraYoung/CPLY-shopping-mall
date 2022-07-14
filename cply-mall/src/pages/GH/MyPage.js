@@ -31,6 +31,7 @@ const MyPage = () => {
                 <Route path='/' element={<NewProduct/>}/>
                 <Route path='b' element={<TodayPopularity/>}/>
             </Routes> */}
+<<<<<<< HEAD
         <Routes>
           <Route path="/" element={<Profile />} />
           <Route path="withdraw" element={<Withdraw />} />
@@ -45,6 +46,21 @@ const MyPage = () => {
       </div>
     </MyPageCss>
   );
+=======
+            <Routes>
+                <Route path='/' element={<Profile/>}/>
+                <Route path='withdraw' element={<Withdraw/>}/>
+                <Route path='changeinfo' element={<ChangeInfo/>}/>
+                <Route path='order' element={<Order/>}/>
+                <Route path='orderdetail' element={<OrderDetail/>}/>
+                <Route path='cart' element={<Cart/>}/>
+                <Route path='rande/*' element={<RandE/>}/>
+                <Route path='*' element={<PageNotFound/>}/>
+            </Routes>
+            </div>
+        </MyPageCss>
+    );
+>>>>>>> 6826feee25fdddf850cd3f3bab7f1ae31692cca7
 };
 
 export default MyPage;

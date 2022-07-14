@@ -127,7 +127,7 @@ const ReviewWrite = memo(() => {
           />
         </ReviewTop>
         <div className="ItemInfo">
-          <img src={Img} alt="itemImage" width="120px" />
+          <img src={Img} alt="itemImage" width="80em" />
           <div className="Info">
             <p>상품 이름</p>
             <p>옵션</p>

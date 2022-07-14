@@ -62,7 +62,7 @@ const Delivery = memo(() => {
     setCloseIcon(!closeIcon);
   }
   return (
-    <div>
+    <div style={{}}>
       <DeliveryTop>
         <div className="top1">
           <span>배송 상태</span>
