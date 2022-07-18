@@ -230,6 +230,35 @@ const Cart = memo(() => {
     setOptionNum(optionNum - 1);
   }
 
+//체크 박스
+let CartItem= 0;
+//전체 체크 클릭시
+// const [checkedList, setCheckedLists] = React.useState([]);
+// const onCheckedAll = React.useCallback(
+//   (checked) => {
+//     if (checked) {
+//       const checkedListArray = [];
+
+//       CartItem.forEach((list) => checkedListArray.push(list));
+
+//       setCheckedLists(checkedListArray);
+//     } else {
+//       setCheckedLists([]);
+//     }
+//   },
+//   [CartItem]
+// );
+//개별 체크 클릭시
+// const onCheckedElement = React.useCallback(
+//   (checked, list) => {
+//     if (checked) {
+//       setCheckedLists([...checkedList, list]);
+//     } else {
+//       setCheckedLists(checkedList.filter((el) => el !== list));
+//     }
+//   },[checkedList]);
+
+
   return (
     <CartArea>
       <div className="checkButArea">
