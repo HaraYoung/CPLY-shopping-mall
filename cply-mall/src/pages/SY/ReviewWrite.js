@@ -11,11 +11,9 @@ import { faStar as regular } from "@fortawesome/free-regular-svg-icons";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-//import { confirmAlert } from 'react-confirm-alert';
 
 import Img from "./img/찡찡이젤리.jpg";
 
-//import { clickNoLastMsg } from "../../components/YorNAlert";
 
 const RWArea = styled.div`
   position: absolute;
@@ -112,7 +110,6 @@ const ReviewWrite = memo(() => {
    const onReviewWrite = () => {
     alert('리뷰가 등록되었습니다.');
     window.location.href = closeURL;
-
    }
   
   return (

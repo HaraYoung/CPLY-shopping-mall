@@ -2,11 +2,13 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import RegexHelper from '../../libs/RegexHelper';
 import { useNavigate } from "react-router-dom";
+import DaumPostcode from 'react-daum-postcode';
 const SignupInfoCss = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
     padding: 5% 0;
+    position: relative;
     .signup-info-box{
         margin: auto;
         width: 30%;
@@ -94,14 +96,87 @@ const SignupInfoCss = styled.div`
             }
         }
     }
+    .signup-modal {
+        width: 420px;
+        background-color: #fff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        border-radius: 10px;
+        border: 1px solid #aaa;
+        &.modalNone {
+            display: none;
+        }
+        .title-box{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px;
+            h2 {
+                margin: 0;
+            }
+            >img {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        .juso-box {
+            background: #ececec;
+            padding: 10px;
+            .juso-box-div {
+            padding: 10px;
+            background-color: #fff;
+            span {
+                width: 40%;
+                border: 1px solid #34b4eb;
+                color: #34b4eb;
+                font-size: 11px;
+                padding: 2px 4px;
+                margin-right: 5px;
+                
+            }
+            >div {
+                width: 100%;
+                margin: 30px 0;
+                input {
+                    width: 60%;
+                    border-radius:5px;
+                    margin-right: 5px;
+                    padding: 5px 10px;
+                }
+                button {
+                    color: #fff;
+                    background: #000;
+                    border-radius: 5px;
+                    padding: 5px 20px;
+                }
+            }
+        }
+    }
+    }
 `;
 const SignupInfo = memo(() => {
     const navigate = useNavigate();
+    //id input Ref
     const mega = React.useRef();
+    //나머지 주소 Ref
+    const inputRef = React.useRef();
+    //중복검사 상태값
     const [overlap,setOverlap] = React.useState({
         blo:false,
         data:''
     });
+    //주소정보 상태값
+    const [daumJuso,setDaumJuso] = React.useState({
+        addr:'',
+        addr2:'',
+        zonecode:'',
+        blo:false
+    })
+    //modal box 상태값
+    const [modalBox,setModalBox] = React.useState(false)
+    //가입하기버튼 submit
     const SignupInfoSubmit = React.useCallback((e)=> {
         e.preventDefault();
         
@@ -165,6 +240,7 @@ const SignupInfo = memo(() => {
         
     },[overlap,navigate])
 
+    //중복검사이벤트
     const idInfoSubmit = React.useCallback((e)=> {
         e.preventDefault();
 
@@ -196,6 +272,47 @@ const SignupInfo = memo(() => {
         window.alert('사용 가능한 아이디 입니다');
     },[setOverlap])
 
+    //주소검색 버튼 이벤트
+    const addrSearchButton = React.useCallback(()=> {
+        setModalBox(true);
+    },[])
+    //주소정보 이벤트
+    const addrInfo = React.useCallback((e)=> {
+        setDaumJuso({
+            ...daumJuso,
+            addr:e.address,
+            zonecode:e.zonecode,
+            blo:true
+            
+        })
+    },[daumJuso])
+
+    //주소 정보 확인버튼 이벤트
+    const addrButton = React.useCallback(()=> {
+        const current = inputRef.current
+        try {
+            RegexHelper.value(current,'나머지 주소를 입력하세요');
+        }catch(e) {
+            window.alert(e.message);
+            e.field.focus();
+            return;
+        }
+        setDaumJuso({
+            ...daumJuso,
+            addr2:current.value,
+            blo:false
+        })
+        setModalBox(modalBox=>!modalBox);
+    },[daumJuso])
+
+    //주소 정보 closebutton 이벤트
+    const addrCloseButton = React.useCallback(()=> {
+        setModalBox(modalBox=>!modalBox);
+        setDaumJuso({
+            ...daumJuso,
+            blo:false
+        })
+    },[daumJuso])
     return (
         <SignupInfoCss>
             <div className='signup-info-box'>
@@ -244,22 +361,45 @@ const SignupInfo = memo(() => {
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>주소<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='addr' placeholder='우편번호'/></div>
-                            <div className='signup-info-div3'><span onClick={()=>window.open('/juso','window_name','width=430,height=500,location=no,status=no')}>주소검색</span></div>                                                 
+                            <div className='signup-info-div2'><input type='text' name='addr' placeholder='우편번호' defaultValue={daumJuso.zonecode}/></div>
+                            <div className='signup-info-div3'><span onClick={addrSearchButton}>주소검색</span></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'></div>
-                            <div className='signup-info-div2'><input type='text' name='addr1' placeholder='기본주소' defaultValue={overlap.data}/></div>
+                            <div className='signup-info-div2'><input type='text' name='addr1' placeholder='기본주소' defaultValue={daumJuso.addr}/></div>
                             <div className='signup-info-div3'></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'></div>
-                            <div className='signup-info-div2'><input type='text' name='addr2' placeholder='나머지 주소'/></div>
+                            <div className='signup-info-div2'><input type='text' name='addr2' placeholder='나머지 주소' defaultValue={daumJuso.addr2}/></div>
                             <div className='signup-info-div3'></div>                                                 
                         </div>
                         <button type='submit'>가입하기</button>
                     </form>
                 </div>
+            </div>
+            <div className={modalBox ? 'signup-modal' : 'signup-modal modalNone'}>
+            <div className='title-box'>
+                <h2>주소찾기</h2>
+                <img src='./assets/img/close1.png' alt='closeButton' onClick={addrCloseButton}/>
+            </div>
+                
+                
+                {daumJuso.blo ? (
+                    <div className='juso-box'>
+                    <div className='juso-box-div'>
+                        <h4><span>우편번호</span>{daumJuso.zonecode}</h4>
+                        <h4><span>도로명</span>{daumJuso.addr}</h4>
+                        <div>
+                        <input type='text' placeholder='나머지 주소' ref={inputRef}/>
+                        <button onClick={addrButton}>확인</button>
+                        </div>
+                    </div>
+                    </div>
+                ):(
+                    <DaumPostcode onComplete={addrInfo}  autoClose={false}/>
+                )}
+            
             </div>
             {/* <div className='signup-info-box'>
                 <h1>C P L Y</h1>

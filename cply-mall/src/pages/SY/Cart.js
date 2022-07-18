@@ -11,8 +11,8 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import Img from "./img/찡찡이젤리.jpg";
 
-//체크 박스 수정, 아이콘 폰트 어썸 react로 바꾸기
 
+//체크 박스 수정
 const CartArea = styled.div`
   display: flex;
   flex-direction: column;

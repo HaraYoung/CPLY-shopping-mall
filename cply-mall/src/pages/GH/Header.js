@@ -86,7 +86,6 @@ const HeaderCss = styled.div`
         border-bottom: 10px solid #ccc;
         padding: 30px 0;
         display: block;
-        position: absolute;
         max-height: 464px;
         transition: all 0.3s ease-in-out;
         z-index: 99;
@@ -126,8 +125,7 @@ const HeaderCss = styled.div`
                 li {
                     padding: 2px 0;
                     cursor: pointer;
-                    &:hover {
-                        color: #fff;
+                    &:hover {                        
                         text-decoration: underline;
                     }
                 }

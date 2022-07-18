@@ -11,6 +11,7 @@ import styled from "styled-components";
 import Img from "./img/찡찡이젤리.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+
 const ExchangeArea = styled.div`
   .exchange {
     padding-bottom: 5%;
@@ -221,7 +222,6 @@ const exchange = memo(() => {
       </div>
     </ExchangeArea>
   );
-  //Router Refund
 });
 
 export default exchange;

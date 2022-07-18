@@ -1,7 +1,8 @@
 import React, { memo } from "react";
 import styled from "styled-components";
-
-const WithdrawCss = styled.div`
+import RegexHelper from "../../libs/RegexHelper";
+import { useNavigate } from "react-router-dom";
+const SecessionCss = styled.div`
   width: 100%;
   > h1 {
     padding-bottom: 1%;
@@ -35,27 +36,47 @@ const WithdrawCss = styled.div`
     }
   }
 `;
-const Withdraw = memo(() => {
+const Secession = memo(() => {
+  const navigate = useNavigate();
+  const secessionSubmit = React.useCallback((e)=> {
+    e.preventDefault();
+
+    const current = e.target;
+    console.log (current.agree);
+    
+    try {
+      RegexHelper.check(current.reason,'회원 탈퇴 사유를 선택해 주시기 바랍니다.');
+      RegexHelper.checked(current.agree,'회원 탈퇴 동의를 선택해 주시기 바랍니다');
+    }catch(e) {
+      window.alert(e.message);
+      return;
+    }
+    if (window.confirm('정말 탈퇴하시겠습니까?')) {
+      //ajax연동
+      window.alert('탈퇴가 완료되었습니다');
+      navigate('/');
+  }
+  },[navigate])
   return (
-    <WithdrawCss>
+    <SecessionCss>
       <h1>회원탈퇴</h1>
-      <form>
+      <form onSubmit={secessionSubmit}>
         <div>
           <h2>회원탈퇴 사유</h2>
           <label htmlFor="reason1">
-            <input type="radio" name="reason1" />
+            <input type="radio" name="reason" />
             상품 구매 빈도가 낮아 이용할 필요가 없어서
           </label>
           <label htmlFor="reason2">
-            <input type="radio" name="reason2" />
+            <input type="radio" name="reason" />
             서비스 및 고객지원이 만족스럽지 못해서
           </label>
           <label htmlFor="reason3">
-            <input type="radio" name="reason3" />
+            <input type="radio" name="reason" />
             PC 또는 모바일 환경과 맞지 않아서
           </label>
           <label htmlFor="reason4">
-            <input type="radio" name="reason4" />
+            <input type="radio" name="reason" />
             별다른 이유없이 탈퇴
           </label>
         </div>
@@ -85,8 +106,8 @@ const Withdraw = memo(() => {
         </div>
         <button type="submit">회원 탈퇴하기</button>
       </form>
-    </WithdrawCss>
+    </SecessionCss>
   );
 });
 
-export default Withdraw;
+export default Secession;

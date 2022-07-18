@@ -3,7 +3,7 @@ import styled from "styled-components";
 import MyPageMenu from "./MyPageMenu";
 import NewProduct from "./NewProduct";
 import Profile from "./Profile";
-import Withdraw from "./Withdraw";
+import Secession from "./Secession";
 import ChangeInfo from "./ChangeInfo";
 import TodayPopularity from "./TodayPopularity";
 import Cart from "../SY/Cart";
@@ -33,7 +33,7 @@ const MyPage = () => {
             </Routes> */}
         <Routes>
           <Route path="/" element={<Profile />} />
-          <Route path="withdraw" element={<Withdraw />} />
+          <Route path="secession" element={<Secession />} />
           <Route path="changeinfo" element={<ChangeInfo />} />
           <Route path="order" element={<Order />} />
           <Route path="orderdetail" element={<OrderDetail />} />
