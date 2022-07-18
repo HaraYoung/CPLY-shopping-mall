@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PaginationCp from "./pagination_cp";
 import Fslight from "./fslight";
@@ -24,7 +24,7 @@ const Div = styled.div`
   }
 
   .sticky-list {
-    z-index: 100000;
+    z-index: 10000000;
     background-color: white;
     display: flex;
     margin: 0;
@@ -378,7 +378,9 @@ const DetailBottom = () => {
     },
     [ifm1, ifm2, ifm3]
   );
-
+  const upLoad = React.useCallback((e) => {
+    e.preventDefault();
+  }, []);
   return (
     <Div>
       <div className="sticky-list">
@@ -643,7 +645,9 @@ const DetailBottom = () => {
             <button type="button" onClick={hidden}>
               취소하기
             </button>
-            <button type="button">등록하기</button>
+            <button type="button" onClick={upLoad}>
+              등록하기
+            </button>
           </div>
           <table className="answer" align="center">
             <thead>
@@ -720,7 +724,10 @@ const DetailBottom = () => {
         </div>
         <div>
           <a data-info="1" href="#!" onClick={info}>
-            판매자 정보<i className="fa fa-angle-down"></i>
+            판매자 정보
+            <i
+              className={ifm1 === 0 ? "fa fa-angle-down" : "fa fa-angle-up"}
+            ></i>
           </a>
           <div style={{ display: ifm1 === 0 ? "none" : "block" }}>
             <h5>[스토어 정보]</h5>
@@ -740,13 +747,19 @@ const DetailBottom = () => {
             <p>발 사이즈 : 240mm</p>
           </div>
           <a href="#!" data-info="2" onClick={info}>
-            상품 정보<i className="fa fa-angle-down"></i>
+            상품 정보
+            <i
+              className={ifm2 === 0 ? "fa fa-angle-down" : "fa fa-angle-up"}
+            ></i>
           </a>
           <div style={{ display: ifm2 === 0 ? "none" : "" }}>
             <p>상품 상세 참조</p>
           </div>
           <a href="#!" data-info="3" onClick={info}>
-            배송/교환/환불/취소<i className="fa fa-angle-down"></i>
+            배송/교환/환불/취소
+            <i
+              className={ifm3 === 0 ? "fa fa-angle-down" : "fa fa-angle-up"}
+            ></i>
           </a>
           <div style={{ display: ifm3 === 0 ? "none" : "" }}>
             <h5>[배송정보]</h5>

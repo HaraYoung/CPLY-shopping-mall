@@ -172,10 +172,11 @@ const SignupInfo = memo(() => {
         addr:'',
         addr2:'',
         zonecode:'',
+        blo:false
     })
     //modal box 상태값
     const [modalBox,setModalBox] = React.useState(false)
-    //가입하기버튼 이벤트
+    //가입하기버튼 submit
     const SignupInfoSubmit = React.useCallback((e)=> {
         e.preventDefault();
         
@@ -280,7 +281,9 @@ const SignupInfo = memo(() => {
         setDaumJuso({
             ...daumJuso,
             addr:e.address,
-            zonecode:e.zonecode
+            zonecode:e.zonecode,
+            blo:true
+            
         })
     },[daumJuso])
 
@@ -296,7 +299,8 @@ const SignupInfo = memo(() => {
         }
         setDaumJuso({
             ...daumJuso,
-            addr2:current.value
+            addr2:current.value,
+            blo:false
         })
         setModalBox(modalBox=>!modalBox);
     },[daumJuso])
@@ -304,7 +308,11 @@ const SignupInfo = memo(() => {
     //주소 정보 closebutton 이벤트
     const addrCloseButton = React.useCallback(()=> {
         setModalBox(modalBox=>!modalBox);
-    },[])
+        setDaumJuso({
+            ...daumJuso,
+            blo:false
+        })
+    },[daumJuso])
     return (
         <SignupInfoCss>
             <div className='signup-info-box'>
@@ -375,8 +383,9 @@ const SignupInfo = memo(() => {
                 <h2>주소찾기</h2>
                 <img src='./assets/img/close1.png' alt='closeButton' onClick={addrCloseButton}/>
             </div>
-                {daumJuso.addr ? (<DaumPostcode onComplete={addrInfo} autoClose/>):(<DaumPostcode onComplete={addrInfo} autoClose/>)}
-                {daumJuso.addr && (
+                
+                
+                {daumJuso.blo ? (
                     <div className='juso-box'>
                     <div className='juso-box-div'>
                         <h4><span>우편번호</span>{daumJuso.zonecode}</h4>
@@ -387,6 +396,8 @@ const SignupInfo = memo(() => {
                         </div>
                     </div>
                     </div>
+                ):(
+                    <DaumPostcode onComplete={addrInfo}  autoClose={false}/>
                 )}
             
             </div>

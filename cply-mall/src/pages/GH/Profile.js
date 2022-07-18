@@ -3,8 +3,10 @@ import styled from 'styled-components';
 
 const ProfileCss = styled.div`
     width: 100%;
-    height: 1000px;
-    background-color: #ff6600;
+    > h1 {
+    padding-bottom: 1%;
+    border-bottom: 3px solid #ccc;
+    }
 `;
 const Profile = memo(() => {
     return (
