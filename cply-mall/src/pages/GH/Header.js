@@ -125,8 +125,7 @@ const HeaderCss = styled.div`
                 li {
                     padding: 2px 0;
                     cursor: pointer;
-                    &:hover {
-                        color: #fff;
+                    &:hover {                        
                         text-decoration: underline;
                     }
                 }

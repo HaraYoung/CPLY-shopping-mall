@@ -51,7 +51,7 @@ const MyPageMenu = () => {
               <Link to="changeinfo">나의 정보 수정</Link>
             </li>
             <li className="list">
-              <Link to="withdraw">회원 탈퇴</Link>
+              <Link to="secession">회원 탈퇴</Link>
             </li>
             <li>
               <h2>쇼핑 정보</h2>
