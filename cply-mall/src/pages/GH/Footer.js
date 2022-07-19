@@ -12,6 +12,7 @@ const FooterCss = styled.div`
         justify-content: space-around;
 
 
+
         
         .footer-box {
             >a {
