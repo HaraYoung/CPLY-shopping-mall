@@ -167,7 +167,7 @@ const Order = memo(() => {
   };
   
   //배송 완료 상태값
-  const [deliveryComplete, setdeliveryComplete]= React.useState(false);
+  //const [deliveryComplete, setdeliveryComplete]= React.useState(false);
 
   //구매 확정 ui 상태값-> 배송완료 상태의 구매확정 버튼 클릭시 나타남
   const [decide, setDecide] = React.useState(false);
@@ -179,9 +179,9 @@ const Order = memo(() => {
     ) {
       alert("구매가 확정되었습니다.");
       setDecide(true);
-      setdeliveryComplete(!deliveryComplete);
     }
   };
+  //setdeliveryComplete(!deliveryComplete);
   
   //리뷰 등록이 되었다는 알림창의 확인버튼을 눌렀을때 reviewBtn을 false로 바꿀것
   const [reviewBtn,setReviewBtn]= React.useState(true);

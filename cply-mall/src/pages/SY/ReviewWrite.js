@@ -110,6 +110,7 @@ const ReviewWrite = memo(() => {
 
   const [star, setStar] = React.useState(false);
   let st = [];
+  const starArray= [1, 2, 3, 4, 5];
   let starItem = () => {
     for (let i = 0; i < 5; i++) {
       st.push(
