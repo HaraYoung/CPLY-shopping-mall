@@ -10,6 +10,10 @@ const FooterCss = styled.div`
         margin: auto;
         display: flex;
         justify-content: space-around;
+
+
+
+        
         .footer-box {
             >a {
                 margin-right: 10px;
