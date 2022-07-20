@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-/**/
+/**
 import App from "./AppSample";
 /*/
 import App from "./App";
@@ -18,10 +18,10 @@ root.render(
   <React.StrictMode>
     <GlobalStyles />
     <Provider store={store}>
-    <Meta />
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+      <Meta />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );

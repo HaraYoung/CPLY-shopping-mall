@@ -7,6 +7,9 @@ const Side = styled.div`
   margin-right: 2em;
   .title {
     padding: 0.5em 1em;
+    h3 {
+      text-align: center;
+    }
   }
   .option {
     .class {
