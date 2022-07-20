@@ -11,15 +11,13 @@ import { faStar as regular } from "@fortawesome/free-regular-svg-icons";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-
 import Img from "./img/찡찡이젤리.jpg";
-
 
 const RWArea = styled.div`
   position: absolute;
   top: 35%;
   left: 30%;
-  width: 40%;
+  width: 50%;
   background-color: gray;
   border-radius: 4px;
   .container {
@@ -95,23 +93,48 @@ const ReviewTop = styled.div`
   }
 `;
 const ReviewWrite = memo(() => {
-
-  const RWRef= React.useRef();
-  const closeReview= '취소시 작성하신 내용은 저장되지 않습니다. 리뷰 작성을 취소하시겠습니까?';
-  const closeURL= 'http://localhost:3000/mypage/order';
-    const clickNoLastMsg= () => {
-      if (window.confirm(closeReview)) {
-        //url말고 리덕스로 리뷰상태값을 false로 바꾸게 만들것
-          window.location.href = closeURL;
-        }
-  }
-   const [star,setStar]= React.useState(false);
-   const onStarClick= () => {setStar(!star);};
-   const onReviewWrite = () => {
-    alert('리뷰가 등록되었습니다.');
+  const RWRef = React.useRef();
+  const closeReview =
+    "취소시 작성하신 내용은 저장되지 않습니다. 리뷰 작성을 취소하시겠습니까?";
+  const closeURL = "http://localhost:3000/mypage/order";
+  const clickNoLastMsg = () => {
+    if (window.confirm(closeReview)) {
+      //url말고 리덕스로 리뷰상태값을 false로 바꾸게 만들것
+      window.location.href = closeURL;
+    }
+  };
+  const onReviewWrite = () => {
+    alert("리뷰가 등록되었습니다.");
     window.location.href = closeURL;
-   }
-  
+  };
+
+  const [star, setStar] = React.useState(false);
+  let st = [];
+  const starArray= [1, 2, 3, 4, 5];
+  let starItem = () => {
+    for (let i = 0; i < 5; i++) {
+      st.push(
+        <FontAwesomeIcon
+          key={i}
+          data-key={i}
+          icon={star ? solidStar : regular}
+          size="lg"
+          onClick={(e) => {
+            if (e.target.dataset) {
+              setStar(!star);
+            }
+          }}
+        />
+      );
+    }
+  };
+  // const onStarClick = () => {
+  //   st.map((v, i) => {
+  //     if (v < i) setStar(!star);
+  //     return star;
+  //   });
+  // };
+
   return (
     <RWArea ref={RWRef}>
       <div className="container">
@@ -131,34 +154,7 @@ const ReviewWrite = memo(() => {
             <p>1개</p>
           </div>
         </div>
-        <div className="starArea">
-          <FontAwesomeIcon
-            icon={star ? solidStar : regular}
-            size="lg"
-            onClick={onStarClick}
-          />
-          {/*아이콘에 번호를 매겨 클릭시 자신보다 작은 값들도 상태 같이 변경되게 구현해야함 */}
-          <FontAwesomeIcon
-            icon={star ? solidStar : regular}
-            size="lg"
-            onClick={onStarClick}
-          />
-          <FontAwesomeIcon
-            icon={star ? solidStar : regular}
-            size="lg"
-            onClick={onStarClick}
-          />
-          <FontAwesomeIcon
-            icon={star ? solidStar : regular}
-            size="lg"
-            onClick={onStarClick}
-          />
-          <FontAwesomeIcon
-            icon={star ? solidStar : regular}
-            size="lg"
-            onClick={onStarClick}
-          />
-        </div>
+        <div className="starArea">{starItem()}</div>
         <div className="inputArea">
           <input type="text" placeholder="내용을 입력해주세요." />
         </div>
