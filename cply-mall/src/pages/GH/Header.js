@@ -39,10 +39,11 @@ const HeaderCss = styled.div`
         a {
             text-decoration: none;
             color: #000;
-            h1 {
+            span {
                 margin: 0;
-                display: block;
+
                 font-size: 40px;
+                font-weight: bold;
                 &:hover {
                     color: #aaa;
                     transition: all 0.3s ease-in-out;
@@ -149,7 +150,7 @@ const Header = () => {
             </div>
             <div className='header-box2'>
                 <button onClick={BtnClick}>☰</button>
-                <Link to='/'><h1>C P L Y</h1></Link>
+                <Link to='/'><span>C P L Y</span></Link>
                 <div className='search-box'>
                 <button><FontAwesomeIcon icon={faMagnifyingGlass} size="lg"/></button>
                 <input type='text'></input>

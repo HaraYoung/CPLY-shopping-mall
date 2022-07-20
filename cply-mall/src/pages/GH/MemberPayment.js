@@ -63,6 +63,8 @@ const MemberPayment = memo(() => {
                 <h3>나머지 주소</h3>
                 <input type='text' name='addr2' disabled/>
                 <span>수정하기</span>
+                <h3>요청 메모</h3>
+                <input type='text' name='memo'/>
                 <h2>포인트 사용</h2>
                 <h3>보유포인트</h3>
                 <input type='text' name='point' disabled/>
