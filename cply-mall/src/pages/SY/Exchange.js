@@ -5,12 +5,16 @@
  */
 
 import React, { memo } from "react";
-import { NavLink, Router } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+
+import { reducer } from "../../components/NumOption";
 
 import Img from "./img/찡찡이젤리.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faMinus } from "@fortawesome/free-solid-svg-icons";
 
 const ExchangeArea = styled.div`
   .exchange {
@@ -48,23 +52,20 @@ const ExchangeArea = styled.div`
           display: flex;
           justify-content: space-around;
           span {
+            width: 36px;
+            height: 30px;
+            padding:3px 0; 
             display: inline-block;
-            border: 1px solid gainsboro;
             text-align: center;
+            border: 1px solid gainsboro;
             border-radius: 4px;
-            padding: 6px 10px;
           }
-          button {
+          .numOption {
+            width: 36px;
+            padding: 10px 0;
             border: 1px solid gainsboro;
             border-radius: 4px;
             background-color: #fff;
-            padding: 6px 8px;
-            font-size: 20px;
-            cursor: pointer;
-            &:hover {
-              background-color: gray;
-              color: white;
-            }
           }
         }
         span select {
@@ -131,25 +132,26 @@ const ExchangeArea = styled.div`
   }
 `;
 
-
-const exchange = memo(() => {
+const exchange = memo(({ step = 1, min = 0, max = 50 }) => {
   //옵션 수량 상태값
-  const [changeOpNum, setChangeOpNum]= React.useState(1);
-  const onClickPlus= ()=>{
-    setChangeOpNum(changeOpNum +1);
-  }
-  const onClickMinus= ()=>{
-    setChangeOpNum(changeOpNum - 1);
-  }
+  // const [changeOpNum, setChangeOpNum]= React.useState(1);
+  // const onClickPlus= ()=>{
+  //   setChangeOpNum(changeOpNum +1);
+  // }
+  // const onClickMinus= ()=>{
+  //   setChangeOpNum(changeOpNum - 1);
+  // }
+  const initialState = { count: 0 };
+  const [state, dispatch] = React.useReducer(reducer, initialState);
 
   //교환하기 버튼 클릭시
-  const onClickExchange= ()=>{
-    if (window.confirm('교환하시겠습니까?')) {
-      alert('교환 신청이 완료되었습니다.');
-      window.location.href='http://localhost:3000/mypage/order';
+  const onClickExchange = () => {
+    if (window.confirm("교환하시겠습니까?")) {
+      alert("교환 신청이 완료되었습니다.");
+      window.location.href = "http://localhost:3000/mypage/order";
       //리덕스로 order에 있는 해당 상품 상태를 교환 요청 확인중으로 바꿈
     }
-  }
+  };
   return (
     <ExchangeArea>
       <div className="exchange">
@@ -169,9 +171,17 @@ const exchange = memo(() => {
           </span>
           <div className="orderOption">
             <span className="ItemSum">
-              <button type="button" onClick={onClickPlus}>+</button>
-              <span>{changeOpNum}</span>
-              <button type="button" onClick={onClickMinus}>-</button>
+              <FontAwesomeIcon
+                className="numOption"
+                icon={faMinus}
+                onClick={() => dispatch({ type: "DECREMENT", step, min })}
+              />
+              <span>{state.count}</span>
+              <FontAwesomeIcon
+                className="numOption"
+                icon={faPlus}
+                onClick={() => dispatch({ type: "INCREMENT", step, max })}
+              />
             </span>
             <span>
               <select>
@@ -215,7 +225,9 @@ const exchange = memo(() => {
               <p>0000원</p>
             </div>
             <div className="butArea">
-              <NavLink to="#" onClick={onClickExchange}>교환 하기</NavLink>
+              <NavLink to="#" onClick={onClickExchange}>
+                교환 하기
+              </NavLink>
             </div>
           </div>
         </div>

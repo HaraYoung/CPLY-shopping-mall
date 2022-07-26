@@ -9,7 +9,7 @@ import TodayPopularity from "./TodayPopularity";
 import Cart from "../SY/Cart";
 import Order from "../SY/Order";
 import OrderDetail from "../SY/OrderDetail";
-import RandE from "../SY/RandE";
+import RandE from "../SY/RAndE";
 import Likes from "../SJ/recentlikes";
 import PageNotFound from "./PageNotFound";
 import { Routes, Route } from "react-router-dom";

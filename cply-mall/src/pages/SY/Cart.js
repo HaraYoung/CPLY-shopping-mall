@@ -9,7 +9,10 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-//import { reducer } from "../../components/NumOption";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faMinus } from "@fortawesome/free-solid-svg-icons";
+
+import { reducer } from "../../components/NumOption";
 
 import Img from "./img/찡찡이젤리.jpg";
 
@@ -37,29 +40,30 @@ const CartArea = styled.div`
       }
     }
   }
+  .ItemTitle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 1em 0;
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
+    span {
+      font-weight: bolder;
+    }
+    .Title1 {
+      width: 65%;
+      text-align: center;
+    }
+    .Title2 {
+      width: 40%;
+      display: flex;
+      justify-content: space-around;
+    }
+  }
   .ItemArea {
     display: flex;
     flex-direction: column;
     width: 100%;
-    .ItemTitle {
-      display: flex;
-      justify-content: space-between;
-      padding: 1em 0;
-      border-top: 1px solid gainsboro;
-      border-bottom: 1px solid gainsboro;
-      span {
-        font-weight: bolder;
-      }
-      .Title1 {
-        width: 65%;
-        text-align: center;
-      }
-      .Title2 {
-        width: 40%;
-        display: flex;
-        justify-content: space-around;
-      }
-    }
     .ItemInfoArea {
       display: flex;
       justify-content: space-between;
@@ -100,23 +104,32 @@ const CartArea = styled.div`
             padding: 0.5em 0;
           }
           .ItemNum {
+            min-width: 195px;
             padding: 0.5em 0;
             border-top: 1px solid #000;
             display: flex;
             justify-content: space-around;
-            span {
-              display: inline-block;
-              border: 1px solid gainsboro;
-              text-align: center;
-              border-radius: 4px;
-              padding: 6px 10px;
-            }
-            button {
-              border: 1px solid gainsboro;
-              border-radius: 4px;
-              background-color: #fff;
-              padding: 6px 8px;
-              font-size: 20px;
+            .numOptionArea {
+              margin-top: 1em;
+              display: flex;
+              span {
+                width: 36px;
+                height: 21px;
+                display: inline-block;
+                text-align: center;
+                border: 1px solid gainsboro;
+                border-radius: 4px;
+              }
+              .numOption {
+                width: 36px;
+                padding: 10px 0;
+                border: 1px solid gainsboro;
+                border-radius: 4px;
+                background-color: #fff;
+              }
+              .optionPrice {
+                margin-left: 1.5em;
+              }
             }
           }
         }
@@ -212,7 +225,7 @@ const CartArea = styled.div`
   }
 `;
 
-const Cart = memo(({ step = 1, min = 0, max = 10 }) => {
+const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
   //품절된 상품의 상태값
   const [soldOut, setSoldOut] = React.useState(true);
 
@@ -231,7 +244,7 @@ const Cart = memo(({ step = 1, min = 0, max = 10 }) => {
   // const onClickMinus = () => {
   //   setOptionNum(optionNum - 1);
   // };
-  // const initialState = { count: 0 };
+  const initialState = { count: 0 };
   // function reducer(state, action) {
   //   switch (action.type) {
   //     case "INCREMENT":
@@ -246,7 +259,7 @@ const Cart = memo(({ step = 1, min = 0, max = 10 }) => {
   //       throw new Error("Unsupported action type:", action.type);
   //   }
   // }
-  // const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [state, dispatch] = React.useReducer(reducer, initialState);
 
   //상품의 상태값
   const [ItemCheck, setItemCheck] = React.useState(true);
@@ -292,6 +305,7 @@ const Cart = memo(({ step = 1, min = 0, max = 10 }) => {
   };
   return (
     <CartArea>
+      {console.log(state)}
       <div className="checkButArea">
         <span>
           <label>
@@ -315,6 +329,15 @@ const Cart = memo(({ step = 1, min = 0, max = 10 }) => {
             품절 삭제
           </button>
         </span>
+      </div>
+      <div className="ItemTitle">
+        <div className="Title1">
+          <span>상품 정보</span>
+        </div>
+        <div className="Title2">
+          <span>옵션</span>
+          <span>상품 금액</span>
+        </div>
       </div>
       {/*품절된 상품 */}
       {soldOut && (
@@ -347,15 +370,14 @@ const Cart = memo(({ step = 1, min = 0, max = 10 }) => {
             <div className="ItemInfoButtonArea">
               <div className="ItemOption">
                 <span>옵션</span>
-                {/*soldOut클래스가 적용되어있을 경우 숫자변경 버튼 없대기 */}
                 <div className="ItemNum">
-                  <div>
-                    <button type="button">+</button>
-                    <span>1</span>
-                    <button type="button">-</button>
-                  </div>
-                  <div>
-                    <p>000원</p>
+                  <div className="numOptionArea">
+                    <FontAwesomeIcon className="numOption" icon={faMinus} />
+                    <span>{state.count}</span>
+                    <FontAwesomeIcon className="numOption" icon={faPlus} />
+                    <div className="optionPrice">
+                      <p>000원</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -372,15 +394,6 @@ const Cart = memo(({ step = 1, min = 0, max = 10 }) => {
       {ItemCheck &&
         CartItem.map((list, i) => (
           <div className="ItemArea">
-            <div className="ItemTitle">
-              <div className="Title1">
-                <span>상품 정보</span>
-              </div>
-              <div className="Title2">
-                <span>옵션</span>
-                <span>상품 금액</span>
-              </div>
-            </div>
             <div className="ItemInfoArea">
               <div className="ItemInfoTopArea">
                 <div className="ItemInfo">
@@ -415,27 +428,25 @@ const Cart = memo(({ step = 1, min = 0, max = 10 }) => {
                 <div className="ItemOption">
                   <span>옵션</span>
                   <div className="ItemNum">
-                    <div>
-                      <button
-                        type="button"
-                        // onClick={() =>
-                        //   dispatch({ type: "INCREMENT", step, max })
-                        // }
-                      >
-                        +
-                      </button>
-                      <span>{}</span>
-                      <button
-                        type="button"
-                        // onClick={() =>
-                        //   dispatch({ type: "DECREMENT", step, min })
-                        // }
-                      >
-                        -
-                      </button>
-                    </div>
-                    <div>
-                      <p>000원</p>
+                    <div className="numOptionArea">
+                      <FontAwesomeIcon
+                        className="numOption"
+                        icon={faMinus}
+                        onClick={() =>
+                          dispatch({ type: "DECREMENT", step, min })
+                        }
+                      />
+                      <span>{state.count}</span>
+                      <FontAwesomeIcon
+                        className="numOption"
+                        icon={faPlus}
+                        onClick={() =>
+                          dispatch({ type: "INCREMENT", step, max })
+                        }
+                      />
+                      <div className="optionPrice">
+                        <p>000원</p>
+                      </div>
                     </div>
                   </div>
                 </div>
