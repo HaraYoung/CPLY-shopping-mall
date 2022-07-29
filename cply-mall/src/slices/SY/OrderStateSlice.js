@@ -7,7 +7,14 @@ const orderStaterSlice = createSlice({
   initialState: {
     // number: 0,
     // color: '#000'
-    stateName: "",
+    stateName: [
+      "order",
+      "delivery",
+      "Dcomplete",
+      "soldDecide",
+      "Exchange",
+      "Refund",
+    ],
   },
   //내부 action 및 동기 action
   /*상태값을 갱신하기 위한 함수들을 구현
@@ -29,32 +36,26 @@ const orderStaterSlice = createSlice({
       return { number: numberValue, color: colorValue };
     },
     orderName: (state, action) => {
-      let nameValue = [
-        "order",
-        "delivery",
-        "Dcomplete",
-        "soldDecide",
-        "Exchange",
-        "Refund",
-      ];
       //파라미터로 받은 숫자에 따라 출력하는 문자열이 다름..
       // eslint-disable-next-line default-case
-      switch (action.payload) {
-        case 1:
-          return nameValue[0];
-        case 2:
-          return nameValue[1];
-        case 3:
-          return nameValue[2];
-        case 4:
-          return nameValue[3];
-        case 5:
-          return nameValue[4];
-        case 6:
-          return nameValue[5];
+      // switch (action.payload) {
+      //   case 1:
+      //     return nameValue[0];
+      //   case 2:
+      //     return nameValue[1];
+      //   case 3:
+      //     return nameValue[2];
+      //   case 4:
+      //     return nameValue[3];
+      //   case 5:
+      //     return nameValue[4];
+      //   case 6:
+      //     return nameValue[5];
+      // }
+      if( action.payload === 1){
+        return state[0]
       }
-      
-      return {stateName: nameValue}
+      //return {stateName: nameValue}
     },
 
     //   const numberValue = state.number - action.payload;
