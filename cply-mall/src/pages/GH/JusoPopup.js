@@ -141,7 +141,7 @@ const JusoPopup = memo(() => {
     },[]);
 
     const onClickPayment =()=> {
-        const {IMP} = window; IMP.init('imp19424728');
+        const {IMP} = window; IMP.init('imp76184821');
         const data = {
             pg: "html5_inicis",
             pay_ment:'card',
@@ -163,7 +163,7 @@ const JusoPopup = memo(() => {
         if (success) {
             alert('결제성공')
         }else {
-            alert(`결제 성공 : ${error_msg}`);
+            alert(`결제 실패 : ${error_msg}`);
         }
     }
     return (
