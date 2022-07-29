@@ -15,6 +15,7 @@ const orderStaterSlice = createSlice({
       "Exchange",
       "Refund",
     ],
+    RAndEstate:''
   },
   //내부 action 및 동기 action
   /*상태값을 갱신하기 위한 함수들을 구현
@@ -35,6 +36,16 @@ const orderStaterSlice = createSlice({
       }
       return { number: numberValue, color: colorValue };
     },
+    RAndEText: (state, action) => {
+      if (action.payload === 1){
+        state= '교환';
+        return state;
+      }else if (action.payload === 2){
+        state= '반품';
+        return state;
+      }
+      return {RAndEstate:state};
+    },
     orderName: (state, action) => {
       //파라미터로 받은 숫자에 따라 출력하는 문자열이 다름..
       // eslint-disable-next-line default-case
@@ -52,10 +63,12 @@ const orderStaterSlice = createSlice({
       //   case 6:
       //     return nameValue[5];
       // }
+      let nameValue= '';
       if( action.payload === 1){
-        return state[0]
+        console.log(action.payload)
+        return nameValue= '주문 확인중';
       }
-      //return {stateName: nameValue}
+      return {state: nameValue}
     },
 
     //   const numberValue = state.number - action.payload;
