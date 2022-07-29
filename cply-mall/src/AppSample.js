@@ -14,6 +14,8 @@ import Cart from "./pages/SY/Cart";
 import Header from "./pages/GH/Header";
 import Footer from "./pages/GH/Footer";
 import MyPage from "./pages/GH/MyPage";
+import Juso from "./pages/GH/JusoPopup";
+import MemberPayment from "./pages/GH/MemberPayment";
 const App = memo(() => {
   return (
     <div>
@@ -31,8 +33,10 @@ const App = memo(() => {
             <Route path="/Qna" element={<QnaMain />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/mypage/*" element={<MyPage />} />
+            <Route path="/payment" element={<MemberPayment />} />
           </Route>
         </Route>
+        <Route path="/juso" element={<Juso />} />
       </Routes>
     </div>
   );
