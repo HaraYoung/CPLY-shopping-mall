@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import  detailGoodsSlice from "../slices/SJ/detailGoodsSlice";
 import orderStaterSlice from "../slices/SY/OrderStateSlice";
+import UserSlice from '../slices/KH/UserSlice';
 
 const store = configureStore({
   reducer: {
     detailGoods: detailGoodsSlice,
     orderState: orderStaterSlice,
+    user:UserSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

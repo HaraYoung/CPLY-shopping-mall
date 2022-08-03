@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import RegexHelper from '../../libs/RegexHelper';
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from 'react-daum-postcode';
+import { useSelector, useDispatch } from "react-redux";
+import { getUserItem,postUserItem } from '../../slices/KH/UserSlice';
 const SignupInfoCss = styled.div`
     width: 100%;
     display: flex;
@@ -176,6 +178,12 @@ const SignupInfo = memo(() => {
     })
     //modal box 상태값
     const [modalBox,setModalBox] = React.useState(false)
+
+    
+    //리덕스초기화
+    const {data,loading,error} = useSelector((state)=>state.user)
+    const dispatch = useDispatch();
+
     //가입하기버튼 submit
     const SignupInfoSubmit = React.useCallback((e)=> {
         e.preventDefault();
@@ -184,7 +192,7 @@ const SignupInfo = memo(() => {
         const current = e.target;
         try {
             //중복검사 유효성
-            if (!overlap.blo || overlap.data !== current.id.value) {
+            if (!overlap.blo || overlap.data !== current.userid.value) {
                 window.alert('아이디 중복검사를 실행하세요');
                 setOverlap({
                     blo:false,
@@ -198,31 +206,31 @@ const SignupInfo = memo(() => {
             /**
              * 특수문자유효성추가해야함
              **/
-            RegexHelper.value(current.pw,'비밀번호는 필수 정보입니다');
-            RegexHelper.minLength(current.pw,8,'비밀번호는 8글자 이상만 입력 가능합니다');
-            RegexHelper.maxLength(current.pw,20,'비밀번호는 최대 20글자 까지 입력 가능합니다');
+            RegexHelper.value(current.userpw,'비밀번호는 필수 정보입니다');
+            RegexHelper.minLength(current.userpw,8,'비밀번호는 8글자 이상만 입력 가능합니다');
+            RegexHelper.maxLength(current.userpw,20,'비밀번호는 최대 20글자 까지 입력 가능합니다');
             //비밀번호 확인
-            RegexHelper.value(current.pwre,'비밀번호 확인은 필수 정보입니다');
-            RegexHelper.value(current.pw,current.pwre,'비밀번호가 일치하지 않습니다');
+            RegexHelper.value(current.userpwre,'비밀번호 확인은 필수 정보입니다');
+            RegexHelper.value(current.userpw,current.userpwre,'비밀번호가 일치하지 않습니다');
             //이름 유효성
-            RegexHelper.value(current.name,'이름은 필수 정보입니다');
-            RegexHelper.minLength(current.name,2,'이름은 2글자 이상 부터 입력 가능합니다');
-            RegexHelper.maxLength(current.name,20,'이름은 최대 20글자 까지 입력 가능합니다');
-            RegexHelper.korEng(current.name,'이름은 한글,영문만 입력 가능합니다');
+            RegexHelper.value(current.username,'이름은 필수 정보입니다');
+            RegexHelper.minLength(current.username,2,'이름은 2글자 이상 부터 입력 가능합니다');
+            RegexHelper.maxLength(current.username,20,'이름은 최대 20글자 까지 입력 가능합니다');
+            RegexHelper.korEng(current.username,'이름은 한글,영문만 입력 가능합니다');
             //전화번호 유효성
             RegexHelper.value(current.phone,'전화번호는 필수 정보입니다');
             RegexHelper.num(current.phone,'전화번호는 숫자만 입력 가능합니다');
             RegexHelper.minLength(current.phone,10,'전화번호는 10자 부터 입력 가능합니다');
             RegexHelper.maxLength(current.phone,11,'전화번호는 11자 까지만 입력 가능합니다');
             //이메일 유효성
-            RegexHelper.value(current.email,'이메일은 필수 정보입니다');
-            RegexHelper.email(current.email,'이메일 형식에 맞지않습니다');
+            RegexHelper.value(current.useremail,'이메일은 필수 정보입니다');
+            RegexHelper.email(current.useremail,'이메일 형식에 맞지않습니다');
             //주소 유효성
             /**
              * 주소검색 에이피아이 연동해야함
              */
-            RegexHelper.value(current.addr,'우편번호를 입력해 주세요');
-            RegexHelper.num(current.addr,'우편번호는 숫자만 입력 가능합니다');
+            RegexHelper.value(current.zonecode,'우편번호를 입력해 주세요');
+            RegexHelper.num(current.zonecode,'우편번호는 숫자만 입력 가능합니다');
             RegexHelper.value(current.addr1,'기본주소를 입력해 주세요');
             RegexHelper.value(current.addr2,'나머지 주소를 입력해 주세요');
         }catch(e) {
@@ -245,9 +253,12 @@ const SignupInfo = memo(() => {
         e.preventDefault();
 
         const current = mega.current
-
-
+        console.log (current.value)
+        
         try {
+            dispatch(getUserItem({
+                userid:current.value
+            }))
             //아이디 유효성
             /**
              * 중복검사쪽에서 되게끔 수정필요
@@ -258,19 +269,27 @@ const SignupInfo = memo(() => {
              RegexHelper.engNum(current,'아이디는 영문,숫자만 입력 가능합니다');
              RegexHelper.minLength(current,8,'아이디는 8글자 이상만 입력 가능합니다');
              RegexHelper.maxLength(current,20,'아이디는 최대 20글자 까지 입력 가능합니다');
+
         }catch(e) {
             window.alert(e.message);
             return;
+        }finally{
+            setOverlap({
+                blo:true,
+                data:current.value
+            });
+            if (data.rt === 200) {
+                window.alert('이미 사용중인 아이디 입니다')
+            }else if (data.rt === 500) {
+    
+                window.alert('사용 가능한 아이디 입니다');
+            }
         }
-        //ajax처리
+    },[setOverlap,dispatch,data])
         
-        setOverlap({
-            blo:true,
-            data:current.value
-        });
+        
 
-        window.alert('사용 가능한 아이디 입니다');
-    },[setOverlap])
+        
 
     //주소검색 버튼 이벤트
     const addrSearchButton = React.useCallback(()=> {
@@ -321,22 +340,22 @@ const SignupInfo = memo(() => {
                     <form onSubmit={SignupInfoSubmit}>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>아이디<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='id' placeholder='아이디를 입력해 주세요' ref={mega}/></div>
+                            <div className='signup-info-div2'><input type='text' name='userid' placeholder='아이디를 입력해 주세요' ref={mega}/></div>
                             <div className='signup-info-div3'><button onClick={idInfoSubmit}>중복확인</button></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>비밀번호<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='password' name='pw' placeholder='비밀번호를 입력해 주세요'/></div>
+                            <div className='signup-info-div2'><input type='password' name='userpw' placeholder='비밀번호를 입력해 주세요'/></div>
                             <div className='signup-info-div3'></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>비밀번호 확인<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='password' name='pwre'/></div>
+                            <div className='signup-info-div2'><input type='password' name='userpwre'/></div>
                             <div className='signup-info-div3'></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>이름<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='name' placeholder='이름을 입력해 주세요'/></div>
+                            <div className='signup-info-div2'><input type='text' name='username' placeholder='이름을 입력해 주세요'/></div>
                             <div className='signup-info-div3'></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
@@ -346,22 +365,22 @@ const SignupInfo = memo(() => {
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>SNS 수신</h2></div>
-                            <div className='signup-info-div2'><input type='checkbox' name='sns-check' className=' signup-info-check'/></div>
+                            <div className='signup-info-div2'><input type='checkbox' name='snsRCPT' className=' signup-info-check'/></div>
                             <div className='signup-info-div3'></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>이메일<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='email' placeholder='이메일을 입력해주세요'/></div>
+                            <div className='signup-info-div2'><input type='text' name='useremail' placeholder='이메일을 입력해주세요'/></div>
                             <div className='signup-info-div3'></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>이메일 수신</h2></div>
-                            <div className='signup-info-div2'><input type='checkbox' name='sns-check' className=' signup-info-check'/></div>
+                            <div className='signup-info-div2'><input type='checkbox' name='emailRCPT' className=' signup-info-check'/></div>
                             <div className='signup-info-div3'></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>주소<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='addr' placeholder='우편번호' defaultValue={daumJuso.zonecode}/></div>
+                            <div className='signup-info-div2'><input type='text' name='zonecode' placeholder='우편번호' defaultValue={daumJuso.zonecode}/></div>
                             <div className='signup-info-div3'><span onClick={addrSearchButton}>주소검색</span></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
