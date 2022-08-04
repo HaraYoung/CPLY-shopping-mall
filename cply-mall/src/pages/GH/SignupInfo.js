@@ -4,7 +4,8 @@ import RegexHelper from '../../libs/RegexHelper';
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from 'react-daum-postcode';
 import { useSelector, useDispatch } from "react-redux";
-import { getUserItem,postUserItem } from '../../slices/KH/UserSlice';
+import { getUserItem,postUserItem,postItem } from '../../slices/KH/UserSlice';
+import dayjs from 'dayjs';
 const SignupInfoCss = styled.div`
     width: 100%;
     display: flex;
@@ -62,6 +63,8 @@ const SignupInfoCss = styled.div`
                             font-size: 1em;
                             border-radius: 5px;
                             &.signup-info-check {
+                                vertical-align: top;
+                                margin-left: 2%;
                                 width: auto;
                                 width: 20px;
                                 height: 20px;
@@ -179,17 +182,19 @@ const SignupInfo = memo(() => {
     //modal box 상태값
     const [modalBox,setModalBox] = React.useState(false)
 
-    
     //리덕스초기화
     const {data,loading,error} = useSelector((state)=>state.user)
     const dispatch = useDispatch();
+    
 
     //가입하기버튼 submit
     const SignupInfoSubmit = React.useCallback((e)=> {
         e.preventDefault();
         
-        
         const current = e.target;
+        const enum1 = current.snsRCPT.checked ? 'Y' : 'N';
+        const enum2 = current.emailRCPT.checked ? 'Y' : 'N';
+
         try {
             //중복검사 유효성
             if (!overlap.blo || overlap.data !== current.userid.value) {
@@ -239,21 +244,38 @@ const SignupInfo = memo(() => {
             return;
         }
 
+        dispatch(postUserItem({
+            userid:current.userid.value,
+            userpw:current.userpw.value,
+            username:current.username.value,
+            phone:current.phone.value,
+            snsRCPT:enum1,
+            useremail:current.useremail.value,
+            emailRCPT:enum2,
+            zonecode:current.zonecode.value,
+            addr1:current.addr1.value,
+            addr2:current.addr2.value,
+            regdate:dayjs().format('YYYY-MM-DD HH:mm:ss'),
+            editdate:dayjs().format('YYYY-MM-DD HH:mm:ss'),
+            point:'0'
+        }))
         if (window.confirm('입력하신 내용으로 정보가 저장됩니다.계속하시겠습니까?')) {
-            //ajax연동
-            window.alert('회원가입이 완료되었습니다.');
-            navigate('/');
+
+
+            // window.alert('회원가입이 완료되었습니다.');
+            // navigate('/');
+            console.log (data.rt);
         }
 
         
-    },[overlap,navigate])
+    },[overlap,navigate,dispatch,data])
 
     //중복검사이벤트
     const idInfoSubmit = React.useCallback((e)=> {
         e.preventDefault();
 
         const current = mega.current
-        console.log (current.value)
+    
         
         try {
             dispatch(getUserItem({
@@ -285,9 +307,19 @@ const SignupInfo = memo(() => {
                 window.alert('사용 가능한 아이디 입니다');
             }
         }
+        console.clear();
     },[setOverlap,dispatch,data])
         
-        
+    //아이디 체인지 이벤트
+    const idChange = React.useCallback((e)=> {
+        const length = e.target.value;
+        if (length.length > 7) {
+            console.clear();
+            dispatch(getUserItem({
+                userid:length
+            }))
+        }
+    },[dispatch])    
 
         
 
@@ -340,7 +372,7 @@ const SignupInfo = memo(() => {
                     <form onSubmit={SignupInfoSubmit}>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>아이디<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='userid' placeholder='아이디를 입력해 주세요' ref={mega}/></div>
+                            <div className='signup-info-div2'><input type='text' name='userid' placeholder='아이디를 입력해 주세요' ref={mega} onChange={idChange}/></div>
                             <div className='signup-info-div3'><button onClick={idInfoSubmit}>중복확인</button></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
@@ -365,7 +397,10 @@ const SignupInfo = memo(() => {
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>SNS 수신</h2></div>
-                            <div className='signup-info-div2'><input type='checkbox' name='snsRCPT' className=' signup-info-check'/></div>
+                            <div className='signup-info-div2'>
+                                <span>동의</span>                                
+                                <input type='checkbox' name='snsRCPT' className=' signup-info-check' defaultChecked={true}/>
+                            </div>
                             <div className='signup-info-div3'></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
@@ -375,7 +410,10 @@ const SignupInfo = memo(() => {
                         </div>
                         <div className='signup-info-div-box'>
                             <div className='signup-info-div1'><h2>이메일 수신</h2></div>
-                            <div className='signup-info-div2'><input type='checkbox' name='emailRCPT' className=' signup-info-check'/></div>
+                            <div className='signup-info-div2'>
+                                <span>동의</span>    
+                                <input type='checkbox' name='emailRCPT' className=' signup-info-check' defaultChecked={true}/>
+                            </div>
                             <div className='signup-info-div3'></div>                                                 
                         </div>
                         <div className='signup-info-div-box'>
@@ -420,69 +458,6 @@ const SignupInfo = memo(() => {
                 )}
             
             </div>
-            {/* <div className='signup-info-box'>
-                <h1>C P L Y</h1>
-                <div className='signup-info-box-margin'>
-                    <form onSubmit={SignupInfoSubmit}>
-                        <div className='signup-info-div-box'>
-                            <div className='signup-info-div1'><h2>아이디<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='id' placeholder='아이디를 입력해 주세요'/></div>
-                            <div className='signup-info-div3'><button>중복확인</button></div>                                                 
-                        </div>
-                        <div className='signup-info-div-box'>
-                            <div className='signup-info-div1'><h2>비밀번호<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='pw' placeholder='비밀번호를 입력해 주세요'/></div>
-                            <div className='signup-info-div3'></div>                                                 
-                        </div>
-                        <div className='signup-info-div-box'>
-                            <div className='signup-info-div1'><h2>비밀번호 확인<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='pwre'/></div>
-                            <div className='signup-info-div3'></div>                                                 
-                        </div>
-                        <div className='signup-info-div-box'>
-                            <div className='signup-info-div1'><h2>이름<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='name' placeholder='이름을 입력해 주세요'/></div>
-                            <div className='signup-info-div3'></div>                                                 
-                        </div>
-                        <div className='signup-info-div-box'>
-                            <div className='signup-info-div1'><h2>전화번호<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='phone' placeholder='(-)를 제외한 전화번호'/></div>
-                            <div className='signup-info-div3'></div>                                                 
-                        </div>
-                        <div className='signup-info-div-box'>
-                            <div className='signup-info-div1'><h2>SNS 수신</h2></div>
-                            <div className='signup-info-div2'><input type='checkbox' name='sns-check' className=' signup-info-check'/></div>
-                            <div className='signup-info-div3'></div>                                                 
-                        </div>
-                        <div className='signup-info-div-box'>
-                            <div className='signup-info-div1'><h2>이메일<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='email' placeholder='이메일을 입력해주세요'/></div>
-                            <div className='signup-info-div3'></div>                                                 
-                        </div>
-                        <div className='signup-info-div-box'>
-                            <div className='signup-info-div1'><h2>이메일 수신</h2></div>
-                            <div className='signup-info-div2'><input type='checkbox' name='sns-check' className=' signup-info-check'/></div>
-                            <div className='signup-info-div3'></div>                                                 
-                        </div>
-                        <div className='signup-info-div-box'>
-                            <div className='signup-info-div1'><h2>주소<span>*</span></h2></div>
-                            <div className='signup-info-div2'><input type='text' name='addr' placeholder='우편번호'/></div>
-                            <div className='signup-info-div3'><button>주소검색</button></div>                                                 
-                        </div>
-                        <div className='signup-info-div-box'>
-                            <div className='signup-info-div1'></div>
-                            <div className='signup-info-div2'><input type='text' name='add1' placeholder='기본주소'/></div>
-                            <div className='signup-info-div3'></div>                                                 
-                        </div>
-                        <div className='signup-info-div-box'>
-                            <div className='signup-info-div1'></div>
-                            <div className='signup-info-div2'><input type='text' name='addr2' placeholder='나머지 주소'/></div>
-                            <div className='signup-info-div3'></div>                                                 
-                        </div>
-                        <button type='submit'>가입하기</button>
-                    </form>
-                </div>
-            </div> */}
         </SignupInfoCss>
     );
 });

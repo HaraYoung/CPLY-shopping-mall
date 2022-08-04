@@ -31,25 +31,21 @@ export const getUserItem = createAsyncThunk("UserSlice/getUserItem", async (payl
 //데이터 저장을 위한 비동기 함수
 export const postUserItem = createAsyncThunk("UserSlice/postUserItem", async (payload,{rejectWithValue})=> {
     let result = null;
-    const date = new Date();
-    const nowDate = date.toLocaleDateString();
     try {
-        result = await axios.post(API_URL,{
+        result = await axios.post('http://localhost:3001/user',{
             userid:payload.userid,
             userpw:payload.userpw,
             username:payload.username,
             phone:payload.phone,
             snsRCPT:payload.snsRCPT,
             useremail:payload.useremail,
-            emailRCPT:payload.RCPT,
+            emailRCPT:payload.emailRCPT,
             zonecode:payload.zonecode,
             addr1:payload.addr1,
             addr2:payload.addr2,
-            admin:'N',
-            regdate: nowDate,
-            editdate:nowDate,
-            isout:'N',
-            point:'0'
+            regdate: payload.regdate,
+            editdate:payload.editdate,
+            point:payload.point
         });
     }catch(err) {
         //에러 발생시 'rejectWithValue()'함수에 에러 데이터를 전달하면 extraReducer의 rejected의 함수가 호출된다
@@ -57,6 +53,7 @@ export const postUserItem = createAsyncThunk("UserSlice/postUserItem", async (pa
     }
     return result;
 });
+
 
 //데이터 수정을 위한 비동기 함수
 export const putUserItem = createAsyncThunk("UserSlice/putUserItem", async (payload,{rejectWithValue})=> {
