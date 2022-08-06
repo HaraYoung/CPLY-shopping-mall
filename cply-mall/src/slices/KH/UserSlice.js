@@ -117,7 +117,16 @@ const UserSlice = createSlice({
 
         [postUserItem.pending] : pending,
         [postUserItem.fulfilled]: fulfilled,
-        [postUserItem.rejected] :rejected,
+        [postUserItem.rejected] :(state,{payload})=> {
+            return {
+                data:payload?.data,
+                loading:false,
+                error: {
+                    code:payload?.data?.rt ===200 ? payload?.data?.rt :490,
+                    message: payload?.data?.rtmsg ? payload?.data?.rtmsg : (payload?.statusText ? payload.statusText : 'Server Error')
+                }
+            }
+        },
 
         [putUserItem.pending] : pending,
         [putUserItem.fulfilled]: fulfilled,

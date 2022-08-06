@@ -2,6 +2,9 @@ const pending =  (state,{payload})=> {
     return {...state,loading:true}
 };
 const fulfilled = (state,{payload})=> {
+    console.log ('slice');
+    console.log (payload.data);
+    console.log ('slice');
     return {
         data:payload?.data,
         loading:false,

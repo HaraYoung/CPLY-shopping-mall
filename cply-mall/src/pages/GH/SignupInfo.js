@@ -186,7 +186,27 @@ const SignupInfo = memo(() => {
     const {data,loading,error} = useSelector((state)=>state.user)
     const dispatch = useDispatch();
     
+    
+    const [CompleteState,setCompleteState] = React.useState({
+        complete:false,
+        idcheck:false
+    }) 
 
+    React.useEffect(()=> {
+        if (CompleteState.complete) {
+            if (data.rt === 200 && window.confirm('입력하신 내용으로 정보가 저장됩니다.계속하시겠습니까?')) {
+                window.alert('회원가입이 완료되었습니다.');
+                navigate('/');
+            }else if (data.rt === 490) {
+                window.alert(error)
+                setCompleteState({
+                    ...CompleteState,
+                    complete:false
+                })
+            }
+        }
+
+    },[data,CompleteState,error])
     //가입하기버튼 submit
     const SignupInfoSubmit = React.useCallback((e)=> {
         e.preventDefault();
@@ -259,16 +279,12 @@ const SignupInfo = memo(() => {
             editdate:dayjs().format('YYYY-MM-DD HH:mm:ss'),
             point:'0'
         }))
-        if (window.confirm('입력하신 내용으로 정보가 저장됩니다.계속하시겠습니까?')) {
-
-
-            // window.alert('회원가입이 완료되었습니다.');
-            // navigate('/');
-            console.log (data.rt);
-        }
-
+        setCompleteState({
+            ...CompleteState,
+            complete:true
+        })
         
-    },[overlap,navigate,dispatch,data])
+    },[overlap,dispatch,CompleteState])
 
     //중복검사이벤트
     const idInfoSubmit = React.useCallback((e)=> {
