@@ -1,14 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { pending, fulfilled, rejected } from "../../Util";
 import axios from "axios";
+
+const API_URL = "http://localhost:3001/detailGoods";
 
 /* 비동기 처리 함수 구현 */
 export const getDetail = createAsyncThunk(
-  "detailGoods/getDetail",
+  "detailGoodsSlice/getDetail",
   async (payload, { rejectWidthValue }) => {
     let result = null;
 
     try {
-      result = await axios.get();
+      result = await axios.get(API_URL);
     } catch (err) {
       // 에러 발생 시 'rejectWidthValue()'함수에 에러 데이터를 전달하면 extraReducer의 rejected 함수가 호출된다.
       result = rejectWidthValue(err.response);
@@ -36,28 +39,9 @@ const detailGoodsSlice = createSlice({
 
   // 외부 action 및 비동기 action.(Ajax용)
   extraReducers: {
-    [getDetail.pending]: (state, { payload }) => {
-      return { ...state, loading: true };
-    },
-    [getDetail.fulfilled]: (state, { meta, payload }) => {
-      return {
-        meta: payload?.data,
-        documents: payload?.data,
-        loading: false,
-        error: null,
-      };
-    },
-    [getDetail.rejected]: (state, { payload }) => {
-      return {
-        meta: null,
-        documents: null,
-        loading: false,
-        error: {
-          code: payload?.status ? payload.status : 500,
-          message: payload?.statusText ? payload.statusText : "Server Error",
-        },
-      };
-    },
+    [getDetail.pending]: pending,
+    [getDetail.fulfilled]: fulfilled,
+    [getDetail.rejected]: rejected,
   },
 });
 

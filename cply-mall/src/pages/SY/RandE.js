@@ -2,7 +2,12 @@ import React, { memo } from "react";
 import styled from "styled-components";
 import { NavLink, Routes, Route } from "react-router-dom";
 
-import Exchange from './Exchange';
+//Slice에 정의된 액션함수들 참조
+
+//상태값을 로드하기 위한 hook과 action함수를 dispatch할 hook참조
+import { useSelector, useDispatch } from "react-redux";
+
+import Exchange from "./Exchange";
 import Refund from "./Refund";
 
 const TabEAndR = styled.div`
@@ -22,31 +27,45 @@ const TabEAndR = styled.div`
   }
 `;
 
-const Notice= styled.div`
-    color: red;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 1em 2em;
+const Notice = styled.div`
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 1em 2em;
 `;
 const RandE = memo(() => {
-  const [notice,setNotice]= React.useState('교환');
-  const onClickTab= ()=>{
-    //교환탭일때와 반품 탭일때의 다른 단어 출력- url감지?
-  }
+  //dispatch함수 생성
+  const dispatch = useDispatch();
+  //hook를 통해 slice가 관리하는 상태값 가져오기
+  //const { RAndEstate } = useSelector((state) => state.orderState);
 
+  const [notice, setNotice] = React.useState(false);
+  const onClickTab = (e) => {
+    //교환탭일때와 반품 탭일때의 다른 단어 출력- url감지?
+    const aa=e.target.dataset.type;
+
+    if (aa > 0) {
+      console.log (notice)
+      setNotice(true)
+    }else {
+      console.log (notice)
+      setNotice(false)
+    }
+    
+  };
+//dispatch(RAndEText(1))
   return (
     <div>
       <TabEAndR>
-        <NavLink to="/mypage/rande">교환</NavLink>
-        <NavLink to="refund">반품</NavLink>
+        <NavLink to="/mypage/rande" data-type="0" onClick={onClickTab}>교환</NavLink>
+        <NavLink to="refund" data-type="1" onClick={onClickTab}>반품</NavLink>
       </TabEAndR>
       <Notice>
-        <p>{notice}시 공지 사항</p>
-        <p>{notice}시 주의 사항</p>
+        {notice ? ('sdf'):('123')}
       </Notice>
       <Routes>
-      <Route path='/'element={<Exchange/>} expat={true} />
-      <Route path='refund' element={<Refund/>}/>
+        <Route path="/" element={<Exchange />} expat={true} />
+        <Route path="refund" element={<Refund />} />
       </Routes>
     </div>
   );

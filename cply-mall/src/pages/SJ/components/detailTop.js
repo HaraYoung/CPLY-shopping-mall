@@ -6,6 +6,15 @@ import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons"; // �
 // CSS적용을 위한 컴포넌트
 import styled from "styled-components";
 
+// 상태값을 로드하기 위한 hook과 action함수를 dispatch할 hook참조
+import { useSelector, useDispatch } from "react-redux";
+
+// Slice에 정의된 액션함수들 참조
+import { getDetail } from "../../slices/detailGoodsSlice";
+
+import Spinner from "../../subComponents/Spinner";
+import Error from "../../subComponents/Error";
+
 const Div = styled.div`
   margin: auto;
   padding-top: 10em;
@@ -53,6 +62,14 @@ const First = styled.section`
   }
   .des {
     width: 60%;
+    .fa {
+      margin-right: 0.3em;
+    }
+    .reviewAmount {
+      a {
+        text-decoration: underline;
+      }
+    }
   }
   div:nth-child(2) {
     flex-direction: column;
@@ -146,7 +163,15 @@ const First = styled.section`
 `;
 
 const DetailGoods = () => {
+  React.useEffect(() => console.clear(), []);
+
   const navigate = useNavigate();
+
+  // hook을 통해 slice가 관리하는 상태값 가져오기
+  const { data, loading, error } = useSelector((state) => state.detailGoods);
+
+  // dispatch 함수 생성
+  const dispatch = useDispatch();
 
   const [urlImg, setUrlImg] = useState(
     "https://cdn.shopify.com/s/files/1/1071/7482/files/1383185611092.jpg?v=1487090221"
@@ -154,6 +179,11 @@ const DetailGoods = () => {
 
   const [opc, setopc] = useState(0);
   const [hrt, setHrt] = useState(0);
+
+  // 컴포넌트가 마운트되면 데이터 조회를 위한 액션함수를 디스패치 함
+  React.useEffect(() => {
+    dispatch(getDetail());
+  }, [dispatch]);
 
   const onClick = React.useCallback((e) => {
     e.preventDefault();
@@ -197,141 +227,171 @@ const DetailGoods = () => {
   );
   return (
     <Div>
-      <First>
-        <div className="img">
-          <div className="swiper-main">
-            <img src={urlImg} alt="thumbnail" />
+      <Spinner visible={loading} />
+      {error ? (
+        <Error error={error} />
+      ) : (
+        <First>
+          <div className="img">
+            <div className="swiper-main">
+              <img src={urlImg} alt="thumbnail" />
+            </div>
+            <div>
+              <ul className="swiper-gallery ">
+                {/* ajax 처리 부분 추후 수정해야 함 */}
+                <li>
+                  <img
+                    onClick={onClick}
+                    data-value="0"
+                    className={opc === 0 ? "op" : ""}
+                    src="https://cdn.shopify.com/s/files/1/1071/7482/files/1383185611092.jpg?v=1487090221"
+                    alt="thumbnail"
+                  />
+                </li>
+                <li>
+                  <img
+                    className={opc === 1 ? "op" : ""}
+                    data-value="1"
+                    onClick={onClick}
+                    src="http://www.joseilbo.com/gisa_img/16372825251637282525_pabw.jpg"
+                    alt="thumbnail"
+                  />
+                </li>
+                <li>
+                  <img
+                    className={opc === 2 ? "op" : ""}
+                    data-value="2"
+                    onClick={onClick}
+                    src="https://cdn.shopify.com/s/files/1/1071/7482/products/450g_grande.jpg?v=1473961315"
+                    alt="thumbnail"
+                  />
+                </li>
+                <li>
+                  <img
+                    className={opc === 3 ? "op" : ""}
+                    data-value="3"
+                    onClick={onClick}
+                    src="https://cdn.shopify.com/s/files/1/1071/7482/products/300_grande.jpg?v=1528415349"
+                    alt="thumbnail"
+                  />
+                </li>
+                <li>
+                  <img
+                    className={opc === 4 ? "op" : ""}
+                    data-value="4"
+                    onClick={onClick}
+                    src="https://cdn.shopify.com/s/files/1/1071/7482/products/cj_brown_12pc_grande.jpeg?v=1460716782"
+                    alt="thumbnail"
+                  />
+                </li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <ul className="swiper-gallery ">
-              {/* ajax 처리 부분 추후 수정해야 함 */}
-              <li>
-                <img
-                  onClick={onClick}
-                  data-value="0"
-                  className={opc === 0 ? "op" : ""}
-                  src="https://cdn.shopify.com/s/files/1/1071/7482/files/1383185611092.jpg?v=1487090221"
-                  alt="thumbnail"
-                />
-              </li>
-              <li>
-                <img
-                  className={opc === 1 ? "op" : ""}
-                  data-value="1"
-                  onClick={onClick}
-                  src="http://www.joseilbo.com/gisa_img/16372825251637282525_pabw.jpg"
-                  alt="thumbnail"
-                />
-              </li>
-              <li>
-                <img
-                  className={opc === 2 ? "op" : ""}
-                  data-value="2"
-                  onClick={onClick}
-                  src="https://cdn.shopify.com/s/files/1/1071/7482/products/450g_grande.jpg?v=1473961315"
-                  alt="thumbnail"
-                />
-              </li>
-              <li>
-                <img
-                  className={opc === 3 ? "op" : ""}
-                  data-value="3"
-                  onClick={onClick}
-                  src="https://cdn.shopify.com/s/files/1/1071/7482/products/300_grande.jpg?v=1528415349"
-                  alt="thumbnail"
-                />
-              </li>
-              <li>
-                <img
-                  className={opc === 4 ? "op" : ""}
-                  data-value="4"
-                  onClick={onClick}
-                  src="https://cdn.shopify.com/s/files/1/1071/7482/products/cj_brown_12pc_grande.jpeg?v=1460716782"
-                  alt="thumbnail"
-                />
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="des">
-          <ul>
-            <h1>제품명</h1>
-          </ul>
-          <ul>
-            <li>
-              <h1>
-                <b>
-                  <span>(가격)</span>원
-                </b>
-              </h1>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <i className="fa fa-star"></i>&nbsp;
-              <i className="fa fa-star"></i>&nbsp;
-              <i className="fa fa-star"></i>&nbsp;
-              <i className="fa fa-star"></i>&nbsp;
-              <i className="fa fa-star"></i>&nbsp;
-            </li>
-            <li>
-              <a href="#review">0개 리뷰 보기</a>
-            </li>
-            <li>0개 구매중</li>
-            <li>도착 예정일</li>
-          </ul>
+          {data &&
+            data.item.map((v, i) => {
+              let color = [v.opt1];
+              let size = [v.opt2];
 
-          <ul>
-            <li>배송정보</li>
-            <li>
-              <b>일반배송</b>
-            </li>
-            <li>무료배송 / 3000원</li>
-          </ul>
-          <ul>
-            <li>정품인증</li>
-            <li style={{ color: "gray" }}>
-              CPLY의 모든 상품은 100% 정품입니다.
-            </li>
-          </ul>
-          <ul className="dropdown">
-            <form>
-              <select>
-                <option value="none">[컬러]를 선택하세요</option>
-              </select>
-              <select>
-                <option value="none">[사이즈]를 선택하세요</option>
-              </select>
-            </form>
-          </ul>
-          <ul className="price">
-            <li>
-              <h2>총 상품 금액</h2>
-            </li>
-            <li>
-              <h1 style={{ color: "#ff204b" }}>0원</h1>
-            </li>
-          </ul>
-          <ul className="pay">
-            <li className="buy">
-              <button type="submit">바로구매</button>
-            </li>
-            <li className="cart">
-              <button onClick={message}>
-                <i className="fa fa-shopping-cart"></i>
-              </button>
-            </li>
-            <li className="heart">
-              <button onClick={handleLike}>
-                <FontAwesomeIcon
-                  icon={hrt === 0 ? regularHeart : solidHeart}
-                  style={{ color: hrt === 0 ? " " : "#ff204b" }}
-                />
-              </button>
-            </li>
-          </ul>
-        </div>
-      </First>
+              let opt1 = color ? color[0].split(",") : null;
+              let opt2 = size[0] !== null ? size[0].split(",") : size === null;
+
+              console.log(opt2);
+
+              return (
+                <div className="des">
+                  <ul>
+                    <h1>{v.title}</h1>
+                  </ul>
+                  <ul>
+                    <li>
+                      <h1>
+                        <b>
+                          <span>{v.price}</span>원
+                        </b>
+                      </h1>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      {[...new Array(v.star)].map((v, i) => {
+                        return <i className="fa fa-star"></i>;
+                      })}
+                      {[...new Array(5 - v.star)].map((v, i) => {
+                        return (
+                          <i
+                            className="fa fa-star"
+                            style={{ color: "lightgray" }}
+                          ></i>
+                        );
+                      })}
+                    </li>
+                    <li className="reviewAmount">
+                      <a href="#review">0개 리뷰 보기</a>
+                    </li>
+                    <li>
+                      <b>{v.sales}</b>개 구매중
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>배송정보</li>
+                    <li>
+                      <b>일반배송</b>
+                    </li>
+                    <li>무료배송 / 3000원</li>
+                  </ul>
+                  <ul>
+                    <li>정품인증</li>
+                    <li style={{ color: "gray" }}>
+                      CPLY의 모든 상품은 100% 정품입니다.
+                    </li>
+                  </ul>
+                  <ul className="dropdown">
+                    <form>
+                      <select>
+                        <option value="none">[컬러]를 선택하세요</option>
+                        {opt1.map((v, i) => {
+                          return <option value="none">{v}</option>;
+                        })}
+                      </select>
+                      <select>
+                        <option value="none">[사이즈]를 선택하세요</option>
+                        {/* {if(opt2 === true){ opt2.map((v, i) => {
+                          return <option value="none">{v}</option>;
+                        })} else{ return();}  */}
+                      </select>
+                    </form>
+                  </ul>
+                  <ul className="price">
+                    <li>
+                      <h2>총 상품 금액</h2>
+                    </li>
+                    <li>
+                      <h1 style={{ color: "#ff204b" }}>0원</h1>
+                    </li>
+                  </ul>
+                  <ul className="pay">
+                    <li className="buy">
+                      <button type="submit">바로구매</button>
+                    </li>
+                    <li className="cart">
+                      <button onClick={message}>
+                        <i className="fa fa-shopping-cart"></i>
+                      </button>
+                    </li>
+                    <li className="heart">
+                      <button onClick={handleLike}>
+                        <FontAwesomeIcon
+                          icon={hrt === 0 ? regularHeart : solidHeart}
+                          style={{ color: hrt === 0 ? " " : "#ff204b" }}
+                        />
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              );
+            })}
+        </First>
+      )}
     </Div>
   );
 };
