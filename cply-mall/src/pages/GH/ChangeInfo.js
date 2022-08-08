@@ -2,6 +2,8 @@ import React, { memo } from "react";
 import styled from "styled-components";
 import RegexHelper from "../../libs/RegexHelper";
 import DaumPostcode from 'react-daum-postcode';
+import { useDispatch,useSelector } from "react-redux";
+import { getUserItem } from "../../slices/KH/UserSlice";
 
 const ChangeInfoCss = styled.div`
   width: 100%;
@@ -160,6 +162,18 @@ const ChangeInfo = memo(() => {
       zonecode:'',
       blo:false
   })
+
+  const dispatch = useDispatch();
+
+  const {data,loading,error} = useSelector((state)=>state.user);
+
+  //페이지가 마운트되면서 회원정보를 가져온다
+  React.useEffect(()=> {
+    dispatch(getUserItem({
+      userid:'hisaishijjo11',
+      userpw:123123123
+    }))
+  },[dispatch])
 
     //주소정보 이벤트
     const addrInfo = React.useCallback((e)=> {

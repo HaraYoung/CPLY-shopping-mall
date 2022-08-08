@@ -19,9 +19,13 @@ export const getUserList = createAsyncThunk("UserSlice/getUserList", async (payl
 //단일행 데이터 조회를 위한 비동기 함수
 export const getUserItem = createAsyncThunk("UserSlice/getUserItem", async (payload,{rejectWithValue})=> {
     let result = null;
-
+    console.log (payload.userpw)
     try {
-        result = await axios.get(`${API_URL}/${payload?.userid}/`);
+        result = await axios.get(`${API_URL}/${payload?.userid}/`,{
+            params:{
+                userpw:payload.userpw
+            }
+        });
     }catch(err) {
         //에러 발생시 'rejectWithValue()'함수에 에러 데이터를 전달하면 extraReducer의 rejected의 함수가 호출된다
         result = rejectWithValue(err.response);
@@ -32,7 +36,7 @@ export const getUserItem = createAsyncThunk("UserSlice/getUserItem", async (payl
 export const postUserItem = createAsyncThunk("UserSlice/postUserItem", async (payload,{rejectWithValue})=> {
     let result = null;
     try {
-        result = await axios.post('http://localhost:3001/user',{
+        result = await axios.post(API_URL,{
             userid:payload.userid,
             userpw:payload.userpw,
             username:payload.username,

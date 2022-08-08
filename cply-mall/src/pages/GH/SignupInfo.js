@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import DaumPostcode from 'react-daum-postcode';
 import { useSelector, useDispatch } from "react-redux";
 import { getUserItem,postUserItem,postItem } from '../../slices/KH/UserSlice';
+import { postSession } from '../../slices/KH/SessionSlice';
 import dayjs from 'dayjs';
 const SignupInfoCss = styled.div`
     width: 100%;
@@ -189,13 +190,19 @@ const SignupInfo = memo(() => {
     
     const [CompleteState,setCompleteState] = React.useState({
         complete:false,
-        idcheck:false
+        idcheck:false,
+        userid:'',
+        userpw:'',
     }) 
 
     React.useEffect(()=> {
         if (CompleteState.complete) {
             if (data.rt === 200 && window.confirm('입력하신 내용으로 정보가 저장됩니다.계속하시겠습니까?')) {
                 window.alert('회원가입이 완료되었습니다.');
+                dispatch(postSession({
+                    userid:CompleteState.userid,
+                    userpw:CompleteState.userpw
+                }))
                 navigate('/');
             }else if (data.rt === 490) {
                 window.alert(error)
@@ -206,7 +213,7 @@ const SignupInfo = memo(() => {
             }
         }
 
-    },[data,CompleteState,error])
+    },[data,CompleteState,error,navigate,dispatch])
     //가입하기버튼 submit
     const SignupInfoSubmit = React.useCallback((e)=> {
         e.preventDefault();
@@ -281,7 +288,9 @@ const SignupInfo = memo(() => {
         }))
         setCompleteState({
             ...CompleteState,
-            complete:true
+            complete:true,
+            userid:current.userid.value,
+            userpw:current.userpw.value,
         })
         
     },[overlap,dispatch,CompleteState])
