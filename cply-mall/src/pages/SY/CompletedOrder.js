@@ -233,10 +233,6 @@ const OrderDetail = memo(() => {
         <h3>결제 정보</h3>
         {/*map()을 사용- [결제수단,총 상품금액, 총 사용 포인트, 배송비] */}
         <div className="borderTop">
-          <span>결제 수단</span>
-          <span>0000원</span>
-        </div>
-        <div>
           <span>총 상품 금액</span>
           <span>0000원</span>
         </div>

@@ -232,14 +232,14 @@ const ChangeInfo = memo(() => {
         RegexHelper.minLength(current.phone,10,'전화번호는 10자 부터 입력 가능합니다');
         RegexHelper.maxLength(current.phone,11,'전화번호는 11자 까지만 입력 가능합니다');
         //이메일 유효성
-        RegexHelper.value(current.email,'이메일은 필수 정보입니다');
-        RegexHelper.email(current.email,'이메일 형식에 맞지않습니다');
+        RegexHelper.value(current.useremail,'이메일은 필수 정보입니다');
+        RegexHelper.email(current.useremail,'이메일 형식에 맞지않습니다');
         //주소 유효성
         /**
          * 주소검색 에이피아이 연동해야함
          */
-        RegexHelper.value(current.addr,'우편번호를 입력해 주세요');
-        RegexHelper.num(current.addr,'우편번호는 숫자만 입력 가능합니다');
+        RegexHelper.value(current.zonecode,'우편번호를 입력해 주세요');
+        RegexHelper.num(current.zonecode,'우편번호는 숫자만 입력 가능합니다');
         RegexHelper.value(current.addr1,'기본주소를 입력해 주세요');
         RegexHelper.value(current.addr2,'나머지 주소를 입력해 주세요');
     }catch(e) {
@@ -266,7 +266,7 @@ const ChangeInfo = memo(() => {
             </h2>
           </div>
           <div className="signup-info-div2">
-            <input type="text" name="id" disabled />
+            <input type="text" name="userid" disabled />
           </div>
         </div>
         <div className="signup-info-div-box">
@@ -276,7 +276,7 @@ const ChangeInfo = memo(() => {
             </h2>
           </div>
           <div className="signup-info-div2">
-            <input type="password" name="pw" disabled />
+            <input type="password" name="userpw" disabled />
           </div>
           <div className="signup-info-div3">
         {pwChangeButton ? (
@@ -328,7 +328,7 @@ const ChangeInfo = memo(() => {
             </h2>
           </div>
           <div className="signup-info-div2">
-            <input type="text" name="name" disabled />
+            <input type="text" name="username" disabled />
           </div>
         </div>
         <div className="signup-info-div-box">
@@ -353,7 +353,7 @@ const ChangeInfo = memo(() => {
           <div className="signup-info-div2">
             <input
               type="text"
-              name="email"
+              name="useremail"
             />
           </div>
         </div>
@@ -364,7 +364,7 @@ const ChangeInfo = memo(() => {
             </h2>
           </div>
           <div className="signup-info-div2">
-            <input type="text" name="addr" defaultValue={daumJuso.zonecode}/>
+            <input type="text" name="zonecode" defaultValue={daumJuso.zonecode}/>
           </div>
           <div className="signup-info-div3">
             <span onClick={addrSearchButton}>주소검색</span>

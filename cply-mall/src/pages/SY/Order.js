@@ -13,7 +13,6 @@ import { faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 
 //Slice에 정의된 액션함수들 참조
-import { orderName } from "../../slices/SY/OrderStateSlice"; //상태값을 갱신하는 함수들
 
 import Delivery from "./Delivery";
 import ReviewWrite from "./ReviewWrite";
@@ -154,10 +153,6 @@ const OrderArea = styled.div`
 `;
 
 const Order = memo(() => {
-  //dispatch함수 생성
-  const dispatch = useDispatch();
-  //hook를 통해 slice가 관리하는 상태값 가져오기
-  const { stateName } = useSelector((state) => state.orderState);
   //delivery컴포넌트 상태값
   const [delivery, setDelivery] = React.useState(false);
   const onClickDelivery = () => {
@@ -239,8 +234,8 @@ const Order = memo(() => {
             <div className="info2">
               <span>000원</span>
               <span className="orderSituation">
-                <div defaultValue={dispatch(orderName(1))}>
-                  {stateName}
+                <div>
+                  {/* {stateName&& dispatch(orderName(1)} */}
                   {/*[주문확인중,배송중,배송완료,구매확정]인 경우를 따져 선택값 or 컴포넌트 */}
                 </div>
                 {/*클릭시 교환/반품 페이지로 이동 */}
