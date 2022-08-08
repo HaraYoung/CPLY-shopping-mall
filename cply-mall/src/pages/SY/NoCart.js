@@ -14,7 +14,7 @@ const NoCartArea = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2em 0;
+  padding: 5em 0;
   a {
     text-decoration: none;
     color: #000;
@@ -33,7 +33,7 @@ const NoCart = memo(() => {
     <NoCartArea>
       <FontAwesomeIcon icon={faCartShopping} size="4x" />
       <h3>장바구니에 상품을 담아보세요.</h3>
-      <NavLink to="#">쇼핑 계속하기</NavLink>
+      <NavLink to="/">쇼핑 계속하기</NavLink>
     </NoCartArea>
   );
 });

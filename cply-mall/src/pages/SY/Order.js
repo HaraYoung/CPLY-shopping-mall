@@ -13,7 +13,6 @@ import { faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 
 //Slice에 정의된 액션함수들 참조
-import { orderName } from "../../slices/SY/basicsSlice"; //상태값을 갱신하는 함수들
 
 import Delivery from "./Delivery";
 import ReviewWrite from "./ReviewWrite";
@@ -154,15 +153,6 @@ const OrderArea = styled.div`
 `;
 
 const Order = memo(() => {
-  //dispatch함수 생성
-  const dispatch = useDispatch();
-  //hook를 통해 slice가 관리하는 상태값 가져오기
-  //const { stateName } = useSelector((state) => state.orderState);
-
-  React.useEffect(()=>{
-    
-  })
-
   //delivery컴포넌트 상태값
   const [delivery, setDelivery] = React.useState(false);
   const onClickDelivery = () => {
