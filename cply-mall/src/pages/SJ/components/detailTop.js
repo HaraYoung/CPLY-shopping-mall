@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark as Xmark } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons"; // ♡
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons"; // ♥︎
 // CSS적용을 위한 컴포넌트
@@ -125,6 +126,31 @@ const First = styled.section`
       }
     }
   }
+  .amount {
+    padding: 1em 1.8em;
+    background-color: #f5f6f6;
+    border-radius: 8px;
+    flex-direction: column;
+    li:nth-child(1) {
+      ul {
+        li:nth-child(2) {
+          button {
+            border: none;
+            svg {
+              font-size: 1.5em;
+            }
+          }
+        }
+      }
+    }
+    li:nth-child(1),
+    li:nth-child(2) {
+      ul {
+        padding-left: 1.8em;
+        justify-content: space-between;
+      }
+    }
+  }
   .price {
     justify-content: space-between;
     margin-right: 0;
@@ -179,6 +205,8 @@ const DetailGoods = () => {
 
   const [opc, setopc] = useState(0);
   const [hrt, setHrt] = useState(0);
+  const [co, setCo] = useState(null);
+  const [si, setSi] = useState(null);
 
   // 컴포넌트가 마운트되면 데이터 조회를 위한 액션함수를 디스패치 함
   React.useEffect(() => {
@@ -225,6 +253,18 @@ const DetailGoods = () => {
     },
     [navigate]
   );
+
+  const onOpt = React.useCallback((e) => {
+    e.preventDefault();
+    const current = e.target;
+    const value = current[current.selectedIndex].value;
+    const select = current.dataset.select;
+    if (select === "1") {
+      setCo((co) => value);
+    } else {
+      setSi((si) => value);
+    }
+  }, []);
   return (
     <Div>
       <Spinner visible={loading} />
@@ -293,10 +333,12 @@ const DetailGoods = () => {
               let size = [v.opt2];
 
               let opt1 = color ? color[0].split(",") : null;
-              let opt2 = size[0] !== null ? size[0].split(",") : size === null;
+              let opt2 = size[0] !== null ? size[0].split(",") : null;
 
-              console.log(opt2);
-
+              let cnt = parseInt(0);
+              if (v.star) {
+                cnt++;
+              }
               return (
                 <div className="des">
                   <ul>
@@ -326,7 +368,9 @@ const DetailGoods = () => {
                       })}
                     </li>
                     <li className="reviewAmount">
-                      <a href="#review">0개 리뷰 보기</a>
+                      <a href="#review">
+                        <b>{cnt}</b>개 리뷰 보기
+                      </a>
                     </li>
                     <li>
                       <b>{v.sales}</b>개 구매중
@@ -347,20 +391,69 @@ const DetailGoods = () => {
                   </ul>
                   <ul className="dropdown">
                     <form>
-                      <select>
-                        <option value="none">[컬러]를 선택하세요</option>
-                        {opt1.map((v, i) => {
-                          return <option value="none">{v}</option>;
-                        })}
-                      </select>
-                      <select>
-                        <option value="none">[사이즈]를 선택하세요</option>
-                        {/* {if(opt2 === true){ opt2.map((v, i) => {
-                          return <option value="none">{v}</option>;
-                        })} else{ return();}  */}
-                      </select>
+                      {opt1 === null ? (
+                        <select disabled>
+                          <option value="none">[컬러]를 선택하세요</option>
+                        </select>
+                      ) : (
+                        <select data-select="1" onClick={onOpt}>
+                          <option value="">[컬러]를 선택하세요</option>
+                          {opt1.map((v, i) => {
+                            return <option value={v}>{v}</option>;
+                          })}
+                        </select>
+                      )}
+                      {opt2 === null ? (
+                        <select disabled>
+                          <option value="none">[사이즈]를 선택하세요</option>
+                        </select>
+                      ) : (
+                        <select data-select="2" onClick={onOpt}>
+                          <option value="">[사이즈]를 선택하세요</option>
+                          {opt2.map((v, i) => {
+                            return <option value={v}>{v}</option>;
+                          })}
+                        </select>
+                      )}
                     </form>
                   </ul>
+                  <div className="control-amout">
+                    <ul className="amount">
+                      <li>
+                        <ul>
+                          <li>
+                            <h5>
+                              {co} {si}
+                            </h5>
+                          </li>
+                          <li>
+                            <button type="button">
+                              <FontAwesomeIcon icon={Xmark} />
+                            </button>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <ul>
+                          <li>
+                            <form>
+                              <input
+                                type="number"
+                                defaultValue="1"
+                                min="1"
+                                max="20"
+                              />
+                            </form>
+                          </li>
+                          <li>
+                            <h4>
+                              <b>{v.price}</b>원
+                            </h4>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
                   <ul className="price">
                     <li>
                       <h2>총 상품 금액</h2>
