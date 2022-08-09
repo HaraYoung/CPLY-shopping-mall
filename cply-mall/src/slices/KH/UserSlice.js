@@ -62,17 +62,15 @@ export const postUserItem = createAsyncThunk("UserSlice/postUserItem", async (pa
 //데이터 수정을 위한 비동기 함수
 export const putUserItem = createAsyncThunk("UserSlice/putUserItem", async (payload,{rejectWithValue})=> {
     let result = null;
-    const date = new Date();
-    const nowDate = date.toLocaleDateString();
     try {
-        result = await axios.put(`${API_URL}${payload.userid}/`,{
-            userpw:payload.newpw1 ? payload.newpw1 : '',
-            phone:payload.phone ? payload.phone : '',
-            useremail:payload.useremail ? payload.useremail : '',
-            zonecode:payload.zonecode ? payload.zonecode : '',
-            addr1:payload.addr1 ? payload.addr1 : '',
-            addr2:payload.addr2 ? payload.addr2 : '',
-            editdate:nowDate ? payload.nowDate : '',
+        result = await axios.put(`${API_URL}/${payload.userid}/`,{
+            userpw:payload.userpw,
+            phone:payload.phone,
+            useremail:payload.useremail,
+            zonecode:payload.zonecode,
+            addr1:payload.addr1,
+            addr2:payload.addr2,
+            editdate:payload.editdate,
             point:payload.point ? payload.point : ''
         });
     }catch(err) {
