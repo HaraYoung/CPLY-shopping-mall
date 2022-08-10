@@ -71,6 +71,7 @@ export const putUserItem = createAsyncThunk("UserSlice/putUserItem", async (payl
             addr1:payload.addr1,
             addr2:payload.addr2,
             editdate:payload.editdate,
+            isout:payload.isout ? payload.isout : '',
             point:payload.point ? payload.point : ''
         });
     }catch(err) {
