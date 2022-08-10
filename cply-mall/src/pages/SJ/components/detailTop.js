@@ -16,6 +16,8 @@ import { getDetail } from "../../slices/detailGoodsSlice";
 import Spinner from "../../subComponents/Spinner";
 import Error from "../../subComponents/Error";
 
+import Insert from "../../subComponents/insert";
+
 const Div = styled.div`
   margin: auto;
   padding-top: 10em;
@@ -131,17 +133,8 @@ const First = styled.section`
     background-color: #f5f6f6;
     border-radius: 8px;
     flex-direction: column;
-    li:nth-child(1) {
-      ul {
-        li:nth-child(2) {
-          button {
-            border: none;
-            svg {
-              font-size: 1.5em;
-            }
-          }
-        }
-      }
+    .nbsp {
+      font-weight: 500;
     }
     li:nth-child(1),
     li:nth-child(2) {
@@ -205,8 +198,9 @@ const DetailGoods = () => {
 
   const [opc, setopc] = useState(0);
   const [hrt, setHrt] = useState(0);
-  const [co, setCo] = useState(null);
-  const [si, setSi] = useState(null);
+  const [co, setCo] = useState("");
+  const [si, setSi] = useState("");
+  const [sum, setSum] = useState(0);
 
   // 컴포넌트가 마운트되면 데이터 조회를 위한 액션함수를 디스패치 함
   React.useEffect(() => {
@@ -232,6 +226,10 @@ const DetailGoods = () => {
     }
   }, []);
 
+  const onfoo = React.useCallback((e) => {
+    console.log(e.target);
+  }, []);
+
   const handleLike = React.useCallback(
     (e) => {
       e.preventDefault();
@@ -254,17 +252,53 @@ const DetailGoods = () => {
     [navigate]
   );
 
-  const onOpt = React.useCallback((e) => {
-    e.preventDefault();
-    const current = e.target;
-    const value = current[current.selectedIndex].value;
-    const select = current.dataset.select;
-    if (select === "1") {
-      setCo((co) => value);
-    } else {
-      setSi((si) => value);
-    }
-  }, []);
+  const onOpt = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      const current = e.target;
+      const value = current[current.selectedIndex].value;
+      const select = current.dataset.select;
+      const price = current.dataset.price;
+
+      if (select === "1") {
+        setCo((co) => value);
+      } else if (select === "2") {
+        setSi((si) => value);
+      }
+
+      const insertHTML = document.querySelector(".control-amount");
+      insertHTML.insertAdjacentHTML(
+        "beforeend",
+        ` <ul className="amount">
+        <li className="nbsp"><b>` +
+          co +
+          "&nbsp;" +
+          si +
+          `
+          </b>
+        </li>
+        <li>
+          <ul>
+            <li>
+              <input type="number" value="1" min="1" max="20" />
+            </li>
+            <li>
+              <h4>
+                <span>` +
+          price +
+          `</span>` +
+          "원" +
+          `
+              </h4>
+            </li>
+          </ul>
+        </li>
+        <button>취소</button>
+      </ul>`
+      );
+    },
+    [co, si]
+  );
   return (
     <Div>
       <Spinner visible={loading} />
@@ -393,13 +427,23 @@ const DetailGoods = () => {
                     <form>
                       {opt1 === null ? (
                         <select disabled>
-                          <option value="none">[컬러]를 선택하세요</option>
+                          <option value="none" disabled>
+                            [컬러]를 선택하세요
+                          </option>
                         </select>
                       ) : (
-                        <select data-select="1" onClick={onOpt}>
+                        <select
+                          data-select="1"
+                          data-price={v.price}
+                          onClick={onOpt}
+                        >
                           <option value="">[컬러]를 선택하세요</option>
                           {opt1.map((v, i) => {
-                            return <option value={v}>{v}</option>;
+                            return (
+                              <option key={i} onClick={onfoo} value={v}>
+                                {v}
+                              </option>
+                            );
                           })}
                         </select>
                       )}
@@ -408,52 +452,24 @@ const DetailGoods = () => {
                           <option value="none">[사이즈]를 선택하세요</option>
                         </select>
                       ) : (
-                        <select data-select="2" onClick={onOpt}>
+                        <select
+                          data-select="2"
+                          data-price={v.price}
+                          onClick={onOpt}
+                        >
                           <option value="">[사이즈]를 선택하세요</option>
                           {opt2.map((v, i) => {
-                            return <option value={v}>{v}</option>;
+                            return (
+                              <option value={v} key={i} onClick={onfoo}>
+                                {v}
+                              </option>
+                            );
                           })}
                         </select>
                       )}
                     </form>
                   </ul>
-                  <div className="control-amout">
-                    <ul className="amount">
-                      <li>
-                        <ul>
-                          <li>
-                            <h5>
-                              {co} {si}
-                            </h5>
-                          </li>
-                          <li>
-                            <button type="button">
-                              <FontAwesomeIcon icon={Xmark} />
-                            </button>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <ul>
-                          <li>
-                            <form>
-                              <input
-                                type="number"
-                                defaultValue="1"
-                                min="1"
-                                max="20"
-                              />
-                            </form>
-                          </li>
-                          <li>
-                            <h4>
-                              <b>{v.price}</b>원
-                            </h4>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
+                  <div className="control-amount"></div>
                   <ul className="price">
                     <li>
                       <h2>총 상품 금액</h2>
