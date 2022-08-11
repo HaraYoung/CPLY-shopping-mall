@@ -16,7 +16,7 @@ import Footer from "./pages/GH/Footer";
 import MyPage from "./pages/GH/MyPage";
 import Juso from "./pages/GH/JusoPopup";
 import MemberPayment from "./pages/GH/MemberPayment";
-// import DetailGoods from "./pages/SJ/detailGoods";
+import DetailGoods from "./pages/SJ/detailGoods";
 const App = memo(() => {
   return (
     <div>
@@ -35,7 +35,7 @@ const App = memo(() => {
             <Route path="/cart" element={<Cart />} />
             <Route path="/mypage/*" element={<MyPage />} />
             <Route path="/payment" element={<MemberPayment />} />
-            {/* <Route path="/detailGoods" element={<DetailGoods />} /> */}
+            <Route path="/detailGoods" element={<DetailGoods />} />
           </Route>
         </Route>
         <Route path="/juso" element={<Juso />} />

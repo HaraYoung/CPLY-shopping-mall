@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark as Xmark } from "@fortawesome/free-solid-svg-icons";
@@ -11,12 +11,10 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
 // Slice에 정의된 액션함수들 참조
-import { getDetail } from "../../slices/detailGoodsSlice";
+import { getDetail } from "../../../slices/SJ/detailGoodsSlice";
 
-import Spinner from "../../subComponents/Spinner";
-import Error from "../../subComponents/Error";
-
-import Insert from "../../subComponents/insert";
+import Spinner from "../../../subComponents/Spinner";
+import Error from "../../../subComponents/Error";
 
 const Div = styled.div`
   margin: auto;
@@ -182,7 +180,7 @@ const First = styled.section`
 `;
 
 const DetailGoods = () => {
-  React.useEffect(() => console.clear(), []);
+  useEffect(() => console.clear(), []);
 
   const navigate = useNavigate();
 
@@ -201,12 +199,19 @@ const DetailGoods = () => {
   const [co, setCo] = useState("");
   const [si, setSi] = useState("");
   const [sum, setSum] = useState(0);
+  const amountRef = useRef();
 
   // 컴포넌트가 마운트되면 데이터 조회를 위한 액션함수를 디스패치 함
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(getDetail());
   }, [dispatch]);
 
+  useEffect(() => {
+    // si 또는 co의 값이 둘 중 하나만 있을 경우, 하나만 값이 변경되어도 태그가 추가
+    // 두 개 다 값이 있을 경우, co의 값이 변동이 되어야만 태그가 생성되어야 함
+    if (si !== null && co !== null) {
+    }
+  }, [si, co]);
   const onClick = React.useCallback((e) => {
     e.preventDefault();
     const img = e.target;
@@ -224,10 +229,6 @@ const DetailGoods = () => {
     } else {
       setopc(4);
     }
-  }, []);
-
-  const onfoo = React.useCallback((e) => {
-    console.log(e.target);
   }, []);
 
   const handleLike = React.useCallback(
@@ -252,53 +253,22 @@ const DetailGoods = () => {
     [navigate]
   );
 
-  const onOpt = React.useCallback(
-    (e) => {
-      e.preventDefault();
-      const current = e.target;
-      const value = current[current.selectedIndex].value;
-      const select = current.dataset.select;
-      const price = current.dataset.price;
+  const onOpt1 = React.useCallback((e) => {
+    e.preventDefault();
+    const current = e.target;
+    const value = current[current.selectedIndex].value;
 
-      if (select === "1") {
-        setCo((co) => value);
-      } else if (select === "2") {
-        setSi((si) => value);
-      }
+    setCo((co) => value);
+  }, []);
 
-      const insertHTML = document.querySelector(".control-amount");
-      insertHTML.insertAdjacentHTML(
-        "beforeend",
-        ` <ul className="amount">
-        <li className="nbsp"><b>` +
-          co +
-          "&nbsp;" +
-          si +
-          `
-          </b>
-        </li>
-        <li>
-          <ul>
-            <li>
-              <input type="number" value="1" min="1" max="20" />
-            </li>
-            <li>
-              <h4>
-                <span>` +
-          price +
-          `</span>` +
-          "원" +
-          `
-              </h4>
-            </li>
-          </ul>
-        </li>
-        <button>취소</button>
-      </ul>`
-      );
-    },
-    [co, si]
-  );
+  const onOpt2 = React.useCallback((e) => {
+    e.preventDefault();
+    const current = e.target;
+    const value = current[current.selectedIndex].value;
+
+    setSi((si) => value);
+  }, []);
+
   return (
     <Div>
       <Spinner visible={loading} />
@@ -366,7 +336,7 @@ const DetailGoods = () => {
               let color = [v.opt1];
               let size = [v.opt2];
 
-              let opt1 = color ? color[0].split(",") : null;
+              let opt1 = color[0] !== null ? color[0].split(",") : null;
               let opt2 = size[0] !== null ? size[0].split(",") : null;
 
               let cnt = parseInt(0);
@@ -374,7 +344,7 @@ const DetailGoods = () => {
                 cnt++;
               }
               return (
-                <div className="des">
+                <div className="des" key={i}>
                   <ul>
                     <h1>{v.title}</h1>
                   </ul>
@@ -390,12 +360,13 @@ const DetailGoods = () => {
                   <ul>
                     <li>
                       {[...new Array(v.star)].map((v, i) => {
-                        return <i className="fa fa-star"></i>;
+                        return <i className="fa fa-star" key={i}></i>;
                       })}
                       {[...new Array(5 - v.star)].map((v, i) => {
                         return (
                           <i
                             className="fa fa-star"
+                            key={i}
                             style={{ color: "lightgray" }}
                           ></i>
                         );
@@ -425,51 +396,39 @@ const DetailGoods = () => {
                   </ul>
                   <ul className="dropdown">
                     <form>
-                      {opt1 === null ? (
-                        <select disabled>
-                          <option value="none" disabled>
-                            [컬러]를 선택하세요
-                          </option>
-                        </select>
-                      ) : (
-                        <select
-                          data-select="1"
-                          data-price={v.price}
-                          onClick={onOpt}
-                        >
-                          <option value="">[컬러]를 선택하세요</option>
-                          {opt1.map((v, i) => {
+                      <select
+                        data-price={v.price}
+                        onChange={onOpt1}
+                        style={{ display: opt1 === null && "none" }}
+                      >
+                        <option value="">[컬러]를 선택하세요</option>
+                        {opt1 &&
+                          opt1.map((v, i) => {
                             return (
-                              <option key={i} onClick={onfoo} value={v}>
+                              <option value={v} key={i}>
                                 {v}
                               </option>
                             );
                           })}
-                        </select>
-                      )}
-                      {opt2 === null ? (
-                        <select disabled>
-                          <option value="none">[사이즈]를 선택하세요</option>
-                        </select>
-                      ) : (
-                        <select
-                          data-select="2"
-                          data-price={v.price}
-                          onClick={onOpt}
-                        >
-                          <option value="">[사이즈]를 선택하세요</option>
-                          {opt2.map((v, i) => {
+                      </select>
+                      <select
+                        data-price={v.price}
+                        onChange={onOpt2}
+                        style={{ display: opt2 === null && "none" }}
+                      >
+                        <option value="">[사이즈]를 선택하세요</option>
+                        {opt2 &&
+                          opt2.map((v, i) => {
                             return (
-                              <option value={v} key={i} onClick={onfoo}>
+                              <option value={v} key={i}>
                                 {v}
                               </option>
                             );
                           })}
-                        </select>
-                      )}
+                      </select>
                     </form>
                   </ul>
-                  <div className="control-amount"></div>
+                  <div ref={amountRef}></div>
                   <ul className="price">
                     <li>
                       <h2>총 상품 금액</h2>
