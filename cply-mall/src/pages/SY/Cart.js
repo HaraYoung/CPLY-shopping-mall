@@ -250,40 +250,40 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
 
   /** 최초 마운트 혹은 QueryString이 변경될 때 마다 hook -> 리덕스를 통해 목록을 조회한다. */
   React.useEffect(() => {
-      //false=최초 등장시, true=최초 등장 이후
-      dispatch(
-        getList({
-          query: query,
-        })
-      );
-  }, [ dispatch, query]);
-  console.log(data);
+    //false=최초 등장시, true=최초 등장 이후
+    dispatch(
+      getList({
+        query: query,
+      })
+    );
+  }, [dispatch, query]);
 
   //품절된 상품의 상태값
   const [soldOut, setSoldOut] = React.useState(true);
 
-
   //품절된 상품 삭제 이벤트
   const onSoldOutDelete = () => {
-    if(data.item.qty === 0){
+    if (data.item.qty === 0) {
       if (window.confirm("품절된 상품을 삭제하시겠습니까?")) {
-      alert("품절된 상품이 삭제되었습니다.");
-      setSoldOut(!soldOut);
-      dispatch(deleteItem({
-        query: query,
-      }))
-    }}
+        alert("품절된 상품이 삭제되었습니다.");
+        setSoldOut(!soldOut);
+        dispatch(
+          deleteItem({
+            id: query.id,
+          })
+        );
+      }
+    }
   };
   //수량 옵션 상태값과 이벤트
   const initialState = { count: 0 };
 
   const [state, amount] = React.useReducer(reducer, initialState);
-
-
+  
   //상품의 상태값
   const [ItemCheck, setItemCheck] = React.useState(true);
 
-  //체크 박스
+  //체크 박스-data의 id
   const CartItem = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
   //체크박스 상태를 관리하기 위한 배열
@@ -320,223 +320,208 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
   const onChoiceDelete = () => {
     if (window.confirm("선택하신 상품을 삭제하시겠습니까?")) {
       alert("선택하신 상품이 삭제되었습니다.");
-      
     }
   };
-  //총 상품 금액 
-  const sum= ()=>{
-    let sumItem= 0;
-    if(checkedList === true){
-      data.item.map((v, i)=> {
-        let k= v.qty * v.price
-        sumItem+= k
-        return sumItem
-      })
-    }
-  }
-  console.log(sum())
+  let totalSum = [];
+  let DSum = null;
   return (
     <>
       <Spinner visible={loading} />
       {error ? (
         <ErrorView error={error} />
-      ) : (
-        data ? (
-          <CartArea>
-            <div className="checkButArea">
-              <span>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="allCheck"
-                    onClick={(e) => {
-                      onCheckedAll(e.target.checked)
-                    }}
-                    checked={
-                      checkedList.length === data.item.length ? true : false
-                    }
-                  />
-                  전체 선택
-                  <span>
-                    ({checkedList.length}/{data.item.length})
-                  </span>
-                </label>
-              </span>
-              <span>
-                <button type="button" onClick={onChoiceDelete}>
-                  선택 삭제
-                </button>
-                <button type="button" onClick={onSoldOutDelete}>
-                  품절 삭제
-                </button>
-              </span>
+      ) : data ? (
+        <CartArea>
+          <div className="checkButArea">
+            <span>
+              <label>
+                <input
+                  type="checkbox"
+                  name="allCheck"
+                  onClick={(e) => {
+                    onCheckedAll(e.target.checked);
+                  }}
+                  checked={
+                    checkedList.length === data.item.length ? true : false
+                  }
+                />
+                전체 선택
+                <span>
+                  ({checkedList.length}/{data.item.length})
+                </span>
+              </label>
+            </span>
+            <span>
+              <button type="button" onClick={onChoiceDelete}>
+                선택 삭제
+              </button>
+              <button type="button" onClick={onSoldOutDelete}>
+                품절 삭제
+              </button>
+            </span>
+          </div>
+          <div className="ItemTitle">
+            <div className="Title1">
+              <span>상품 정보</span>
             </div>
-            <div className="ItemTitle">
-              <div className="Title1">
-                <span>상품 정보</span>
-              </div>
-              <div className="Title2">
-                <span>옵션</span>
-                <span>상품 금액</span>
-              </div>
+            <div className="Title2">
+              <span>옵션</span>
+              <span>상품 금액</span>
             </div>
-            {
-            data.item.map((item, index) => {
-              return (
-                <div className="ItemArea" key={index}>
-                  <div className="ItemInfoArea">
-                    <div className="ItemInfoTopArea">
-                      <div className="ItemInfo">
-                        <span>
-                          <input
-                            key={index}
-                            type="checkbox"
-                            onChange={(e) =>
-                              onCheckedElement(e.target.checked, index)
-                            }
-                            checked={checkedList.includes(index) ? true : false}
-                          />
-                        </span>
-                        <span>
-                          <img src={Img} alt="상품이미지" width="100px" />
-                        </span>
-                        <span>
-                          <p>{item.title}</p>
-                          <p>{item.price}원</p>
-                        </span>
-                        <FontAwesomeIcon
-                          icon={faXmark}
-                          size="2x"
-                          className="deleteItem"
-                          onClick={(e) => {
-                            setItemCheck(!ItemCheck);
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="ItemInfoButtonArea">
-                      <div className="ItemOption">
-                        <span>{item.goodsOption}</span>
-                        <div className="ItemNum">
-                          <div className="numOptionArea">
-                            <FontAwesomeIcon
-                              className="numOption"
-                              icon={faMinus}
-                              onClick={() =>
-                                amount({ type: "DECREMENT", step, min })
-                              }
-                            />
-                            <span>{item.qty}</span>
-                            <FontAwesomeIcon
-                              className="numOption"
-                              icon={faPlus}
-                              onClick={() =>
-                                amount({ type: "INCREMENT", step, max })
-                              }
-                            />
-                            <div className="optionPrice">
-                              <p>{(item.qty) * (item.price)}원</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="OrderArea">
-                        <div>{item.qty * item.price}원</div>
-                        <button type="button">주문하기</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-    
-            {/*품절된 상품 */}
-            {soldOut && (
-              <div className="ItemArea soldOut">
+          </div>
+          {data.item.map((item, index) => {
+            let sum = 0;
+            sum = item.qty * item.price;
+            totalSum.push(sum);
+            DSum = totalSum.reduce(function add(a, currValue) {
+              return a + currValue;
+            }, 0);
+            return (
+              <div className="ItemArea" key={index}>
                 <div className="ItemInfoArea">
                   <div className="ItemInfoTopArea">
                     <div className="ItemInfo">
                       <span>
-                        <input type="checkbox" name="ItemCheck" value="false" />
+                        <input
+                          key={index}
+                          type="checkbox"
+                          onChange={(e) =>
+                            onCheckedElement(e.target.checked, index)
+                          }
+                          checked={checkedList.includes(index) ? true : false}
+                        />
                       </span>
                       <span>
-                        <span>품절</span>
-                        {/*상품의 클래스에 soldOut이 있다면 추가할 태그*/}
                         <img src={Img} alt="상품이미지" width="100px" />
                       </span>
                       <span>
-                        <p>상품 이름</p>
-                        <p>000원</p>
+                        <p>{item.title}</p>
+                        <p>{item.price}원</p>
                       </span>
                       <FontAwesomeIcon
                         icon={faXmark}
                         size="2x"
                         className="deleteItem"
                         onClick={(e) => {
-                          setSoldOut(!soldOut);
+                          setItemCheck(!ItemCheck);
                         }}
                       />
                     </div>
                   </div>
                   <div className="ItemInfoButtonArea">
                     <div className="ItemOption">
-                      <span>옵션</span>
+                      <span>{item.goodsOption}</span>
                       <div className="ItemNum">
                         <div className="numOptionArea">
                           <FontAwesomeIcon
                             className="numOption"
                             icon={faMinus}
+                            onClick={() =>
+                              amount({ type: "DECREMENT", step, min })
+                            }
                           />
-                          <span>{state.count}</span>
+                          <span>{item.qty}</span>
                           <FontAwesomeIcon
                             className="numOption"
                             icon={faPlus}
+                            onClick={() =>
+                              amount({ type: "INCREMENT", step, max })
+                            }
                           />
                           <div className="optionPrice">
-                            <p>000원</p>
+                            <p>{item.qty * item.price}원</p>
                           </div>
                         </div>
                       </div>
                     </div>
-                    {/*soldOut클래스가 적용되어있을 경우 0원으로 바꾸고 구매하기 버튼 없대기 */}
-                    {
-                      <div className="OrderArea">
-                        <div>0000원</div>
-                      </div>
-                    }
+                    <div className="OrderArea">
+                      <div>{sum}원</div>
+                      <button type="button">주문하기</button>
+                    </div>
                   </div>
                 </div>
               </div>
-            )}
-            <div className="SumArea">
-              <div className="LeftSum">
-                <div>
-                  총 상품 금액
-                  <p>{sum()}</p>
+            );
+          })}
+          {/*품절된 상품 */}
+          {soldOut && (
+            <div className="ItemArea soldOut">
+              <div className="ItemInfoArea">
+                <div className="ItemInfoTopArea">
+                  <div className="ItemInfo">
+                    <span>
+                      <input type="checkbox" name="ItemCheck" value="false" />
+                    </span>
+                    <span>
+                      <span>품절</span>
+                      {/*상품의 클래스에 soldOut이 있다면 추가할 태그*/}
+                      <img src={Img} alt="상품이미지" width="100px" />
+                    </span>
+                    <span>
+                      <p>상품 이름</p>
+                      <p>000원</p>
+                    </span>
+                    <FontAwesomeIcon
+                      icon={faXmark}
+                      size="2x"
+                      className="deleteItem"
+                      onClick={(e) => {
+                        setSoldOut(!soldOut);
+                      }}
+                    />
+                  </div>
                 </div>
-                <div className="plus">+</div>
-                <div>
-                  배송비
-                  <p>000원</p>
+                <div className="ItemInfoButtonArea">
+                  <div className="ItemOption">
+                    <span>옵션</span>
+                    <div className="ItemNum">
+                      <div className="numOptionArea">
+                        <FontAwesomeIcon className="numOption" icon={faMinus} />
+                        <span>{state.count}</span>
+                        <FontAwesomeIcon className="numOption" icon={faPlus} />
+                        <div className="optionPrice">
+                          <p>000원</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/*soldOut클래스가 적용되어있을 경우 0원으로 바꾸고 구매하기 버튼 없대기 */}
+                  {
+                    <div className="OrderArea">
+                      <div>0000원</div>
+                    </div>
+                  }
                 </div>
               </div>
-              <div className="RightSum">
-                총 결제 금액
-                <p>0000원</p>
+            </div>
+          )}
+          <div className="SumArea">
+            <div className="LeftSum">
+              <div>
+                총 상품 금액
+                <p>{DSum}원</p>
+              </div>
+              <div className="plus">+</div>
+              <div>
+                배송비
+                <p>000원</p>
               </div>
             </div>
-            <div className="OrderButton">
-              <NavLink to="#">구매 하기</NavLink>
+            <div className="RightSum">
+              총 결제 금액
+              <p>{DSum}원</p>
             </div>
-          </CartArea>
-        ) : (
+          </div>
+          <div className="OrderButton">
+            <NavLink to="#">구매 하기</NavLink>
+          </div>
+        </CartArea>
+      ) : (
         <div>
           <NoCart />
         </div>
-      )
       )}
-      </>
-  )
+    </>
+  );
 });
 
 export default Cart;
