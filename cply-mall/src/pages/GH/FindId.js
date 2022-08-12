@@ -69,7 +69,7 @@ const FindIdCss = styled.div`
             border: none;
             border-radius: 5px;
             margin-top: 50px;
-            }
+        }
     }
 `;
 
@@ -85,6 +85,8 @@ const FindId = memo(() => {
 
     const {data,loading,error} = useSelector((state)=>state.user);
 
+
+    //data 값을 감시하고 값이 참일때 로직을 수행
     React.useEffect(()=> {
         if (findIdState.blo1 === false) {
             if (data.rt === 200 ) {
@@ -146,7 +148,7 @@ const FindId = memo(() => {
                     <h1>아이디 찾기</h1>
                     <p>가입시 등록한 전화번호를 입력하시면<br/>아이디의 일부를 알려드립니다</p>
                 </div>
-                {findIdState.blo1 === true ? (
+                {findIdState.blo1 ? (
                     <>                    
                         <form onSubmit={FindIdSubmit}>
                             <label htmlFor='username'>
