@@ -89,12 +89,16 @@ const MemberPayment = memo(() => {
             <form>
                 <h2>주문자 정보</h2>
                 <h3>이름</h3>
-                <input type='text' name='name' disabled/>
+                <input type='text' name='username' disabled/>
                 <h3>전화번호</h3>
                 <input type='text' name='phone' disabled/>
                 <h3>이메일</h3>
                 <input type='text' name='email' disabled/>
                 <h2>배송지 정보</h2>
+                <h3>이름</h3>
+                <input type='text' name='name'/>
+                <h3>전화번호</h3>
+                <input type='text' name='phone1' disabled/>
                 <h3>우편번호</h3>
                 <input type='text' name='zonecode' disabled/>
                 <h3>상세 주소</h3>

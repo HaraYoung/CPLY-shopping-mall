@@ -19,11 +19,27 @@ export const getUserList = createAsyncThunk("UserSlice/getUserList", async (payl
 //단일행 데이터 조회를 위한 비동기 함수
 export const getUserItem = createAsyncThunk("UserSlice/getUserItem", async (payload,{rejectWithValue})=> {
     let result = null;
-    console.log (payload.userpw)
+
     try {
         result = await axios.get(`${API_URL}/${payload?.userid}/`,{
             params:{
                 userpw:payload.userpw
+            }
+        });
+    }catch(err) {
+        //에러 발생시 'rejectWithValue()'함수에 에러 데이터를 전달하면 extraReducer의 rejected의 함수가 호출된다
+        result = rejectWithValue(err.response);
+    }
+    return result;
+});
+//단일행 데이터 조회 (아이디찾기 비밀번호찾기)
+export const getFindInfo = createAsyncThunk("UserSlice/getFindInfo", async (payload,{rejectWithValue})=> {
+    let result = null;
+    try {
+        result = await axios.get(`${API_URL}find/${payload.phone}`,{
+            params:{
+                username:payload.username,
+                userid:payload.userid
             }
         });
     }catch(err) {
@@ -117,6 +133,10 @@ const UserSlice = createSlice({
         [getUserItem.pending] : pending,
         [getUserItem.fulfilled]: fulfilled,
         [getUserItem.rejected] :rejected,
+        
+        [getFindInfo.pending] : pending,
+        [getFindInfo.fulfilled]: fulfilled,
+        [getFindInfo.rejected] :rejected,
 
         [postUserItem.pending] : pending,
         [postUserItem.fulfilled]: fulfilled,

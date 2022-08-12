@@ -60,11 +60,16 @@ const FindPw = memo(() => {
         const current = e.target;
         
         try {
+            //이름 유효성 검사
+            RegexHelper.value(current.username,'이름을 입력하세요');
+            RegexHelper.minLength(current.username,2,'이름을 다시 확인하세요');
+            RegexHelper.maxLength(current.username,20,'이름를 다시 확인하세요');
+
             //아이디 유효성 검사
-            RegexHelper.value(current.id,'아이디를 입력하세요');
-            RegexHelper.minLength(current.id,8,'아이디를 다시 확인하세요');
-            RegexHelper.maxLength(current.id,20,'아이디를 다시 확인하세요');
-            RegexHelper.engNum(current.id,'아이디를 다시 확인하세요');
+            RegexHelper.value(current.userid,'아이디를 입력하세요');
+            RegexHelper.minLength(current.userid,8,'아이디를 다시 확인하세요');
+            RegexHelper.maxLength(current.userid,20,'아이디를 다시 확인하세요');
+            RegexHelper.engNum(current.userid,'아이디를 다시 확인하세요');
 
             //전화번호 유효성 검사
             RegexHelper.value(current.phone,'전화번호를 입력하세요');
@@ -84,10 +89,14 @@ const FindPw = memo(() => {
                     <p>가입시 등록한 아이디와 전화번호를 입력하시면<br/>가입시 입력한 이메일로 임시 비밀번호를 전송해 드립니다</p>
                 </div>
                 <form onSubmit={FindPwSubmit}>
-                    <label htmlFor='id'>
+                    <label htmlFor='username'>
+                        가입시 등록한 이름
+                    </label>
+                    <input name='username' placeholder='이름'/>
+                    <label htmlFor='userid'>
                         가입시 등록한 아이디
                     </label>
-                    <input name='id' placeholder='아이디'></input>
+                    <input name='userid' placeholder='아이디'></input>
                     <label htmlFor='phone'>
                         가입시 등록한 전화번호
                     </label>
