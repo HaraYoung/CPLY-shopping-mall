@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import RegexHelper from '../../libs/RegexHelper';
 import { useSelector, useDispatch } from "react-redux";
-import { getFindInfo } from '../../slices/KH/UserSlice.js';
+import { getFindInfo,putUserItem } from '../../slices/KH/UserSlice.js';
 import { postSendMail } from '../../slices/KH/SendMailSlice';
 import Spinner from "../../components/Spinner";
 import ErrorView from "../../components/ErrorView";
@@ -60,17 +60,18 @@ const FindPwCss = styled.div`
     .find-pw-info{
         margin-top: 60px;
         text-align: center;
-        >a {
-            display: block;
-            width: 100%;
-            font-size: 20px;
-            background-color: #e74c3c;
-            color: #fff;
-            padding: 10px 0;
-            border: none;
-            border-radius: 5px;
-            margin-top: 50px;
-        }
+    }
+    a {
+        text-align: center;
+        display: block;
+        width: 100%;
+        font-size: 20px;
+        background-color: #e74c3c;
+        color: #fff;
+        padding: 10px 0;
+        border: none;
+        border-radius: 5px;
+        margin-top: 50px;
     }
 `;
 
@@ -80,6 +81,7 @@ const FindPw = memo(() => {
         blo1:true,
         useremailstate:'',
         username:'',
+        userid:''
     })
     const random = React.useCallback((n1,n2)=> {
         return parseInt(Math.random() * (n2 - n1 + 1)) + n1;
@@ -114,6 +116,10 @@ const FindPw = memo(() => {
                         receiver_name:findPwState.username,
                         receiver_email:data.item.useremail,
                         content:content
+                    }))
+                    dispatch(putUserItem({
+                        userpw:content,
+                        userid:findPwState.userid
                     }))
                 } else if (data.rt === 500) {
                     window.alert('회원정보를 다시 확인하세요');
@@ -160,7 +166,8 @@ const FindPw = memo(() => {
         setFindPwState({
             ...findPwState,
             blo1:false,
-            username:current.username.value
+            username:current.username.value,
+            userid:current.userid.value
         })
     },[dispatch,findPwState])
     return (
@@ -192,7 +199,10 @@ const FindPw = memo(() => {
                     <>
                     <Spinner visible={loading}/>
                     {error ? (
+                        <>
                         <ErrorView error={error}/>
+                        <Link to='/login'>로그인 페이지</Link>
+                        </>
                     ):(
                         data && (
                             <div className='find-pw-info'>

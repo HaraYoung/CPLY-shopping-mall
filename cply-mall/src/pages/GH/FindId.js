@@ -59,17 +59,17 @@ const FindIdCss = styled.div`
     .findid-id-info {
         margin-top: 60px;
         text-align: center;
-        >a {
-            display: block;
-            width: 100%;
-            font-size: 20px;
-            background-color: #e74c3c;
-            color: #fff;
-            padding: 10px 0;
-            border: none;
-            border-radius: 5px;
-            margin-top: 50px;
-        }
+    }
+    a {
+        display: block;
+        width: 100%;
+        font-size: 20px;
+        background-color: #e74c3c;
+        color: #fff;
+        padding: 10px 0;
+        border: none;
+        border-radius: 5px;
+        margin-top: 50px;
     }
 `;
 
@@ -166,7 +166,10 @@ const FindId = memo(() => {
                     <>
                     <Spinner visible={loading}/>
                     {error ? (
+                        <>
                         <ErrorView error={error}/>
+                        <Link to='/login'>로그인 페이지</Link>
+                        </>
                     ):(
                         data && (
                             <div className='findid-id-info'>

@@ -1,6 +1,6 @@
 import React, { memo,useEffect } from 'react';
 import styled from 'styled-components';
-
+import { useSelector, useDispatch } from "react-redux";
 
 const MemberPaymentCss = styled.div`
     width: 100%;
@@ -13,13 +13,15 @@ const MemberPaymentCss = styled.div`
         }
         >form {
             h2 {
+                margin-top: 3%;
                 padding-bottom: 1%;
                 border-bottom: 2px solid #ccc;
+                font-size: 23px;
             }
             h3 {
                 font-weight: normal;
                 margin: 5px 0 10px 0;
-                
+                font-size: 18px;
             }
             input {
                 width: 35%;
