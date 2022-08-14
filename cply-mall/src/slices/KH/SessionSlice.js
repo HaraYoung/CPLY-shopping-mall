@@ -5,7 +5,7 @@ import {pending,fulfilled,rejected} from '../../Util/Util';
 const API_URL = 'http://localhost:3001/session/login'
 
 //비동기 처리 함수 구현
-export const postSession = createAsyncThunk("SessionSlice,postSession", async (payload,{rejectWithValue})=> {
+export const postSession = createAsyncThunk("SessionSlice/postSession", async (payload,{rejectWithValue})=> {
     let result = null;
 
     try {
@@ -20,7 +20,7 @@ export const postSession = createAsyncThunk("SessionSlice,postSession", async (p
     return result;
 });
 //비동기 처리 함수 구현
-export const getSession = createAsyncThunk("SessionSlice,getSession", async (payload,{rejectWithValue})=> {
+export const getSession = createAsyncThunk("SessionSlice/getSession", async (payload,{rejectWithValue})=> {
     let result = null;
 
     try {
@@ -32,7 +32,7 @@ export const getSession = createAsyncThunk("SessionSlice,getSession", async (pay
     return result;
 });
 //비동기 처리 함수 구현
-export const deleteSession = createAsyncThunk("SessionSlice,deleteSession", async (payload,{rejectWithValue})=> {
+export const deleteSession = createAsyncThunk("SessionSlice/deleteSession", async (payload,{rejectWithValue})=> {
     let result = null;
 
     try {
