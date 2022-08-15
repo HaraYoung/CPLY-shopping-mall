@@ -1,7 +1,7 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {pending,fulfilled,rejected} from '../../Util/Util';
-
+import dayjs from 'dayjs';
 
 const API_URL = 'http://localhost:3001/payment';
 
@@ -36,6 +36,18 @@ export const postPaymentItem = createAsyncThunk("PaymentSlice/postPaymentItem", 
     let result = null;
     try {
         result = await axios.post(API_URL,{
+            orderdate:dayjs().format("YYYY-MM-DD"),
+            memo:payload.memo,
+            orderstate:'1',
+            name:payload.name,
+            phone:payload.phone,
+            zonecode:payload.phone,
+            addr1:payload.addr1,
+            addr2:payload.addr2,
+            user_id:payload.user_id,
+            product:payload.product,
+            username:payload.username,
+            state:"1",
 
         });
     }catch(err) {

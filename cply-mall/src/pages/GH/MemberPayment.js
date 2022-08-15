@@ -153,8 +153,21 @@ const MemberPayment = memo(() => {
     const [paymentInfo,setPaymentInfo] = React.useState({
         goods:'',
         point:'',
-        total:'',
+        total:12500,
         blo:false,
+    })
+
+    //db에 넣을 정보 상태값
+    const [dbPayment,setDbPayment] = React.useState({
+        memo:'',
+        name:'',
+        phone:'',
+        zonecode:'',
+        addr1:'',
+        addr2:'',
+        user_id:'',
+        product:'',
+        username:'',
     })
 
     //iamport 설정
@@ -170,11 +183,17 @@ const MemberPayment = memo(() => {
             document.head.removeChild(jquery); document.head.removeChild(iamport);
         }
     },[]);
+
+    //아이디 정보를 가져오는 effect
     useEffect(()=> {
         dispatch(getUserItem({
             userid:'abc123129',
             userpw:'123123123'
         }))
+        setDbPayment({
+            ...dbPayment,
+            user_id:'abc123129',
+        })
     },[dispatch])
 
 
@@ -237,6 +256,7 @@ const MemberPayment = memo(() => {
         })
     },[daumJuso])
 
+    //보유포인트/사용포인트 유효성검사 및 로직
     const pointButton = React.useCallback(()=> {
         const current = pointRef.current
         const current2 = havePointRef.current
@@ -256,34 +276,60 @@ const MemberPayment = memo(() => {
             point:current,
             blo:true,
         })
-    })
+    },[])
 
-    const onClickPayment =()=> {
+    const onClickPayment = React.useCallback((e)=> {
+        e.preventDefault();
+        const current= e.target;
+        console.log (current.memo.value);
+        setDbPayment({
+            ...dbPayment,
+            memo:current.memo.value,
+            name:current.name.value,
+            phone:current.phone1.value,
+            zonecode:current.zonecode.value,
+            addr1:current.addr.value,
+            addr2:current.addr2.value,
+            product:'{"color":"black","size":"L""price":"10000"}',
+            username:current.username.value,
+        })
         const {IMP} = window; IMP.init('imp76184821');
         const data = {
             pg: "html5_inicis",
             pay_ment:'card',
             merchant_uid:`mid_${new Date().getTime()}`,
             name:'결제테스트',
-            amount:'100',
+            amount:100,
             custom_data:{name:'부가정보',desc:'세부 부가정보'},
-            buyer_name:'임기원',
-            buyer_tel:'01012345678',
-            buyer_email:'1234@naver.com',
-            buyer_addr:'강동구성내2동',
-            buyer_postalcode:'05232'
+            buyer_name:current.username.value,
+            buyer_tel:current.phone.value,
+            buyer_email:current.email.value,
+            buyer_addr:current.addr.value,
+            buyer_postcode:current.addr2.value
         };
         IMP.request_pay(data,callback);
         IMP.close();
-    }
-    const callback =(response)=> {
-        const{success,error_msg,imp_uid,merchant_uid,pay_ment,paid_amount,status}= response;
+    },[])
+    const callback = React.useCallback((response)=> {
+        const{success,error_msg,imp_uid,merchant_uid,pay_ment,paid_amount,status,data}= response;
         if (success) {
             alert('결제성공')
+            dispatch(postPaymentItem({
+                memo:dbPayment.memo,
+                name:dbPayment.name,
+                phone:dbPayment.phone,
+                zonecode:dbPayment.zonecode,
+                addr1:dbPayment.addr1,
+                addr2:dbPayment.addr2,
+                user_id:dbPayment.user_id,
+                product:dbPayment.product,
+                username:dbPayment.username
+            }))
         }else {
+
             alert(`결제 실패 : ${error_msg}`);
         }
-    }
+    },[])
     return (
         <MemberPaymentCss>
             <Spinner visible={loading}/>
@@ -297,7 +343,7 @@ const MemberPayment = memo(() => {
                         <div className='payment-box'>
                         <h1>주문 결제</h1>
                         <div><h1>상품내역 박스</h1></div>
-                        <form>
+                        <form onSubmit={onClickPayment}>
                             <h2>주문자 정보</h2>
                             <h3>이름</h3>
                             <input type='text' name='username' disabled value={data.item.username}/>
@@ -338,7 +384,7 @@ const MemberPayment = memo(() => {
                             <h4>-{paymentInfo.blo ? (paymentInfo.point):'0'}원</h4>
                             <h3>총 결제금액</h3>
                             <h4>10500원</h4>
-                            <button onClick={onClickPayment}>결제하기</button>
+                            <button type='submit'>결제하기</button>
                         </form>
                         </div> 
                         <div className={modalBox ? 'payment-modal' : 'payment-modal modalNone'}>
