@@ -11,10 +11,10 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
 // Slice에 정의된 액션함수들 참조
-import { getDetail } from "../../../slices/SJ/detailGoodsSlice";
+import { getDetail } from "../../slices/detailGoodsSlice";
 
-import Spinner from "../../../subComponents/Spinner";
-import Error from "../../../subComponents/Error";
+import Spinner from "../../subComponents/Spinner";
+import Error from "../../subComponents/Error";
 
 const Div = styled.div`
   margin: auto;
@@ -131,13 +131,16 @@ const First = styled.section`
     background-color: #f5f6f6;
     border-radius: 8px;
     flex-direction: column;
-    .nbsp {
-      font-weight: 500;
+    b {
+      font-size: 1.8em;
+    }
+    li:nth-child(1) {
+      padding-left: 1.8em;
+      margin-bottom: 1em;
     }
     li:nth-child(1),
     li:nth-child(2) {
       ul {
-        padding-left: 1.8em;
         justify-content: space-between;
       }
     }
@@ -196,22 +199,17 @@ const DetailGoods = () => {
 
   const [opc, setopc] = useState(0);
   const [hrt, setHrt] = useState(0);
-  const [co, setCo] = useState("");
-  const [si, setSi] = useState("");
+  const [optValue, setOptValue] = useState({ color: "", size: "" });
+  const [optArray, setOptArray] = useState([]);
+  const [result, setResult] = useState([]);
   const [sum, setSum] = useState(0);
-  const amountRef = useRef();
+  const option1Ref = useRef();
 
   // 컴포넌트가 마운트되면 데이터 조회를 위한 액션함수를 디스패치 함
   useEffect(() => {
     dispatch(getDetail());
   }, [dispatch]);
 
-  useEffect(() => {
-    // si 또는 co의 값이 둘 중 하나만 있을 경우, 하나만 값이 변경되어도 태그가 추가
-    // 두 개 다 값이 있을 경우, co의 값이 변동이 되어야만 태그가 생성되어야 함
-    if (si !== null && co !== null) {
-    }
-  }, [si, co]);
   const onClick = React.useCallback((e) => {
     e.preventDefault();
     const img = e.target;
@@ -253,22 +251,30 @@ const DetailGoods = () => {
     [navigate]
   );
 
-  const onOpt1 = React.useCallback((e) => {
-    e.preventDefault();
-    const current = e.target;
-    const value = current[current.selectedIndex].value;
+  const onSelectChange = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      const current = e.target;
+      const key = current.name;
+      const value = current[current.selectedIndex].value;
+      const newOptValue = { ...optValue, [key]: value };
+      setOptValue(newOptValue);
 
-    setCo((co) => value);
-  }, []);
+      const _optArray = optArray.filter((v, i, a) => {
+        if (v !== newOptValue) {
+          return true;
+        } else {
+          //false가 리턴되는 경우 v는 버려진다.
+          return false;
+        }
+      });
 
-  const onOpt2 = React.useCallback((e) => {
-    e.preventDefault();
-    const current = e.target;
-    const value = current[current.selectedIndex].value;
+      setOptArray([..._optArray, optValue]);
 
-    setSi((si) => value);
-  }, []);
-
+      setResult([...new Set(optArray.map(JSON.stringify))].map(JSON.parse));
+    },
+    [optValue, optArray]
+  );
   return (
     <Div>
       <Spinner visible={loading} />
@@ -397,9 +403,12 @@ const DetailGoods = () => {
                   <ul className="dropdown">
                     <form>
                       <select
+                        name="color"
                         data-price={v.price}
-                        onChange={onOpt1}
+                        onChange={onSelectChange}
                         style={{ display: opt1 === null && "none" }}
+                        className="option1"
+                        ref={option1Ref}
                       >
                         <option value="">[컬러]를 선택하세요</option>
                         {opt1 &&
@@ -412,9 +421,11 @@ const DetailGoods = () => {
                           })}
                       </select>
                       <select
+                        name="size"
                         data-price={v.price}
-                        onChange={onOpt2}
+                        onChange={onSelectChange}
                         style={{ display: opt2 === null && "none" }}
+                        disabled={option1Ref.current === undefined && true}
                       >
                         <option value="">[사이즈]를 선택하세요</option>
                         {opt2 &&
@@ -428,7 +439,37 @@ const DetailGoods = () => {
                       </select>
                     </form>
                   </ul>
-                  <div ref={amountRef}></div>
+                  <div>
+                    {result &&
+                      result.map((v, i) => {
+                        return (
+                          <ul className="amount" key={i}>
+                            <li>
+                              <b>{v.color}</b>
+                              &nbsp; &nbsp; &nbsp;
+                              <b>{v.size}</b>
+                            </li>
+                            <li>
+                              <ul>
+                                <li>
+                                  <input
+                                    type="number"
+                                    defaultValue="1"
+                                    min="1"
+                                    max="20"
+                                  />
+                                </li>
+                                <li>
+                                  <h4>
+                                    <span></span>원
+                                  </h4>
+                                </li>
+                              </ul>
+                            </li>
+                          </ul>
+                        );
+                      })}
+                  </div>
                   <ul className="price">
                     <li>
                       <h2>총 상품 금액</h2>
