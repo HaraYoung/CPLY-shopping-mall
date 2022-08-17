@@ -259,6 +259,10 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
     );
   }, [dispatch, query]);
 
+  //data가 변경되었을 때
+  React.useEffect(() =>{
+    console.log('test')
+  },[data]);
   //품절된 상품의 상태값
   const [soldOut, setSoldOut] = React.useState(false);
 
@@ -502,7 +506,6 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
                             className="numOption"
                             icon={faPlus}
                             //onClick={() => {
-                            //amount({ type: "INCREMENT", step, max });
                             // dispatch(
                             //   putItem({
                             //     id: item.id,
@@ -556,9 +559,9 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
           </div>
         </CartArea>
       ) : (
-        <div>
+        (<div>
           <NoCart />
-        </div>
+        </div>) || (<div></div>)
       )}
     </>
   );

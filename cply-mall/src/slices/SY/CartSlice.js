@@ -10,13 +10,11 @@ export const getList = createAsyncThunk(
   "CartSlice/getList",
   async (payload, { rejectWithValue }) => {
     let result = null;
-
     try {
       result = await axios.get(API_URL);
     } catch (err) {
       result = rejectWithValue(err.response);
     }
-
     return result;
   }
 );
@@ -79,13 +77,11 @@ export const deleteItem = createAsyncThunk(
   "CartSlice/deleteItem",
   async (payload, { rejectWithValue }) => {
     let result = null;
-
     try {
       result = await axios.delete(`${API_URL}${payload.id}/`);
     } catch (err) {
       result = rejectWithValue(err.response);
     }
-
     return result;
   }
 );
@@ -97,7 +93,8 @@ const CartSlice = createSlice({
     data: null,
     error: null, // 에러여부를 관리하기 위한 상태값
   },
-  reducers: {},
+  reducers: {
+  },
   extraReducers: {
     /** 다중행 데이터 조회를 위한 액션 함수 */
     [getList.pending]: pending,
@@ -108,14 +105,14 @@ const CartSlice = createSlice({
     [postItem.pending]: pending,
     [postItem.fulfilled]: (state, { meta, payload }) => {
       // 기존의 상태값을 복사한다.(원본이 JSON이므로 깊은 복사를 수행해야 한다)
-      const data = cloneDeep(state.data);
+      const data = cloneDeep(state.item);
       console.log(data);
 
       // 새로 저장된 결과를 기존 상태값 배열의 맨 앞에 추가한다.
-      data.item.unshift(payload.data.item);
+      data.unshift(payload.item);
 
       // 기존의 상태값 배열에서 맨 마지막 항목은 삭제한다.
-      data.item.pop();
+      data.pop();
 
       return {
         data: data,
@@ -129,16 +126,16 @@ const CartSlice = createSlice({
     [putItem.pending]: pending,
     [putItem.fulfilled]: (state, { meta, payload }) => {
       // 기존의 상태값을 복사한다.(원본이 JSON이므로 깊은 복사를 수행해야 한다)
-      const data = cloneDeep(state.data);
+      const data = cloneDeep(state.item);
       console.log(data);
 
       // 기존의 데이터에서 수정이 요청된 항목의 위치를 검색한다.
-      const index = data.item.findIndex(
-        (element) => element.deptno === parseInt(meta.arg.deptno)
+      const index = data.findIndex(
+        (element) => element.id === parseInt(meta.arg.id)
       );
 
       if (index !== undefined) {
-        data.item.splice(index, 1, payload.data.item);
+        data.splice(index, 1, payload.data);
       }
 
       return {
@@ -175,7 +172,8 @@ const CartSlice = createSlice({
       };
     },
     [deleteItem.rejected]: rejected,
+
   },
 });
-
+//export const {plus, minus} = CartSlice.actions;
 export default CartSlice.reducer;

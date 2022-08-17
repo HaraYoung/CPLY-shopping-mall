@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getList, putItem } from "../../slices/SY/CartSlice";
 import { reducer } from "../../components/NumOption";
@@ -9,65 +9,58 @@ import Spinner from "../../components/Spinner";
 import ErrorView from "../../components/ErrorView";
 import { type } from "@testing-library/user-event/dist/type";
 
-
-const Test = memo(({ step = 1, min = 0, max = 50 }) => {
+const Test = memo(() => {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.CartSlice);
   useEffect(() => {
     dispatch(getList());
   }, [dispatch]);
-  const initialState = { count: 0 };
-  const [state, amount] = React.useReducer(reducer, initialState);
 
-    //상품 수량 변동을 관리할 상태값
-    const [goodsCount, setGoodsCount] = React.useState({
-      //상품의 수량
-      goodsQty: [],
-      //상품의 카운트값
-      count: [],
-      //합친값
-      qtyCut: [],
-    });
-    const cut= React.useRef({});
+  const [state, setState] = React.useState({
+    id: null,
+    qty: null,
+  });
 
   return (
     <>
       <Spinner visible={loading} />
       {error ? (
+
         <ErrorView error={error} />
-        ) : data && (
-          <>
-      {data.item.map((item, index) => {
-        // goodsCount.goodsQty.push(item.qty)
-        // goodsCount.count.push(0)
-        console.log(item)
-        return (
-          <div className="numOptionArea" key={item.id} ref={(e=>{cut.current[index]=e})}>
-            <FontAwesomeIcon
-              className="numOption"
-              icon={faMinus}
-              onClick={() => {
-                //use
-                amount({ type: "DECREMENT", step, min });
-              }}
-            />
-            <span>{state.count}</span>
-            <FontAwesomeIcon
-              className="numOption"
-              icon={faPlus}
-              onClick={() => amount({ type: "INCREMENT", step, max })}
-            />
-            <div>{item.title}</div>
-            
-            <div>{index}</div>
-          </div>
-        );
-      }
-      )
-    }
+      ) : data && (
+      <ul>
+        {data.item.map((v, i) => {
+          const value = [];
+          //데이터의 id와 qty를 저장
+          //bar(v.id, v.qty);
+
+          //data의 id와 변경된 수량을 담은 json의 id가 같다면
+          // 데이터의 qty를 value.qty로 변경 후
+          //put으로 DB 데이터 수정
+          // const foo = () => {
+          //   if (v.id === value.id) {
+          //     setState({ qty: value.qty });
+          //     //dispatch(putItem({ ...v, qty: v.qty }));
+          //   }
+          // };
+
+          //버튼이 클릭이 되었을 때 push하지만 id가 같은게 없다면 새로 push
+          //id가 같은게 있다면 그 id의 qty를 변경,
+          //만약 변경된게 없다면 그대로 리턴
+          return (
+            <div key={v.id}>
+              <div>{v.title}</div>
+              <FontAwesomeIcon className="numOption" icon={faMinus}/>
+              <div>
+                {v.qty}
+              </div>
+              <FontAwesomeIcon className="numOption" icon={faPlus}/>
+            </div>
+          );
+        })}
+      </ul>
+      )}
     </>
-    )}
-    </>
-);
+  );
 });
 export default Test;
