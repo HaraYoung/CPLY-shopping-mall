@@ -139,8 +139,8 @@ const JusoPopup = memo(() => {
             document.head.removeChild(jquery); document.head.removeChild(iamport);
         }
     },[]);
-
-    const onClickPayment =()=> {
+    const onClickPayment = React.useCallback((e)=> {
+        e.preventDefault();
         const {IMP} = window; IMP.init('imp76184821');
         const data = {
             pg: "html5_inicis",
@@ -157,18 +157,24 @@ const JusoPopup = memo(() => {
         };
         IMP.request_pay(data,callback);
         IMP.close();
-    }
-    const callback =(response)=> {
-        const{success,error_msg,imp_uid,merchant_uid,pay_ment,paid_amount,status}= response;
+    },[])
+
+    const callback = React.useCallback((response)=> {
+
+        const{success,error_msg,imp_uid,merchant_uid,pay_ment,paid_amount,status,data}= response;
         if (success) {
             alert('결제성공')
         }else {
             alert(`결제 실패 : ${error_msg}`);
         }
-    }
+    },[])
+    
     return (
         <div>
+            <form>
+
             <button onClick={onClickPayment}>결제하기</button>
+            </form>
         </div>
     );
 });

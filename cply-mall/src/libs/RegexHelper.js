@@ -23,6 +23,20 @@ class RegexHelper {
         return true;
     }
     /**
+     * 값이 0인지 여부를 검사한다.
+     * @param {*} field  검사할 대상에 대한 input 요소의 dom 객체
+     * @param {*} msg    값이 없을 경우 표시할 메세지 내용
+     * @returns 
+     */
+    zero(field,msg) {
+        const content = field.value;
+
+        if (content <= 0){
+        throw new BadRequestException(msg,field);
+        }
+        return true;
+    }
+    /**
      * 입력값이 지정된 글자수를 초과했는지 검사한다.
      * @param {*} field     검사할 대상에 대한 input 요소의 dom 객체
      * @param {*} len       최대 글자수
@@ -71,6 +85,26 @@ class RegexHelper {
         var dsc = compare.value.trim();
 
         if (src !== dsc) {
+            throw new BadRequestException(msg,origin);
+        }
+        return true;
+    }
+
+    /**
+     * 두 값이 동일한지 검사한다
+     * @param {*} origin  검사를위한 원본
+     * @param {*} compare 원본값과 비교할 검사대상 
+     * @param {*} msg     검사에 실패할 경우 표시할 메세지
+     * @returns 
+     */
+    overnum(origin,compare,msg) {
+        this.value(origin,msg);
+        this.value(compare,msg);
+
+        var src = origin.value.trim();
+        var dsc = compare.value.trim();
+
+        if (src > dsc) {
             throw new BadRequestException(msg,origin);
         }
         return true;
