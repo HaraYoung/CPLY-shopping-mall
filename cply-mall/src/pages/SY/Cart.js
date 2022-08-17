@@ -240,14 +240,13 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
   /** 리덕스 관련 초기화 */
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.CartSlice);
+  console.log(data);
 
   const { query, rows, page } = useQueryString({
     query: "",
     rows: 10,
     page: 1,
   });
-  //이 컴포넌트가 화면에 마운트 되었는지 확인하기 위한 hook
-  const mountedRef = useMountedRef();
 
   /** 최초 마운트 혹은 QueryString이 변경될 때 마다 hook -> 리덕스를 통해 목록을 조회한다. */
   React.useEffect(() => {
@@ -259,10 +258,6 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
     );
   }, [dispatch, query]);
 
-  //data가 변경되었을 때
-  React.useEffect(() =>{
-    console.log('test')
-  },[data]);
   //품절된 상품의 상태값
   const [soldOut, setSoldOut] = React.useState(false);
 
@@ -344,11 +339,11 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
   );
 
   //체크된 상품만 삭제 이벤트
-  const onChoiceDelete = () => {
+  const onChoiceDelete = React.useCallback((e)=> {
     if (window.confirm("선택하신 상품을 삭제하시겠습니까?")) {
       alert("선택하신 상품이 삭제되었습니다.");
     }
-  };
+  });
   //총 가격을 담을 변수
   let DSum = null;
   //상품의 수량을 담을 상태값
@@ -404,7 +399,7 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
               <span>상품 금액</span>
             </div>
           </div>
-          {data.item.map((item, index) => {
+          {data && (data.item.map((item, index) => {
             //상품 * 가격
             let sum = 0;
             sum = item.qty * item.price;
@@ -418,7 +413,6 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
               return a + currValue;
             }, 0);
 
-            console.log();
             // cut.push(item.qty);
             // console.log(cut)
             // console.log('cut:'+cut[2])
@@ -479,7 +473,7 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
                           <FontAwesomeIcon
                             className="numOption"
                             icon={faMinus}
-                            onClick={() => {
+                            onClick={(e) => {
                               setGoodsCount({
                                 ...goodsCount,
                                 count: -1,
@@ -536,7 +530,7 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
                 </div>
               </div>
             );
-          })}
+          }))}
           <div className="SumArea">
             <div className="LeftSum">
               <div>
