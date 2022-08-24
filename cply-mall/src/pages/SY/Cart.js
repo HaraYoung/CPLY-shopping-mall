@@ -555,7 +555,7 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
       ) : (
         (<div>
           <NoCart />
-        </div>) || (<div></div>)
+        </div>)
       )}
     </>
   );
