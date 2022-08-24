@@ -11,10 +11,10 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
 // Slice에 정의된 액션함수들 참조
-import { getDetail } from "../../slices/detailGoodsSlice";
+import { getDetail } from "../../../slices/SJ/detailGoodsSlice.js";
 
-import Spinner from "../../subComponents/Spinner";
-import Error from "../../subComponents/Error";
+import Spinner from "../../../subComponents/Spinner";
+import Error from "../../../subComponents/Error";
 
 const Div = styled.div`
   margin: auto;

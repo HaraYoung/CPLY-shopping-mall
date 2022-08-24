@@ -53,6 +53,16 @@ const MemberPaymentCss = styled.div`
                 }
                 
             }
+            button {
+                color: #fff;
+                font-size: 20px;
+                background-color: #000;
+                border: 1px solid #000;
+                border-radius: 5px;
+                padding: 0.3%;
+                margin-bottom:1%;
+                display: block;
+            }
 
         }
     }
