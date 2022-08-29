@@ -126,21 +126,34 @@ const First = styled.section`
       }
     }
   }
-  .amount {
-    padding: 1em 1.8em;
-    background-color: #f5f6f6;
-    border-radius: 8px;
-    flex-direction: column;
-    b {
-      font-size: 1.8em;
-    }
-    li:nth-child(1) {
-      padding-left: 1.8em;
-      margin-bottom: 1em;
-    }
-    li:nth-child(1),
-    li:nth-child(2) {
-      ul {
+  .select-result {
+    .amount {
+      background-color: #f5f6f6;
+      border-radius: 8px;
+      border-bottom: 10px;
+      .firstUi {
+        padding: 1em;
+        justify-content: space-between;
+        margin: 0;
+        b {
+          font-size: 30px;
+        }
+        .button {
+          margin-right: 1.2em;
+          margin-top: 1em;
+          button {
+            border: 0;
+            background-color: #f5f6f6;
+            color: gray;
+            svg {
+              font-size: 1.5em;
+            }
+          }
+        }
+      }
+      .secondUi {
+        padding: 1em;
+        display: flex;
         justify-content: space-between;
       }
     }
@@ -148,6 +161,15 @@ const First = styled.section`
   .price {
     justify-content: space-between;
     margin-right: 0;
+    .won {
+      display: flex;
+      p {
+        padding-left: 0.2em;
+        font-size: 0.6em;
+        line-height: 2.4em;
+        margin: 0;
+      }
+    }
   }
   .pay {
     justify-content: space-between;
@@ -199,11 +221,11 @@ const DetailGoods = () => {
 
   const [opc, setopc] = useState(0);
   const [hrt, setHrt] = useState(0);
-  const [optValue, setOptValue] = useState({ color: "", size: "" });
+  const [optValue, setOptValue] = useState([]);
   const [optArray, setOptArray] = useState([]);
-  const [result, setResult] = useState([]);
   const [sum, setSum] = useState(0);
   const option1Ref = useRef();
+  const priceRef = useRef([]);
 
   // 컴포넌트가 마운트되면 데이터 조회를 위한 액션함수를 디스패치 함
   useEffect(() => {
@@ -241,9 +263,27 @@ const DetailGoods = () => {
     (e) => {
       e.preventDefault();
       if (
-        window.confirm(
-          "선택하신 상품들이 정상적으로 장바구니에 담겼습니다. \n지금 장바구니함으로 이동하시겠습니까?"
-        ) === true
+        e.target.dataset.alert === "cart"
+          ? window.confirm(
+              "선택하신 상품들이 정상적으로 장바구니에 담겼습니다. \n지금 장바구니함으로 이동하시겠습니까?"
+            ) === true
+          : window.confirm("선택하신 상품을 삭제하시겠습니까?") === true
+      ) {
+        navigate("/");
+      }
+    },
+    [navigate]
+  );
+
+  const cartMessage = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      if (
+        e.target.dataset.alert === "cart"
+          ? window.confirm(
+              "선택하신 상품들이 정상적으로 장바구니에 담겼습니다. \n지금 장바구니함으로 이동하시겠습니까?"
+            ) === true
+          : window.confirm("선택하신 상품을 삭제하시겠습니까?") === true
       ) {
         navigate("/");
       }
@@ -254,27 +294,111 @@ const DetailGoods = () => {
   const onSelectChange = React.useCallback(
     (e) => {
       e.preventDefault();
-      const current = e.target;
-      const key = current.name;
-      const value = current[current.selectedIndex].value;
-      const newOptValue = { ...optValue, [key]: value };
-      setOptValue(newOptValue);
 
-      const _optArray = optArray.filter((v, i, a) => {
-        if (v !== newOptValue) {
-          return true;
-        } else {
-          //false가 리턴되는 경우 v는 버려진다.
-          return false;
-        }
+      const current = e.target;
+      let price = current.dataset.price;
+      // let num = document.querySelector(".countNum").value;
+
+      // 전체 dropdown의 수(배열길이)
+      /*  잊지 말기 !! index + 1 = length */
+      const size = Array.from(current.parentNode.children).length;
+
+      // 이벤트가 발생한 dropdown의 index
+      let indexInParent = Array.from(current.parentNode.children).indexOf(
+        current
+      );
+
+      // 마지막 항목이 아닐 경우?
+      if (indexInParent + 1 < size) {
+        // 전체 드롭다운에 대해 순서대로 반복하면서...
+        Array.from(document.querySelectorAll(".optDropdown")).forEach(
+          (v, i) => {
+            // 이벤트가 발생한 항목 이후의 dropdown의 선택 상태를 리셋
+            if (i > indexInParent) {
+              v.selectedIndex = 0;
+            }
+          }
+        );
+
+        // 이벤트 핸들러 함수 강제 종료.
+        return;
+      }
+
+      // ------------------ 이 아래가 실행된다는 것은 맨 마지막 드롭다운이 실행되었다는 의미 ----------------
+
+      // 생성해야 할 json 객체 구조
+      const newItem = {};
+
+      Array.from(document.querySelectorAll(".optDropdown")).forEach((v, i) => {
+        newItem[v.name] = v[v.selectedIndex].value;
       });
 
-      setOptArray([..._optArray, optValue]);
+      newItem.price = price;
+      newItem.num = "1";
 
-      setResult([...new Set(optArray.map(JSON.stringify))].map(JSON.parse));
+      /* concat의 메서드는 배열이 아닌 값도 넣을 수 있다 */
+      const result = optValue.concat(newItem);
+
+      // console.log(result);
+      setOptValue(result);
+      setOptArray([...new Set(result.map(JSON.stringify))].map(JSON.parse));
     },
-    [optValue, optArray]
+
+    [optValue]
   );
+
+  /* 수량조절 이벤트 */
+
+  const onQuantity = React.useCallback(
+    (e) => {
+      e.preventDefault();
+
+      // input의 value(숫자값)을 가져온다
+      let num = e.target.value;
+
+      // 해당 배열 안에 num(key) value에 숫자값을 넣어준다.
+      let selectedArray = optArray[e.target.name];
+      selectedArray.num = num;
+
+      // 해당 배열의 price에 num 곱하기 price한 가격을 넣어준다.
+      let numberPrice = document
+        .querySelector(".optDropdown")
+        .dataset.price.split(",")
+        .join("")
+        .trim();
+
+      // ,(콤마) 찍어주기
+      let realPrice = numberPrice * num;
+      selectedArray.price = realPrice.toLocaleString();
+
+      // state값을 쓸 수 없기 때문에(다른 경우의 선택값이랑 같이 변하기 떄문) 직접 값을 넣어줘야 함
+      priceRef.current[e.target.name].innerHTML = selectedArray.price;
+      // console.log(optArray);
+      // console.log(priceRef.current[e.target.name].innerHTML);
+
+      // 합계값(sum) 넣어주기
+      let total = 0;
+
+      for (let i = 0; i < optArray.length; i++) {
+        total += Number(
+          priceRef.current[i].innerHTML.split(",").join("").trim()
+        );
+      }
+      setSum(total.toLocaleString());
+    },
+    [optArray]
+  );
+
+  /* 합계값 관련(optArray의 배열 수가 증가할 때마다 합계에 적용되어야 함) */
+  useEffect(() => {
+    let total = 0;
+
+    for (let i = 0; i < optArray.length; i++) {
+      total += Number(priceRef.current[i].innerHTML.split(",").join("").trim());
+    }
+    setSum(total.toLocaleString());
+  }, [optArray]);
+
   return (
     <Div>
       <Spinner visible={loading} />
@@ -407,7 +531,7 @@ const DetailGoods = () => {
                         data-price={v.price}
                         onChange={onSelectChange}
                         style={{ display: opt1 === null && "none" }}
-                        className="option1"
+                        className="option1 optDropdown"
                         ref={option1Ref}
                       >
                         <option value="">[컬러]를 선택하세요</option>
@@ -424,6 +548,7 @@ const DetailGoods = () => {
                         name="size"
                         data-price={v.price}
                         onChange={onSelectChange}
+                        className="optDropdown"
                         style={{ display: opt2 === null && "none" }}
                         disabled={option1Ref.current === undefined && true}
                       >
@@ -439,34 +564,51 @@ const DetailGoods = () => {
                       </select>
                     </form>
                   </ul>
-                  <div>
-                    {result &&
-                      result.map((v, i) => {
+                  <div className="select-result">
+                    {optArray &&
+                      optArray.map((v, i) => {
                         return (
-                          <ul className="amount" key={i}>
-                            <li>
-                              <b>{v.color}</b>
-                              &nbsp; &nbsp; &nbsp;
-                              <b>{v.size}</b>
-                            </li>
-                            <li>
-                              <ul>
-                                <li>
-                                  <input
-                                    type="number"
-                                    defaultValue="1"
-                                    min="1"
-                                    max="20"
-                                  />
-                                </li>
-                                <li>
-                                  <h4>
-                                    <span></span>원
-                                  </h4>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
+                          <div className="amount" key={i}>
+                            <ul className="firstUi">
+                              <li>
+                                <b>{v.color}</b>
+                                &nbsp; &nbsp; &nbsp;
+                                <b>{v.size}</b>
+                              </li>
+                              <li className="button">
+                                <button
+                                  type="button"
+                                  onClick={message}
+                                  data-alert="xmark"
+                                >
+                                  <FontAwesomeIcon icon={Xmark} />
+                                </button>
+                              </li>
+                            </ul>
+                            <ul className="secondUi">
+                              <li className="count">
+                                <input
+                                  name={i}
+                                  onClick={onQuantity}
+                                  className="countNum"
+                                  type="number"
+                                  defaultValue="1"
+                                  min="1"
+                                  max="20"
+                                />
+                              </li>
+                              <li>
+                                <h4>
+                                  <span>
+                                    <b ref={(e) => (priceRef.current[i] = e)}>
+                                      {v.price}
+                                    </b>
+                                  </span>
+                                  원
+                                </h4>
+                              </li>
+                            </ul>
+                          </div>
                         );
                       })}
                   </div>
@@ -475,7 +617,10 @@ const DetailGoods = () => {
                       <h2>총 상품 금액</h2>
                     </li>
                     <li>
-                      <h1 style={{ color: "#ff204b" }}>0원</h1>
+                      <h1 style={{ color: "#ff204b" }} className="won">
+                        <b>{sum}</b>
+                        <p>원</p>
+                      </h1>
                     </li>
                   </ul>
                   <ul className="pay">
@@ -483,7 +628,7 @@ const DetailGoods = () => {
                       <button type="submit">바로구매</button>
                     </li>
                     <li className="cart">
-                      <button onClick={message}>
+                      <button onClick={message} data-alert="cart">
                         <i className="fa fa-shopping-cart"></i>
                       </button>
                     </li>
