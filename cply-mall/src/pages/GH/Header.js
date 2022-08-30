@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import { getSession } from '../../slices/KH/SessionSlice';
+import { postSession,getSession } from '../../slices/KH/SessionSlice';
 
 const HeaderCss = styled.div`
     .header-box {
@@ -139,9 +139,29 @@ const HeaderCss = styled.div`
 const Header = () => {
     const dispatch = useDispatch();
     const {data,loading,error} = useSelector((state)=> state.session)
+    const [headerState,setHeaderState] = React.useState({
+        blo1:false,
+        blo2:false
+    });
     React.useEffect(()=> {
         dispatch(getSession())
+        setHeaderState({
+            ...headerState,
+            blo1:true
+        });
     },[dispatch])
+
+    React.useEffect(()=> {
+        if (headerState.blo1) {
+            if (data.item !== null && data.item !== '') {
+                window.alert('로그인완료 ')
+                console.log (data.item)
+            }else {
+                window.alert('로그인안되어있음')
+                console.log ('asdfsdf');
+            }
+        }
+    },[data])
 
     //상단 우측 검색 이미지 클릭시 바뀔 상태값
     const [SearchBtn,setSearchBtn] = React.useState(true);
