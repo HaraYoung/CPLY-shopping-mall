@@ -140,14 +140,17 @@ const First = styled.section`
         }
         .button {
           margin-right: 1.2em;
-          margin-top: 1em;
+          margin-top: 0.5em;
           button {
+            width: 100%;
             border: 0;
             background-color: #f5f6f6;
             color: gray;
-            svg {
-              font-size: 1.5em;
-            }
+            width: 30px;
+            height: 30px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 15 15'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M0 0h16v16H0z'/%3E%3Cpath stroke='%23C5C5C5' stroke-width='1.5' d='M3.001 3 8 8l-4.999 4.999M12.999 13 8 8l4.999-4.999'/%3E%3C/g%3E%3C/svg%3E");
+            text-indent: -9999px;
+            overflow: hidden;
           }
         }
       }
@@ -259,36 +262,45 @@ const DetailGoods = () => {
     [hrt]
   );
 
+  /* 삭제 버튼에 대한 이벤트 */
+  const onDelete = React.useCallback(
+    (e) => {
+      e.preventDefault();
+
+      if (window.confirm("선택하신 상품을 삭제하시겠습니까?") === true) {
+        let deleteArray = cloneDeep(optArray);
+        deleteArray.splice(e.target.dataset.num, 1);
+        setOptArray(deleteArray);
+        setOptValue(deleteArray);
+      }
+    },
+    [optArray]
+  );
+
   const message = React.useCallback(
     (e) => {
       e.preventDefault();
-      if (
-        e.target.dataset.alert === "cart"
-          ? window.confirm(
-              "선택하신 상품들이 정상적으로 장바구니에 담겼습니다. \n지금 장바구니함으로 이동하시겠습니까?"
-            ) === true
-          : window.confirm("선택하신 상품을 삭제하시겠습니까?") === true
-      ) {
-        navigate("/");
-      }
-    },
-    [navigate]
-  );
 
-  const cartMessage = React.useCallback(
-    (e) => {
-      e.preventDefault();
-      if (
-        e.target.dataset.alert === "cart"
-          ? window.confirm(
-              "선택하신 상품들이 정상적으로 장바구니에 담겼습니다. \n지금 장바구니함으로 이동하시겠습니까?"
-            ) === true
-          : window.confirm("선택하신 상품을 삭제하시겠습니까?") === true
-      ) {
+      if (optArray.length === 0) {
+        if (option1Ref.current.value === "") {
+          window.alert("[색상]을 선택하세요.");
+        } else if (option1Ref.current.value !== "") {
+          window.alert("[사이즈]을 선택하세요.");
+        }
+      } else if (e.target.dataset.alert === "cart") {
+        let answer = window.confirm(
+          "선택하신 상품들이 정상적으로 장바구니에 담겼습니다. \n지금 장바구니함으로 이동하시겠습니까?"
+        );
+        if (answer === true) {
+          /* 장바구니함으로 이동하는 것으로 바꿀 것 */
+          navigate("/");
+        }
+      } else {
+        /* 결제페이지로 이동하는 것으로 바꿀 것 */
         navigate("/");
       }
     },
-    [navigate]
+    [optArray, navigate]
   );
 
   const onSelectChange = React.useCallback(
@@ -339,7 +351,6 @@ const DetailGoods = () => {
       /* concat의 메서드는 배열이 아닌 값도 넣을 수 있다 */
       const result = optValue.concat(newItem);
 
-      // console.log(result);
       setOptValue(result);
       setOptArray([...new Set(result.map(JSON.stringify))].map(JSON.parse));
     },
@@ -356,8 +367,11 @@ const DetailGoods = () => {
       // input의 value(숫자값)을 가져온다
       let num = e.target.value;
 
+      // 깊은 복사
+      let copyOptArray = cloneDeep(optArray);
+
       // 해당 배열 안에 num(key) value에 숫자값을 넣어준다.
-      let selectedArray = optArray[e.target.name];
+      let selectedArray = copyOptArray[e.target.dataset.index];
       selectedArray.num = num;
 
       // 해당 배열의 price에 num 곱하기 price한 가격을 넣어준다.
@@ -367,14 +381,20 @@ const DetailGoods = () => {
         .join("")
         .trim();
 
-      // ,(콤마) 찍어주기
       let realPrice = numberPrice * num;
+
+      // ,(콤마) 찍어주기
       selectedArray.price = realPrice.toLocaleString();
 
+      setOptValue(copyOptArray);
+      setOptArray(copyOptArray);
+
       // state값을 쓸 수 없기 때문에(다른 경우의 선택값이랑 같이 변하기 떄문) 직접 값을 넣어줘야 함
-      priceRef.current[e.target.name].innerHTML = selectedArray.price;
+      priceRef.current[e.target.dataset.index].innerHTML =
+        optArray[e.target.dataset.index].price;
+
       // console.log(optArray);
-      // console.log(priceRef.current[e.target.name].innerHTML);
+      // console.log(optValue);
 
       // 합계값(sum) 넣어주기
       let total = 0;
@@ -534,7 +554,7 @@ const DetailGoods = () => {
                         className="option1 optDropdown"
                         ref={option1Ref}
                       >
-                        <option value="">[컬러]를 선택하세요</option>
+                        <option value="">[색상]을 선택하세요</option>
                         {opt1 &&
                           opt1.map((v, i) => {
                             return (
@@ -575,20 +595,22 @@ const DetailGoods = () => {
                                 &nbsp; &nbsp; &nbsp;
                                 <b>{v.size}</b>
                               </li>
-                              <li className="button">
+                              <li className="button" data-num={i}>
                                 <button
                                   type="button"
-                                  onClick={message}
                                   data-alert="xmark"
+                                  data-num={i}
+                                  onClick={onDelete}
                                 >
-                                  <FontAwesomeIcon icon={Xmark} />
+                                  삭제
                                 </button>
                               </li>
                             </ul>
                             <ul className="secondUi">
                               <li className="count">
                                 <input
-                                  name={i}
+                                  name="quantity"
+                                  data-index={i}
                                   onClick={onQuantity}
                                   className="countNum"
                                   type="number"
@@ -625,15 +647,20 @@ const DetailGoods = () => {
                   </ul>
                   <ul className="pay">
                     <li className="buy">
-                      <button type="submit">바로구매</button>
+                      <button type="submit" onClick={message}>
+                        바로구매
+                      </button>
                     </li>
                     <li className="cart">
-                      <button onClick={message} data-alert="cart">
-                        <i className="fa fa-shopping-cart"></i>
+                      <button type="submit" onClick={message} data-alert="cart">
+                        <i
+                          className="fa fa-shopping-cart"
+                          data-alert="cart"
+                        ></i>
                       </button>
                     </li>
                     <li className="heart">
-                      <button onClick={handleLike}>
+                      <button type="submit" onClick={handleLike}>
                         <FontAwesomeIcon
                           icon={hrt === 0 ? regularHeart : solidHeart}
                           style={{ color: hrt === 0 ? " " : "#ff204b" }}
