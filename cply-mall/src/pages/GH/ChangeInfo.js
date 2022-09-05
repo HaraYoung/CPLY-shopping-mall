@@ -4,6 +4,7 @@ import RegexHelper from "../../libs/RegexHelper";
 import DaumPostcode from "react-daum-postcode";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserItem, putUserItem } from "../../slices/KH/UserSlice";
+import {getSession} from '../../slices/KH/SessionSlice';
 import Spinner from "../../components/Spinner";
 import ErrorView from "../../components/ErrorView";
 import dayjs from 'dayjs';
@@ -167,20 +168,25 @@ const ChangeInfo = memo(() => {
   const dispatch = useDispatch();
 
   const { data, loading, error } = useSelector((state) => state.user);
-
+  const {data:data1,loading:loading1,error:error1} = useSelector((state)=> state.session)
   //페이지가 마운트되면서 회원정보를 가져온다
   React.useEffect(() => {
     dispatch(
-      getUserItem({
-        userid: "hisaishijjo11",
-        userpw: 123123123,
-      })
+      getSession()
     );
   }, [dispatch]);
 
   React.useEffect(()=> {
-    console.log (daumJuso)
-  },[daumJuso])
+    
+    if (data1) {
+      dispatch(
+        getUserItem({
+          userid: data1.item.userid,
+          userpw: data1.item.userpw,
+        })
+      );
+    }
+  },[dispatch,data1])
   //주소정보 이벤트
   const addrInfo = React.useCallback(
     (e) => {

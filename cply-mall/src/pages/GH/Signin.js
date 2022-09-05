@@ -105,7 +105,7 @@ const Signin = memo(() => {
         <SigninCss>
             <form className='signin-user-info' onSubmit={SignInSubmit}>
                 <input type='text' placeholder='아이디' name='id'/>
-                <input type='text' placeholder='비밀번호' name='pw'/>
+                <input type='password' placeholder='비밀번호' name='pw'/>
                 <Link to='/signupcheck'>회원가입</Link>
                 <Link to='/findid'>아이디 찾기</Link>
                 <Link to='/findpw'>비밀번호 찾기</Link>

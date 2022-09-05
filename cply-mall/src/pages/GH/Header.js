@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import { postSession,getSession } from '../../slices/KH/SessionSlice';
+import { postSession,getSession,deleteSession } from '../../slices/KH/SessionSlice';
 
 const HeaderCss = styled.div`
     .header-box {
@@ -15,8 +15,8 @@ const HeaderCss = styled.div`
         padding: 10px 0;
         a {
             color: #fff;
-            font-size: 14px;
             font-weight: bold;
+            font-size: 14px;
             margin-left:15px;
             text-decoration: none;
             padding: 3px;
@@ -28,6 +28,21 @@ const HeaderCss = styled.div`
             }
             &:nth-child(3) {
                 margin-right: 140px;
+            }
+        }
+        span {
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left:15px;
+            text-decoration: none;
+            padding: 3px;
+            &:hover {
+                color: #000;
+                background-color: #fff;
+                border-radius: 5px;
+                transition: all 0.3s ease-in-out;
             }
         }
     }
@@ -137,6 +152,8 @@ const HeaderCss = styled.div`
     }
 `;
 const Header = () => {
+    const navigate = useNavigate();
+
     const dispatch = useDispatch();
     const {data,loading,error} = useSelector((state)=> state.session)
     const [headerState,setHeaderState] = React.useState({
@@ -153,15 +170,27 @@ const Header = () => {
 
     React.useEffect(()=> {
         if (headerState.blo1) {
-            if (data.item !== null && data.item !== '') {
-                window.alert('로그인완료 ')
-                console.log (data.item)
+            if (data.item && data.item !== null && data.item !== '') {
+                setHeaderState({
+                    ...headerState,
+                    blo2:true
+                })
             }else {
-                window.alert('로그인안되어있음')
-                console.log ('asdfsdf');
+                console.clear();
+                console.log ('로그인안됨');
+                return;
             }
         }
     },[data])
+
+    const logoutButton = React.useCallback(()=> {
+        dispatch(deleteSession())
+        setHeaderState({
+            ...headerState,
+            blo2:false
+        })
+        navigate('/')
+    },[dispatch])
 
     //상단 우측 검색 이미지 클릭시 바뀔 상태값
     const [SearchBtn,setSearchBtn] = React.useState(true);
@@ -171,8 +200,8 @@ const Header = () => {
     return (
         <HeaderCss>
             <div className='header-box'>
-                <Link to='/login'>로그인/비로그인주문조회</Link>
-                <Link to='/cart'>장바구니</Link>
+                {headerState.blo2 ?  <span onClick={logoutButton}>로그아웃</span>:<Link to='/login'>로그인/비로그인주문조회</Link>}
+                {headerState.blo2 ? <Link to='/mypage'>마이페이지</Link>: <Link to='/cart'>장바구니</Link> }
                 <Link to='/notice'>고객센터</Link>
             </div>
             <div className='header-box2'>

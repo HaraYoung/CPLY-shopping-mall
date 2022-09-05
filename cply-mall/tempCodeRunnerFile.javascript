@@ -1,15 +1,6 @@
-const json = {
-    color:'black',
-    size:'L',
-    price:'10000'
-};
+const a = 's%3AjnlWYENE26Iei8JZojy96Si9zwLTMfat.0jxAr0oC%2Fa5spz%2BpoS9RS1OM5blard1VmmZoUldBa6U';
 
-const a = JSON.stringify(json);
+const b = encodeURIComponent(a);
 
-console.log (a);
-console.log (typeof a);
-
-const b = JSON.parse(a);
 
 console.log (b);
-console.log (b.color);

@@ -12,8 +12,9 @@ export const postSession = createAsyncThunk("SessionSlice/postSession", async (p
     try {
         result = await axios.post(API_URL,{
             userid:payload.userid,
-            userpw:payload.userpw
-        });
+            userpw:payload.userpw,
+            
+        },{withCredentials:true});
     }catch(err) {
         //에러 발생시 'rejectWithValue()'함수에 에러 데이터를 전달하면 extraReducer의 rejected의 함수가 호출된다
         result = rejectWithValue(err.response);
@@ -37,7 +38,7 @@ export const deleteSession = createAsyncThunk("SessionSlice/deleteSession", asyn
     let result = null;
 
     try {
-        result = await axios.delete(API_URL);
+        result = await axios.delete(API_URL,{withCredentials:true});
     }catch(err) {
         //에러 발생시 'rejectWithValue()'함수에 에러 데이터를 전달하면 extraReducer의 rejected의 함수가 호출된다
         result = rejectWithValue(err.response);
