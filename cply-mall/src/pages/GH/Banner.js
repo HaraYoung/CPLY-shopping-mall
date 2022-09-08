@@ -7,7 +7,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
-
+import { getBannerList } from "../../slices/KH/BannerSlice";
+import { useDispatch,useSelector } from "react-redux";
+import Spinner from "../../components/Spinner";
+import ErrorView from "../../components/ErrorView";
 
 const BannerCss = styled.div`
     margin-bottom: 50px;
@@ -74,25 +77,44 @@ const BannerCss = styled.div`
 `;
 
 const Banner = () => {
+    //리덕스 초기화
+    const dispatch = useDispatch();
+
+    const {data,loading,error} = useSelector((state)=> state.banner);
+    React.useEffect(()=> {
+        dispatch(getBannerList())
+    },[dispatch])
+
     return (
         <BannerCss>
-        <Swiper
-          modules={[Autoplay, Pagination, Navigation]}
-          spaceBetween={50}
-          slidesPerView={3}
-          navigation
-          autoplay={{ delay: 3000}}
-          loop={true}
-          centeredSlides={true}
-          pagination={{ clickable: true }}
-        >
-      <SwiperSlide><img src="./assets/img/bannerImage_796772_1656664122.jpg"></img></SwiperSlide>
-      <SwiperSlide><img src="./assets/img/bannerImage_796766_1656664121.jpg"></img></SwiperSlide>
-      <SwiperSlide><img src="./assets/img/bannerImage_796773_1656664123.jpg"></img></SwiperSlide>
-      <SwiperSlide><img src="./assets/img/bannerImage_796774_1656664123.jpg"></img></SwiperSlide>
-
-      
-    </Swiper>
+        <Spinner visible={loading}/>
+        {error ? (
+            <ErrorView error={error}/>
+        ):(
+            data && (
+                <>
+                <Swiper
+                    modules={[Autoplay, Pagination, Navigation]}
+                    spaceBetween={50}
+                    slidesPerView={3}
+                    navigation
+                    autoplay={{ delay: 3000}}
+                    loop={true}
+                    centeredSlides={true}
+                    pagination={{ clickable: true }}
+                >
+                    {data.item.map((v,i)=> {
+                        const url = 'http://localhost:3001'
+                        return (
+                            <>
+                            <SwiperSlide key={i}><img src={`${url}${v.url}`} alt={i}/></SwiperSlide>
+                            </>
+                        )
+                    })}
+                </Swiper>                
+                </>
+            )
+        )}
     </BannerCss>
     );
 };

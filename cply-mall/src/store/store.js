@@ -5,6 +5,7 @@ import UserSlice from '../slices/KH/UserSlice';
 import SessionSlice from "../slices/KH/SessionSlice";
 import SecessionSlice from "../slices/KH/SecessionSlice";
 import SendMailSlice from "../slices/KH/SendMailSlice";
+import BannerSlice from "../slices/KH/BannerSlice";
 const store = configureStore({
   reducer: {
     detailGoods: detailGoodsSlice,
@@ -13,6 +14,7 @@ const store = configureStore({
     session:SessionSlice,
     secession:SecessionSlice,
     sendmail:SendMailSlice,
+    banner:BannerSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

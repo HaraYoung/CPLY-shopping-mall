@@ -1,7 +1,7 @@
 import React, { memo,useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from "react-redux";
-import { getUserItem } from '../../slices/KH/UserSlice';
+import { getSession } from '../../slices/KH/SessionSlice';
 import { postPaymentItem } from '../../slices/KH/PaymentSlice';
 import Spinner from "../../components/Spinner";
 import ErrorView from "../../components/ErrorView";
@@ -141,6 +141,7 @@ const MemberPayment = memo(() => {
     const dispatch = useDispatch();
 
     const {data,loading,error} = useSelector((state)=> state.user);
+    
 
     //배송지 정보 체크박스 상태값
     const [checkOn,setCheckOn] = React.useState(false);
@@ -182,6 +183,7 @@ const MemberPayment = memo(() => {
 
     //iamport 설정
     useEffect(()=> {
+        dispatch(getSession())
         const jquery = document.createElement("script");
         jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
         const iamport = document.createElement('script');
@@ -192,19 +194,17 @@ const MemberPayment = memo(() => {
         return()=> {
             document.head.removeChild(jquery); document.head.removeChild(iamport);
         }
-    },[]);
+    },[dispatch]);
 
     //아이디 정보를 가져오는 effect
     useEffect(()=> {
-        dispatch(getUserItem({
-            userid:'abc123129',
-            userpw:'123123123'
-        }))
-        setDbPayment({
-            ...dbPayment,
-            user_id:'abc123129',
-        })
-    },[dispatch])
+        if (data.item) {
+            setDbPayment({
+                ...dbPayment,
+                user_id:data.item.userid,
+            })
+        }
+    },[data])
 
 
     //배송지 정보 체크박스 이벤트

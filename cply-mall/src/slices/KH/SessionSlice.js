@@ -7,8 +7,6 @@ const API_URL = 'http://localhost:3001/session/login'
 //비동기 처리 함수 구현
 export const postSession = createAsyncThunk("SessionSlice/postSession", async (payload,{rejectWithValue})=> {
     let result = null;
-    console.log (payload.userid)
-    console.log (payload.userpw)
     try {
         result = await axios.post(API_URL,{
             userid:payload.userid,
