@@ -1,43 +1,11 @@
 import React from "react";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
-const MyPageMenuCSS = styled.div`
-  margin: 0 3% 0 5%;
-  display: flex;
-  height: 1000px;
-  .my-page-box1 {
-    width: 300px;
-    background-color: #000;
-    color: #fff;
-    .menu {
-      width: 80%;
-      margin: auto;
-      > ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        .list {
-          padding: 7px 0;
-          > a {
-            padding: 3px;
-            color: #fff;
-            &:hover {
-              background: #fff;
-              color: #000;
-              border-radius: 3px;
-              transition: all 0.3s ease-in-out;
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+import BoardList from "./BoardList";
 
 const MyPageMenu = () => {
   return (
-    <MyPageMenuCSS>
-      <div className="my-page-box1">
+    <BoardList>
+      <div className="board-list-box1">
         <div className="menu">
           <h1>My Page</h1>
           <ul>
@@ -86,7 +54,7 @@ const MyPageMenu = () => {
           </ul>
         </div>
       </div>
-    </MyPageMenuCSS>
+    </BoardList>
   );
 };
 
