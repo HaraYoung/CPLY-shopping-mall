@@ -26,7 +26,7 @@ const App = memo(() => {
             <Route path="/signupcheck" element={<SignupCheck />} />
             <Route path="/signupinfo" element={<SignupInfo />} />
             <Route path="/" element={<Home />} exact={true} />
-            <Route path='/servicecenter' element={<ServiceCenter/>}/>
+            <Route path='/servicecenter/*' element={<ServiceCenter/>}/>
             <Route path="/cart" element={<Cart />} />
             <Route path="/mypage/*" element={<MyPage />} />
             <Route path="/payment" element={<MemberPayment />} />

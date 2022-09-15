@@ -176,7 +176,7 @@ const Header = () => {
                     blo2:true
                 })
             }else {
-                console.clear();
+                
                 console.log ('로그인안됨');
                 return;
             }
@@ -202,7 +202,7 @@ const Header = () => {
             <div className='header-box'>
                 {headerState.blo2 ?  <span onClick={logoutButton}>로그아웃</span>:<Link to='/login'>로그인/비로그인주문조회</Link>}
                 {headerState.blo2 ? <Link to='/mypage'>마이페이지</Link>: <Link to='/cart'>장바구니</Link> }
-                <Link to='/notice'>고객센터</Link>
+                <Link to='/servicecenter'>고객센터</Link>
             </div>
             <div className='header-box2'>
                 <button onClick={BtnClick}>☰</button>

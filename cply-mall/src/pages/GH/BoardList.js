@@ -12,12 +12,21 @@ const BoardList = styled.div`
     .menu {
       width: 80%;
       margin: auto;
+      >h1 {
+        margin-bottom: 40px;
+      }
       > ul {
         list-style: none;
         padding: 0;
         margin: 0;
         .list {
           padding: 7px 0;
+          &.list2 {
+            margin-left: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            padding-bottom: 15px;
+          }
           > a {
             padding: 3px;
             color: #fff;
