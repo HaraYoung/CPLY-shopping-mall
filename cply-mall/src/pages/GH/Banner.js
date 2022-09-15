@@ -106,9 +106,7 @@ const Banner = () => {
                     {data.item.map((v,i)=> {
                         const url = 'http://localhost:3001'
                         return (
-                            <>
-                            <SwiperSlide key={i}><img src={`${url}${v.url}`} alt={i}/></SwiperSlide>
-                            </>
+                            <SwiperSlide key={i}><img src={`${url}${v.url}`} alt={i}/></SwiperSlide>                    
                         )
                     })}
                 </Swiper>                

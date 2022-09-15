@@ -7,16 +7,13 @@ import FindId from "./pages/GH/FindId";
 import FindPw from "./pages/GH/FindPw";
 import SignupCheck from "./pages/GH/SignupCheck";
 import SignupInfo from "./pages/GH/SignupInfo";
-import NoticeMain from "./pages/YS/NoticeScreen/NoticeMain";
-import FaqMain from "./pages/YS/FaqScreen/FaqMain";
-import QnaMain from "./pages/YS/QnaScreen/QnaMain";
 import Cart from "./pages/SY/Cart";
 import Header from "./pages/GH/Header";
 import Footer from "./pages/GH/Footer";
 import MyPage from "./pages/GH/MyPage";
-import Juso from "./pages/GH/JusoPopup";
 import MemberPayment from "./pages/GH/MemberPayment";
 import DetailGoods from "./pages/SJ/detailGoods";
+import ServiceCenter from "./pages/GH/ServiceCenter";
 const App = memo(() => {
   return (
     <div>
@@ -29,16 +26,13 @@ const App = memo(() => {
             <Route path="/signupcheck" element={<SignupCheck />} />
             <Route path="/signupinfo" element={<SignupInfo />} />
             <Route path="/" element={<Home />} exact={true} />
-            <Route path="/notice" element={<NoticeMain />} />
-            <Route path="/faq" element={<FaqMain />} />
-            <Route path="/Qna" element={<QnaMain />} />
+            <Route path='/servicecenter' element={<ServiceCenter/>}/>
             <Route path="/cart" element={<Cart />} />
             <Route path="/mypage/*" element={<MyPage />} />
             <Route path="/payment" element={<MemberPayment />} />
             <Route path="/detailGoods" element={<DetailGoods />} />
           </Route>
         </Route>
-        <Route path="/juso" element={<Juso />} />
       </Routes>
     </div>
   );

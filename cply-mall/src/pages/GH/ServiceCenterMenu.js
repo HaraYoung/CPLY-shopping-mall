@@ -12,10 +12,10 @@ const ServiceCenterMenu = memo(() => {
                             <Link to='/notice/'>고객센터</Link>
                         </li>
                         <li>
-                            <Link to='/notice/'>자주 묻는 질문</Link>
+                            <Link to='/faq'>자주 묻는 질문</Link>
                         </li>
                         <li>
-                            <Link to='/notice/'>내 문의 내역</Link>
+                            <Link to='/qa'>내 문의 내역</Link>
                         </li>
                     </ul>
                 </div>
