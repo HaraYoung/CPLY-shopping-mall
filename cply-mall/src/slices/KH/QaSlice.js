@@ -22,10 +22,12 @@ export const getQaItem = createAsyncThunk("QaSlice/getQaItem", async (payload,{r
 //목록 데이터 조회
 export const getQaList = createAsyncThunk("QaSlice/getQaList", async (payload,{rejectWithValue})=> {
     let result = null;
-
     try {
         result = await axios.get(API_URL,{
-            userid:payload.userid
+            params:{
+                userid:payload.userid,
+                page:payload.page
+            }
         });
     }catch(err) {
         //에러 발생시 'rejectWithValue()'함수에 에러 데이터를 전달하면 extraReducer의 rejected의 함수가 호출된다
@@ -59,7 +61,7 @@ export const putQaItem = createAsyncThunk("QaSlice/putQaItem", async (payload,{r
     let result = null;
 
     try {
-        result = await axios.post(`${API_URL}/${payload.id}`,{
+        result = await axios.put(`${API_URL}/${payload.id}`,{
             title:payload.title,
             content:payload.content,
             success:payload.success,
@@ -78,7 +80,7 @@ export const deleteQaItem = createAsyncThunk("QaSlice/deleteQaItem", async (payl
     let result = null;
 
     try {
-        result = await axios.post(`${API_URL}/${payload.id}`);
+        result = await axios.delete(`${API_URL}/${payload.id}`);
     }catch(err) {
         //에러 발생시 'rejectWithValue()'함수에 에러 데이터를 전달하면 extraReducer의 rejected의 함수가 호출된다
         result = rejectWithValue(err.response);

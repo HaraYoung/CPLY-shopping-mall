@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-const QaUpdate = memo(() => {
+const QaEdit = memo(() => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const QaUpdate = memo(() => {
     );
 });
 
-export default QaUpdate;
+export default QaEdit;

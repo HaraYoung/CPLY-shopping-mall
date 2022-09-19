@@ -25,6 +25,7 @@ const Table = styled.table`
     td {
         padding: 10px ;
         border: 1px solid #000;
+        cursor: pointer;
         &:first-child {
             border-left: 0;
         }

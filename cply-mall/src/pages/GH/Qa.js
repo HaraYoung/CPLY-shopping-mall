@@ -7,7 +7,8 @@ import { getSession } from '../../slices/KH/SessionSlice';
 import styled from 'styled-components';
 import Table from '../../components/Table';
 import dayjs from 'dayjs';
-import { NavLink } from 'react-router-dom';
+import { useNavigate,Link,NavLink } from 'react-router-dom';
+import {useQueryString} from '../../hooks/useQueryString';
 
 const QaCss = styled.div`
     >h1 {
@@ -23,6 +24,7 @@ const Pagenation = styled.ul`
   margin: 20px 0;
   display: flex;
   justify-content: center;
+  position: relative;
 
   a {
     color: black;
@@ -32,7 +34,7 @@ const Pagenation = styled.ul`
     margin: 0 5px;
 
     &.current-page {
-      background-color: #116688;
+      background-color: #000;
       color: white;
       border-radius: 5px;
     }
@@ -45,15 +47,45 @@ const Pagenation = styled.ul`
       border-radius: 5px;
     }
   }
+  >div {
+      display: block;
+      >span {
+        a {
+          color: #fff;
+          background-color: #000;
+          padding: 5px 7px;
+          margin: 5px 0;
+          border-radius: 5px;
+          position: absolute;
+          right: 0;
+          top: -50%;
+          border: 1px solid #000;
+          &:hover {
+            background-color: #fff;
+            transition: all 0.3s;
+            cursor: pointer;
+            color: #000;
+            border: 1px solid #000;
+          }
+        }
+      }
+    }
 `;
 
 const Qa = memo(() => {
+    const navigate = useNavigate();
+
     //리덕스 초기화
     const dispatch = useDispatch();
 
     const {data:data1,loading:loading1,error:error1} = useSelector((state)=>state.session)
     const {data:data2,loading:loading2,error:error2} = useSelector((state)=>state.qa)
 
+  //querystring 문자열 얻기
+  //ex) http://localhost:3000?query=풀스택&rows=10&page=3
+  const { page } = useQueryString({
+    page: 1,
+  });
 
     //상태값
     const [qaLogin,setQaLogin] = React.useState({
@@ -66,19 +98,35 @@ const Qa = memo(() => {
             ...qaLogin,
             blo1:true
         })
+        console.log ('aa')
     },[dispatch])
 
     React.useEffect(()=> {
         if (qaLogin.blo1) {
             if (data1.item !== null && data1.item !== undefined) {
                 dispatch(getQaList({
-                    userid:data1.item.userid
+                    userid:data1.item.userid,
+                    page:page
                 }))
+                console.log ('bb')
             }else {
                 return;
             }
         }
-    },[data1])
+        
+    },[data1,page])
+
+    const onQaInfoButton = React.useCallback((e)=> {
+      e.preventDefault();
+
+      const current = e.target;
+
+      const parent = current.closest('.foo');
+
+      const id = parent.dataset.id;
+
+      navigate(`/servicecenter/qainfo/${id}`)
+    },[])
     return (
         <div>
             <Spinner visible={loading2}/>
@@ -100,7 +148,7 @@ const Qa = memo(() => {
                         <tbody>
                         {data2.item.map((v,i)=> {
                             return (
-                                <tr>
+                                <tr key={i} data-id={v.id} className="foo" onClick={onQaInfoButton}>
                                     <td>{v.title}</td>
                                     <td>{v.success}</td>
                                     <td>{dayjs(v.regdate).format("YYYY-MM-DD")}</td>
@@ -110,12 +158,12 @@ const Qa = memo(() => {
                         </tbody>
                         </Table>
                     </QaCss>
-                {/* {data2 && (
+                {data2 && (
               <Pagenation>
                 {data2.pagenation.prevGroupLastPage > 0 ? (
                   <li>
                     <NavLink
-                      to={`/?query=${query}&rows=${rows}&page=${data2.pagenation.prevGroupLastPage}`}
+                      to={`/servicecenter/qa/?page=${data2.pagenation.prevGroupLastPage}`}
                     >
                       &laquo;
                     </NavLink>
@@ -145,7 +193,7 @@ const Qa = memo(() => {
                       li.push(
                         <li key={i}>
                           <NavLink
-                            to={`/?query=${query}&rows=${rows}&page=${i}`}
+                            to={`/servicecenter/qa/?page=${i}`}
                           >
                             {i}
                           </NavLink>
@@ -159,20 +207,23 @@ const Qa = memo(() => {
                 {data2.pagenation.nextGroupFirstPage > 0 ? (
                   <li>
                     <NavLink
-                      to={`/?query=${query}&rows=${rows}&page=${data2.pagenation.nextGroupFirstPage}`}
+                      to={`/servicecenter/qa/?page=${data2.pagenation.nextGroupFirstPage}`}
                     >
                       &raquo;
                     </NavLink>
                   </li>
                 ) : (
                   <li>
-                    <NavLink to={`/?query=${query}&rows=${rows}&page=${data2.pagenation.groupEnd}`} className="disabled">
+                    <NavLink to={`/servicecenter/qa/?page=${data2.pagenation.groupEnd}`} className="disabled">
                       &raquo;
                     </NavLink>
                   </li>
                 )}
+                  <div>
+                    <span><Link to='/servicecenter/qaadd'>글쓰기</Link></span>
+                  </div>
               </Pagenation>
-            )} */}
+            )}
             </>
                 )
             )}

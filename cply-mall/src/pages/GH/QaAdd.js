@@ -6,10 +6,13 @@ import {postQaItem} from '../../slices/KH/QaSlice'
 import RegexHelper from "../../libs/RegexHelper";
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-const QaWriteCss = styled.div`
+import Spinner from '../../components/Spinner';
+import ErrorView from '../../components/ErrorView';
+const QaAddCss = styled.div`
     width: 100%;
     display: block;
     >h1 {
+        margin-top: 0;
         margin-bottom: 40px;
     }
     >form {        
@@ -48,39 +51,42 @@ const QaWriteCss = styled.div`
         }
     }
 `;
-const QaWrite = memo(() => {
+const QaAdd = memo(() => {
     const navigate = useNavigate();
     
     //리덕스 초기화
 
     const dispatch = useDispatch()
 
-    const  {data,lodding,error} = useSelector((state)=> state.session);
+    const  {data,loading,error} = useSelector((state)=> state.session);
 
     //상태값
-    const [qaWriteCheck,setQaWriteCheck] = React.useState({
+    const [qaAddCheck,setQaAddCheck] = React.useState({
         blo1:false,
         blo2:false,
         userid:''
     })
+
+    
     React.useEffect(()=> {
+        
         dispatch(getSession())
-        setQaWriteCheck({
-            ...qaWriteCheck,
+        setQaAddCheck({
+            ...qaAddCheck,
             blo1:true
         })
     },[dispatch])
     React.useEffect(()=> {
-        if (qaWriteCheck.blo1) {
+        if (qaAddCheck.blo1) {
             if (data.item !== null && data.item !==undefined) {
-                setQaWriteCheck({
-                    ...qaWriteCheck,
+                setQaAddCheck({
+                    ...qaAddCheck,
                     userid:data.item.userid
                 })
                 console.log (data.item.userid)
             }else {
-                setQaWriteCheck({
-                    ...qaWriteCheck,
+                setQaAddCheck({
+                    ...qaAddCheck,
                     blo1:false
                 })
                 return;
@@ -88,7 +94,7 @@ const QaWrite = memo(() => {
         }
     },[data])
 
-    const qaWriteSubmit = React.useCallback((e)=> {
+    const qaAddSubmit = React.useCallback((e)=> {
         e.preventDefault();
 
         const current = e.target;
@@ -108,20 +114,29 @@ const QaWrite = memo(() => {
             success:'N',
             regdate:dayjs().format("YYYY-MM-DD HH:mm:ss"),
             editdate:dayjs().format("YYYY-MM-DD HH:mm:ss"),
-            userid:qaWriteCheck.userid
+            userid:qaAddCheck.userid
         }))
         navigate('/servicecenter/qa')
-    })
+    },[])
     return (
-        <QaWriteCss>
-            <h1>문의 작성</h1>
-            <form onSubmit={qaWriteSubmit}>
-            <input type='text' name='title' placeholder='제목을 작성해 주세요'/>
-            <textarea name='content' className='content' placeholder='내용을 작성해 주세요'/>
-            <button type='submit'>등록하기</button>
-            </form>
-        </QaWriteCss>
+        <QaAddCss>
+            <Spinner visible={loading}/>
+            {error ? (
+                <ErrorView error={error}/>
+            ): (
+                data && (
+                    <>
+                    <h1>문의 작성</h1>
+                    <form onSubmit={qaAddSubmit}>
+                    <input type='text' name='title' placeholder='제목을 작성해 주세요'/>
+                    <textarea name='content' className='content' placeholder='내용을 작성해 주세요'/>
+                    <button type='submit'>등록하기</button>
+                    </form>
+                    </>
+                )
+            )}
+        </QaAddCss>
     );
 });
 
-export default QaWrite;
+export default QaAdd;

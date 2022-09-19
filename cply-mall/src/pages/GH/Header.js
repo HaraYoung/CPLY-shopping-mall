@@ -166,6 +166,7 @@ const Header = () => {
             ...headerState,
             blo1:true
         });
+        console.log ('이펙트1')
     },[dispatch])
 
     React.useEffect(()=> {
@@ -175,6 +176,7 @@ const Header = () => {
                     ...headerState,
                     blo2:true
                 })
+                console.log (';;;')
             }else {
                 
                 console.log ('로그인안됨');
@@ -189,7 +191,8 @@ const Header = () => {
             ...headerState,
             blo2:false
         })
-        navigate('/')
+        window.location.replace('/')
+        window.alert('로그아웃!')
     },[dispatch])
 
     //상단 우측 검색 이미지 클릭시 바뀔 상태값
