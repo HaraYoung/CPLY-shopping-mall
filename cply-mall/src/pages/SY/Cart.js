@@ -5,7 +5,7 @@
  * @author: 박세영(qkrtpdud9899@gmail.com)
  */
 import React, { memo } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -125,7 +125,7 @@ const CartArea = styled.div`
               display: flex;
               span {
                 width: 36px;
-                height: 21px;
+                height: 39px;
                 display: inline-block;
                 text-align: center;
                 border: 1px solid gainsboro;
@@ -235,31 +235,38 @@ const CartArea = styled.div`
     }
   }
 `;
-
 const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
   /** 리덕스 관련 초기화 */
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.CartSlice);
-  console.log(data);
 
   const { query, rows, page } = useQueryString({
     query: "",
     rows: 10,
     page: 1,
   });
+  /** 데이터 수정 후 목록 페이지로 강제 이동하기 위한 함수 생성 */
+  const navigate = useNavigate();
+
+  //품절된 상품의 상태값
+  const [soldOut, setSoldOut] = React.useState(false);
+
+  //데이터를 받아왔을 때 변경될 상태값
+  const [dataState, setDataState] = React.useState(false);
 
   /** 최초 마운트 혹은 QueryString이 변경될 때 마다 hook -> 리덕스를 통해 목록을 조회한다. */
   React.useEffect(() => {
-    //false=최초 등장시, true=최초 등장 이후
     dispatch(
       getList({
         query: query,
       })
     );
-  }, [dispatch, query]);
+    setDataState(true);
+    
+  }, [dispatch, query, dataState]);
 
-  //품절된 상품의 상태값
-  const [soldOut, setSoldOut] = React.useState(false);
+  //상태값을 생성하고 useEffect로 데이터를 받아올때 (dispatch) 상태값이 true로 변경 후
+  //상태값이 true일때라는 조건을 걸어서 데이터를 사용하는 방법
 
   //품절된 상품 삭제 이벤트
   // const onSoldOutDelete = () => {
@@ -278,35 +285,67 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
   //수량 옵션 상태값과 이벤트
   //const initialState = {};
 
-  /*state: 현재 가리키고있는 상태, amount: action값을 발생시키는 함수
-  reducer: reducer함수,initialState: 해당 reducer함수의 기본값*/
-  //const [state, amount] = React.useReducer(reducer, initialState);
+  //수량 옵션 버튼이 눌렸을 경우 횟수를 담은 변수
+  let cut = 0;
 
-  //상품 수량 변동을 관리할 상태값
-  const [goodsCount, setGoodsCount] = React.useState({
-    //상품의 수량
-    goodsQty: [],
-    //상품의 카운트값
-    count: [],
-    //합친값
-    qtyCut: [],
-  });
+  //상품 수량이 최대값, 최소값을 관리할 상태값- 범위를 넘을경우 false로 변경
+  const [goodsCount, setGoodsCount] = React.useState(true);
+
+  const onClickPlus = React.useCallback(
+    (e) => {
+      const current = e.target;
+      if (cut > 51) {
+        setGoodsCount(false);
+      } else {
+        setGoodsCount(true);
+        cut++;
+        cut += Number.parseInt(current.dataset.count);
+        dispatch(
+          putItem({
+            id: current.dataset.cart_id,
+            qty: cut,
+            goodsOption: current.dataset.goods_option,
+            goodnumber: current.dataset.goodnumber,
+            userid: current.dataset.userid,
+          })
+        );
+      }
+      window.location.reload();
+      console.log(goodsCount, cut);
+    },
+    [goodsCount, cut]
+  );
+
+  const onClickMinus = React.useCallback(
+    (e) => {
+      const current = e.target;
+      if (cut < 0) {
+        setGoodsCount(false);
+      } else {
+        setGoodsCount(true);
+        cut--;
+        cut += Number.parseInt(current.dataset.count);
+        dispatch(
+          putItem({
+            id: current.dataset.cart_id,
+            qty: cut,
+            goodsOption: current.dataset.goods_option,
+            goodnumber: current.dataset.goodnumber,
+            userid: current.dataset.userid,
+          })
+        );
+      }
+      window.location.reload();
+      console.log(goodsCount, cut);
+    },
+    [goodsCount, cut]
+  );
 
   //상품의 상태값
   const [ItemCheck, setItemCheck] = React.useState();
 
-  //체크 박스-data의 id
-  // const b= data.item.map((v, i)=> {
-  //     console.log ('index= '+i);
-  //     console.log ('item= '+v);
-  //   return v
-  // })
-  // console.log(b);
+  //장바구니의 데이터 갯수만큼 id값을 넣을 배열
   const CartItem = [];
-  // data.item.map((v, i)=>{
-  //    CartItem.push(i);
-  //    return CartItem;
-  // })
 
   //체크박스 상태를 관리하기 위한 배열
   const [checkedList, setCheckedLists] = React.useState([]);
@@ -316,11 +355,14 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
       if (checked) {
         const checkedListArray = [];
         //CartItem의 정보를 checkList에 넣음(id만)
-        CartItem.forEach((list) => checkedListArray.push(list.id));
+        console.log("CartItem", CartItem);
+        CartItem.forEach((v) => checkedListArray.push(v));
+        console.log("CartItem의 id값을 push한 배열", checkedListArray);
         setCheckedLists(checkedListArray);
       } else {
         setCheckedLists([]);
       }
+      console.log(checkedList);
     },
     [CartItem]
   );
@@ -332,230 +374,223 @@ const Cart = memo(({ step = 1, min = 0, max = 50 }) => {
         setCheckedLists([...checkedList, list]);
       } else {
         //아닌경우 filter메서드로 걸러냄
-        setCheckedLists(checkedList.filter((el) => el !== list));
+        setCheckedLists(checkedList.filter((item) => item !== list));
+        //checkedList의 아이템이 상품의 id와 같지 않다면 true를 반환
       }
+      console.log(checkedList);
     },
     [checkedList]
   );
 
   //체크된 상품만 삭제 이벤트
-  const onChoiceDelete = React.useCallback((e)=> {
+  const onChoiceDelete = React.useCallback((e) => {
     if (window.confirm("선택하신 상품을 삭제하시겠습니까?")) {
+      const current = e.target;
+      dispatch(
+        deleteItem({
+          id: current.dataset.deleteId,
+        })
+      );
       alert("선택하신 상품이 삭제되었습니다.");
+      window.location.reload();
     }
   });
-  //총 가격을 담을 변수
-  let DSum = null;
-  //상품의 수량을 담을 상태값
-  let cut = [];
+  //체크박스가 선택된 아이템의 총 가격을 담을 변수
+  let totalSum = null;
+
   return (
     <>
       <Spinner visible={loading} />
       {error ? (
         <ErrorView error={error} />
-      ) : data ? (
-        <CartArea>
-          <div className="checkButArea">
-            <span>
-              <label>
-                <input
-                  type="checkbox"
-                  name="allCheck"
-                  onClick={(e) => {
-                    onCheckedAll(e.target.checked);
-                  }}
-                  checked={
-                    checkedList.length === data.item.length ? true : false
-                  }
-                />
-                전체 선택
-                <span>
-                  ({checkedList.length}/{data.item.length})
-                </span>
-              </label>
-            </span>
-            <span>
-              <button
-                type="button"
-                // data-deleteId={data.item.id}
-                onClick={onChoiceDelete}
-              >
-                선택 삭제
-              </button>
-              <button
-                type="button"
-                // data-deleteId={data.item.id}
-              >
-                품절 삭제
-              </button>
-            </span>
-          </div>
-          <div className="ItemTitle">
-            <div className="Title1">
-              <span>상품 정보</span>
+      ) : (
+        data &&
+        (data.item.cartData ? (
+          <CartArea>
+            <div className="checkButArea">
+              <span>
+                <label>
+                  {/*데이터의 id값을 CartItem에 넣어줌 */}
+                  {data.item.cartData.forEach((v) => {
+                    CartItem.push(v.id);
+                  })}
+                  <input
+                    type="checkbox"
+                    name="allCheck"
+                    onClick={(e) => onCheckedAll(e.target.checked)}
+                    checked={
+                      checkedList.length === 0
+                        ? false
+                        : data.item.cartData.length === CartItem.length
+                        ? true
+                        : false
+                    }
+                  />
+                  전체 선택
+                  <span>
+                    ({checkedList.length}/{data.item.cartData.length})
+                  </span>
+                </label>
+              </span>
+              <span>
+                <button type="button" onClick={onChoiceDelete}>
+                  선택 삭제
+                </button>
+                <button
+                  type="button"
+                  // data-deleteId={data.item.id}
+                >
+                  품절 삭제
+                </button>
+              </span>
             </div>
-            <div className="Title2">
-              <span>옵션</span>
-              <span>상품 금액</span>
+            <div className="ItemTitle">
+              <div className="Title1">
+                <span>상품 정보</span>
+              </div>
+              <div className="Title2">
+                <span>옵션</span>
+                <span>상품 금액</span>
+              </div>
             </div>
-          </div>
-          {data && (data.item.map((item, index) => {
-            //상품 * 가격
-            let sum = 0;
-            sum = item.qty * item.price;
 
-            //각 item의 item.qty * item.price을 저장하기 위한 배열
-            let totalSum = [];
-            totalSum.push(sum);
+            {data &&
+              data.item.cartData.map((v, i) => {
+                
+                //상품 데이터의 id값과 장바구니 데이터의 goodnumber가 같은 아이템을 filter로 걸러냄
+                let filter = data.item.goodsData.filter(
+                  (value) => value.goodsId === v.goodnumber
+                  );
+                  
+                  //상품 * 가격
+                  let sum = filter[0].price * v.qty;
+                  
+                  //체크된 상품과 item의 id가 같다면 각 상품의 총 가격을 더함
+                  checkedList.forEach((item) => {
+                    if (v.id === item) {
+                      totalSum += sum;
+                    }
+                  });
+                  //상품의 재고가 0일경우 sold out UI로 변경- true일경우 노출
+                if(filter[0].stock === 0){
+                  console.log(v.id)
+                }
 
-            //reduce함수로 각각의 상품*가격을 합친 총 가격
-            DSum = totalSum.reduce(function add(a, currValue) {
-              return a + currValue;
-            }, 0);
-
-            // cut.push(item.qty);
-            // console.log(cut)
-            // console.log('cut:'+cut[2])
-
-            //카운트 상태값, 배열을 상품의 인덱스와 같은 인덱스를 가진 원소와 더해 화면에 출력
-            //item이 생성되면 item의 index만큼 같이 원소가 늘어남
-            //goodsCount.push({count: 0});
-
-            return (
-              <div
-                className={"ItemArea " + (soldOut ? "soldOut" : "")}
-                key={index}
-              >
-                <div className="ItemInfoArea">
-                  <div className="ItemInfoTopArea">
-                    <div className="ItemInfo">
-                      <span>
-                        <input
-                          key={index}
-                          type="checkbox"
-                          onChange={(e) =>
-                            onCheckedElement(e.target.checked, index)
-                          }
-                          checked={checkedList.includes(index) ? true : false}
-                        />
-                      </span>
-                      <span>
-                        {soldOut && <span>품절</span>}
-                        <img src={Img} alt="상품이미지" width="100px" />
-                      </span>
-                      <span>
-                        <p>{item.title}</p>
-                        <p>{soldOut ? "0" : item.price}원</p>
-                      </span>
-                      <FontAwesomeIcon
-                        icon={faXmark}
-                        size="2x"
-                        className="deleteItem"
-                        data-deleteId={item.id}
-                        onClick={(e) => {
-                          //이벤트가 발생한 자기 스스로
-                          const current = e.target;
-                          dispatch(
-                            deleteItem({
-                              id: current.dataset.deleteId,
-                            })
-                          );
-                          //setItemCheck(!ItemCheck);
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="ItemInfoButtonArea">
-                    <div className="ItemOption">
-                      <span>{item.goodsOption}</span>
-                      <div className="ItemNum">
-                        <div className="numOptionArea">
+                return (
+                  <div
+                    className={"ItemArea " + (soldOut ? "soldOut" : "")}
+                    key={i}
+                  >
+                    <div className="ItemInfoArea">
+                      <div className="ItemInfoTopArea">
+                        <div className="ItemInfo">
+                          <span>
+                            <input
+                              key={v.id}
+                              type="checkbox"
+                              onChange={(e) =>
+                                onCheckedElement(e.target.checked, v.id)
+                              }
+                              checked={
+                                checkedList.includes(v.id) ? true : false
+                              }
+                            />
+                          </span>
+                          <span>
+                            {soldOut && <span>품절</span>}
+                            <img src={Img} alt="상품이미지" width="100px" />
+                          </span>
+                          <span>
+                            <p>{filter[0].title}</p>
+                            <p>{soldOut ? "0" : filter[0].price}원</p>
+                          </span>
                           <FontAwesomeIcon
-                            className="numOption"
-                            icon={faMinus}
+                            icon={faXmark}
+                            size="2x"
+                            className="deleteItem"
+                            data-delete_id={v.id}
                             onClick={(e) => {
-                              setGoodsCount({
-                                ...goodsCount,
-                                count: -1,
-                              });
-                              //amount({ type: "DECREMENT", step, min });
-                              // dispatch(
-                              //   putItem({
-                              //     id: item.id,
-                              //     qty: state.count + item.qty,
-                              //     title: item.title,
-                              //     goodsOption: item.goodsOption,
-                              //     thumbnail: item.thumbnail,
-                              //     price: item.price,
-                              //     goodnumber: item.goodnumber,
-                              //     userid: item.userid,
-                              //     stock: item.stock,
-                              //     chose: item.chose,
-                              //   })
-                              // );
+                              //이벤트가 발생한 자기 스스로
+                              const current = e.target;
+                              dispatch(
+                                deleteItem({
+                                  id: current.dataset.delete_id,
+                                })
+                              );
+                              window.location.reload();
                             }}
                           />
-                          <span>{soldOut ? "0" : item.qty}</span>
-                          <FontAwesomeIcon
-                            className="numOption"
-                            icon={faPlus}
-                            //onClick={() => {
-                            // dispatch(
-                            //   putItem({
-                            //     id: item.id,
-                            //     qty: state.count + item.qty,
-                            //     title: item.title,
-                            //     goodsOption: item.goodsOption,
-                            //     thumbnail: item.thumbnail,
-                            //     price: item.price,
-                            //     goodnumber: item.goodnumber,
-                            //     userid: item.userid,
-                            //     stock: item.stock,
-                            //     chose: item.chose,
-                            //   })
-                            // );
-                            //}}
-                          />
-                          <div className="optionPrice">
-                            <p>{soldOut ? "0" : sum}</p>
+                        </div>
+                      </div>
+                      <div className="ItemInfoButtonArea">
+                        <div className="ItemOption">
+                          <span>{v.goodsOption}</span>
+                          <div className="ItemNum">
+                            <div className="numOptionArea">
+                              <FontAwesomeIcon
+                                className="numOption"
+                                icon={faMinus}
+                                data-cart_id={v.id}
+                                data-count={v.qty}
+                                data-goodnumber={v.goodnumber}
+                                data-goods_option={v.goodsOption}
+                                data-userid={v.userid}
+                                onClick={onClickMinus}
+                                disabled={goodsCount}
+                              />
+                              <span>{soldOut ? "0" : v.qty}</span>
+                              <FontAwesomeIcon
+                                className="numOption"
+                                icon={faPlus}
+                                data-cart_id={v.id}
+                                data-count={v.qty}
+                                data-goodnumber={v.goodnumber}
+                                data-goods_option={v.goodsOption}
+                                data-userid={v.userid}
+                                onClick={onClickPlus}
+                                disabled={goodsCount}
+                              />
+                              <div className="optionPrice">
+                                <p>{soldOut ? "0" : sum}</p>
+                              </div>
+                            </div>
                           </div>
+                        </div>
+                        <div className="OrderArea">
+                          <div>{soldOut ? "0" : sum}원</div>
+                          {!soldOut && <button type="button">주문하기</button>}
                         </div>
                       </div>
                     </div>
-                    <div className="OrderArea">
-                      <div>{soldOut ? "0" : sum}원</div>
-                      {!soldOut && <button type="button">주문하기</button>}
-                    </div>
                   </div>
+                );
+              })}
+            <div className="SumArea">
+              <div className="LeftSum">
+                <div>
+                  총 상품 금액
+                  <p>{totalSum === null ? '0' : totalSum}원</p>
+                </div>
+                <div className="plus">+</div>
+                <div>
+                  배송비
+                  <p>000원</p>
                 </div>
               </div>
-            );
-          }))}
-          <div className="SumArea">
-            <div className="LeftSum">
-              <div>
-                총 상품 금액
-                <p>{DSum}원</p>
-              </div>
-              <div className="plus">+</div>
-              <div>
-                배송비
-                <p>000원</p>
+              <div className="RightSum">
+                총 결제 금액
+                <p>{totalSum === null ? '0' : totalSum}원</p>
               </div>
             </div>
-            <div className="RightSum">
-              총 결제 금액
-              <p>{DSum}원</p>
+            <div className="OrderButton">
+              <NavLink to="#">구매 하기</NavLink>
             </div>
+          </CartArea>
+        ) : (
+          <div>
+            <NoCart />
           </div>
-          <div className="OrderButton">
-            <NavLink to="#">구매 하기</NavLink>
-          </div>
-        </CartArea>
-      ) : (
-        (<div>
-          <NoCart />
-        </div>)
+        ))
       )}
     </>
   );

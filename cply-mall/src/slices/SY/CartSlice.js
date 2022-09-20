@@ -27,15 +27,10 @@ export const postItem = createAsyncThunk(
 
     try {
       result = await axios.post(API_URL, {
-        title: payload.title,
         qty: payload.qty,
         goodsOption: payload.goodsOption,
-        thumbnail: payload.thumbnail,
-        price: payload.price,
         goodnumber: payload.goodnumber,
         userid: payload.userid,
-        stock: payload.stock,
-        chose: payload.chose,
       });
     } catch (err) {
       result = rejectWithValue(err.response);
@@ -55,14 +50,9 @@ export const putItem = createAsyncThunk(
       result = await axios.put(`${API_URL}${payload.id}/`, {
         id: payload.id,
         qty: payload.qty,
-        title: payload.title,
         goodsOption: payload.goodsOption,
-        thumbnail: payload.thumbnail,
-        price: payload.price,
         goodnumber: payload.goodnumber,
         userid: payload.userid,
-        stock: payload.stock,
-        chose: payload.chose,
       });
     } catch (err) {
       result = rejectWithValue(err.response);

@@ -2,17 +2,13 @@ import React, { memo } from "react";
 import styled from "styled-components";
 import { NavLink, Routes, Route } from "react-router-dom";
 
-//Slice에 정의된 액션함수들 참조
-
-//상태값을 로드하기 위한 hook과 action함수를 dispatch할 hook참조
-import { useSelector, useDispatch } from "react-redux";
-
 import Exchange from "./Exchange";
 import Refund from "./Refund";
 
 const TabEAndR = styled.div`
   display: flex;
   justify-content: space-around;
+  margin: 3em;
   a {
     text-decoration: none;
     color: #000;
@@ -20,10 +16,15 @@ const TabEAndR = styled.div`
     font-weight: bold;
     padding: 10px;
     border-bottom: 2px solid black;
-    margin: 3em;
     &:hover {
       background-color: gainsboro;
     }
+  }
+  .chose{
+    background-color: black;
+    font-size: 2em;
+    color: white;
+    font-weight: bold;
   }
 `;
 
@@ -34,10 +35,6 @@ const Notice = styled.div`
   padding: 1em 2em;
 `;
 const RandE = memo(() => {
-  //dispatch함수 생성
-  const dispatch = useDispatch();
-  //hook를 통해 slice가 관리하는 상태값 가져오기
-  //const { RAndEstate } = useSelector((state) => state.orderState);
 
   const [notice, setNotice] = React.useState(false);
   const onClickTab = (e) => {
@@ -45,10 +42,8 @@ const RandE = memo(() => {
     const aa=e.target.dataset.type;
 
     if (aa > 0) {
-      console.log (notice)
       setNotice(true)
     }else {
-      console.log (notice)
       setNotice(false)
     }
     
@@ -57,11 +52,11 @@ const RandE = memo(() => {
   return (
     <div>
       <TabEAndR>
-        <NavLink to="/mypage/rande" data-type="0" onClick={onClickTab}>교환</NavLink>
-        <NavLink to="refund" data-type="1" onClick={onClickTab}>반품</NavLink>
+        <NavLink to="/mypage/rande" data-type="0" onClick={onClickTab} className={(notice ? '' : 'chose')}>교환</NavLink>
+        <NavLink to="refund" data-type="1" onClick={onClickTab} className={(notice ? 'chose' : '')}>반품</NavLink>
       </TabEAndR>
       <Notice>
-        {notice ? ('sdf'):('123')}
+        {notice ? ('반품시 주의 사항'):('교환시 주의 사항')}
       </Notice>
       <Routes>
         <Route path="/" element={<Exchange />} expat={true} />
