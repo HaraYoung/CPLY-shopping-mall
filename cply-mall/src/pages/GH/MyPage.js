@@ -1,6 +1,4 @@
 import React from "react";
-import styled from "styled-components";
-import MyPageMenu from "./MyPageMenu";
 import NewProduct from "./NewProduct";
 import Profile from "./Profile";
 import Secession from "./Secession";
@@ -13,20 +11,14 @@ import RandE from "../SY/RandE";
 import Likes from "../SJ/recentlikes";
 import PageNotFound from "./PageNotFound";
 import { Routes, Route } from "react-router-dom";
-const MyPageCss = styled.div`
-  padding: 150px 0;
-  display: flex;
-  align-items: flex-start;
-  .mypage-contents {
-    width: 70%;
-  }
-`;
+import Board from "./Board";
+import MyPageMenu from './MyPageMenu'
 
 const MyPage = () => {
   return (
-    <MyPageCss>
-      <MyPageMenu />
-      <div className="mypage-contents">
+    <Board>
+      <MyPageMenu/>
+      <div className="board-contents">
         {/* <Routes>
                 <Route path='/' element={<NewProduct/>}/>
                 <Route path='b' element={<TodayPopularity/>}/>
@@ -43,7 +35,7 @@ const MyPage = () => {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>
-    </MyPageCss>
+    </Board>
   );
 };
 

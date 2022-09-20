@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { putUserItem } from "../../slices/KH/UserSlice";
 import { postSecessionItem } from "../../slices/KH/SecessionSlice";
+import { getSession } from "../../slices/KH/SessionSlice";
 import dayjs from "dayjs";
 const SecessionCss = styled.div`
   width: 100%;
@@ -59,6 +60,14 @@ const Secession = memo(() => {
     error: error2,
   } = useSelector((state) => state.secession);
 
+
+  const {data:data3,loading:loading3,error:error3} = useSelector((state)=> state.session);
+
+
+  React.useEffect(()=> {
+    dispatch(getSession());
+  },[dispatch])
+
   const array = [
     "상품 구매 빈도가 낮아 이용할 필요가 없어서",
     "서비스 및 고객지원이 만족스럽지 못해서",
@@ -95,18 +104,18 @@ const Secession = memo(() => {
         return;
       }
       if (window.confirm("정말 탈퇴하시겠습니까?")) {
-        dispatch(putUserItem({
-          userid:'hisaishijjo11',
+        if (data3) {dispatch(putUserItem({
+          userid:data3.item.userid,
           editdate:dayjs().format("YYYY-MM-DD HH:mm:ss"),
           isout:'Y'
         }))
         dispatch(postSecessionItem({
-          userid:'hisaishijjo11',
+          userid:data3.item.userid,
           reason:stateValue.value,
           regdate:dayjs().format('YYYY-MM-DD')
         }))
         window.alert("탈퇴가 완료되었습니다");
-        // navigate('/');
+        navigate('/');}
       }
     },
     [navigate, dispatch]
